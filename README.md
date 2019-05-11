@@ -36,7 +36,6 @@ docker-compose up
 - para definir puertos, dns y configuraciones internas dentro del archivo **.env**
 - para definir conexiones externas a otros apis se debe crear el archivo **custom.env** en la raiz del proyecto
 
-en los puertos definidos en **.env** y **custom.env** actualmente 8080
 # Licencia
 [licencia](LICENSE)
 
