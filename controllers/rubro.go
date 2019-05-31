@@ -104,5 +104,4 @@ func (c *RubroController) ArbolRubros() {
 		fmt.Println("expc ", e)
 		c.Data["json"] = map[string]interface{}{"Code": "E_0458", "Body": e, "Type": "error"}
 	})
-	c.ServeJSON()
 }
