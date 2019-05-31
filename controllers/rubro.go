@@ -69,7 +69,7 @@ func (c *RubroController) EliminarRubro() {
 	}
 
 	response := rubroHelper.DeleteRubro(id)
-	beego.Debug("response", response)
+	//beego.Debug("response", response)
 	responseformat.SetResponseFormat(&c.Controller, response["Body"], response["Code"].(string), 200)
 
 }
