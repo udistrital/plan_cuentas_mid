@@ -12,9 +12,10 @@ import (
 // AddRubro ... send finantial information to mongo for some internal operation's
 func AddRubro(data models.Rama) (response map[string]interface{}) {
 	var (
-		urlCrud  string
-		padre    bool
-		sendData interface{}
+		urlCrud       string
+		padre         bool
+		sendData      interface{}
+		sendDataMongo interface{}
 	)
 	res := make(map[string]interface{})
 
@@ -53,7 +54,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 
 	urlCrud = beego.AppConfig.String("plan_cuentasApiService")
 	if data.RubroPadre != nil {
-		urlCrud += "rama"
+		urlCrud += "rama/?parentId=" + strconv.Itoa(data.RubroPadre.Id)
 		sendData = data
 		padre = false
 	} else if data.RubroHijo != nil {
@@ -70,16 +71,16 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 	if err == nil && res["Type"] != nil && res["Type"].(string) == "success" {
 
 		if !padre {
-			sendData = res["Body"].(map[string]interface{})
+			sendDataMongo = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{}), "RubroPadre": data.RubroPadre}
 		} else {
-			sendData = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{}), "RubroPadre": map[string]interface{}{}}
-			res["Body"] = sendData
+			sendDataMongo = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{}), "RubroPadre": map[string]interface{}{}}
+			res["Body"] = sendDataMongo
 
 		}
 
 		urlMongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/registrarRubro"
 		var resMongo map[string]interface{}
-		err = request.SendJson(urlMongo, "POST", &resMongo, &sendData)
+		err = request.SendJson(urlMongo, "POST", &resMongo, &sendDataMongo)
 		if err != nil || resMongo["Type"] == nil || resMongo["Type"].(string) == "error" {
 			beego.Error("err", err, "res", resMongo)
 			panic(helpers.ExternalAPIErrorMessage())
