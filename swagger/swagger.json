@@ -1,0 +1,151 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/rubro/ArbolRubros/{unidadEjecutora}": {
+            "get": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "RubroController.ArbolRubros",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/rubro/EliminarRubro/{id}": {
+            "delete": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "delete the Rubro",
+                "operationId": "RubroController.EliminarRubro",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/rubro/RegistrarRubro/": {
+            "post": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "Registra Rubro en postgres y mongo",
+                "operationId": "RubroController.RegistrarRubro",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Rubro content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alert"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Alert": {
+            "title": "Alert",
+            "type": "object"
+        },
+        "models.Rubro": {
+            "title": "Rubro",
+            "type": "object",
+            "properties": {
+                "Codigo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "organizacion": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "rubro",
+            "description": "RubroController operations for Rubro\n"
+        }
+    ]
+}
