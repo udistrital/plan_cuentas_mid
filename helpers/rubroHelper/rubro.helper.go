@@ -25,11 +25,11 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 			go func() {
 				defer func() {
 					if routineRecv := recover(); routineRecv != nil {
-						beego.Error(helpers.RoutineError())
+						beego.Error(helpers.RoutineError())  //todo: cambiar a manager
 					}
 				}()
 				if resul, e := res["Body"].(map[string]interface{}); e {
-					urlCrud = beego.AppConfig.String("plan_cuentasApiService")
+					urlCrud = beego.AppConfig.String("planCuentasApiService")
 
 					if padre {
 						urlCrud += "rubro/" + strconv.Itoa(int(resul["Id"].(float64)))
@@ -52,7 +52,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 
 	}()
 
-	urlCrud = beego.AppConfig.String("plan_cuentasApiService")
+	urlCrud = beego.AppConfig.String("planCuentasApiService")
 	if data.RubroPadre != nil {
 		urlCrud += "rama/?parentId=" + strconv.Itoa(data.RubroPadre.Id)
 		sendData = data
@@ -99,7 +99,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 func DeleteRubro(id int) map[string]interface{} {
 
 	idStr := strconv.Itoa(id)
-	urlcrud := beego.AppConfig.String("plan_cuentasApiService") + "/rubro/" + idStr
+	urlcrud := beego.AppConfig.String("planCuentasApiService") + "/rubro/" + idStr
 	res := make(map[string]interface{})
 	defer func() {
 		if r := recover(); r != nil {
