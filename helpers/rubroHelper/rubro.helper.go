@@ -54,7 +54,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 
 	urlCrud = beego.AppConfig.String("planCuentasApiService")
 	if data.RubroPadre != nil {
-		urlCrud += "rama/?parentId=" + strconv.Itoa(data.RubroPadre.Id)
+		urlCrud += "rubro/?parentId=" + strconv.Itoa(data.RubroPadre.Id)
 		sendData = data
 		padre = false
 	} else if data.RubroHijo != nil {

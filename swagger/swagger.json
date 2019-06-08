@@ -131,11 +131,11 @@
                 "Nombre": {
                     "type": "string"
                 },
-                "UnidadEjecutora": {
+                "Organizacion": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "organizacion": {
+                "UnidadEjecutora": {
                     "type": "integer",
                     "format": "int64"
                 }
