@@ -39,7 +39,7 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 		}
 	}()
 
-	urlcrud = beego.AppConfig.String("presupuestoApiService") + "apropiacion"
+	urlcrud = beego.AppConfig.String("planCuentasApiService") + "apropiacion"
 
 	if err := request.GetJson(urlcrud+"apropiacion?query=Rubro.Codigo:"+data.Rubro.Codigo+",Vigencia:"+strconv.Itoa(int(data.Vigencia)), &aprComp); err != nil {
 		if len(aprComp) > 0 {
@@ -97,7 +97,7 @@ func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) m
 		if r := recover(); r != nil {
 			beego.Error(r)
 			go func() {
-				urlcrud = beego.AppConfig.String("presupuestoApiService") + "apropiacion/" + "/UpdateApropiacionValue/" + idStr + "/" + valorAntStr
+				urlcrud = beego.AppConfig.String("planCuentasApiService") + "apropiacion/" + "/UpdateApropiacionValue/" + idStr + "/" + valorAntStr
 				if err := request.SendJson(urlcrud, "PUT", &resM, nil); err == nil {
 					beego.Info("Rollback TR")
 				} else {
@@ -118,7 +118,7 @@ func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) m
 
 	mongoData = data
 
-	urlcrud = beego.AppConfig.String("presupuestoApiService") + "apropiacion/" + "UpdateApropiacionValue/" + idStr + "/" + valStr
+	urlcrud = beego.AppConfig.String("planCuentasApiService") + "apropiacion/" + "UpdateApropiacionValue/" + idStr + "/" + valStr
 	if err := request.SendJson(urlcrud, "PUT", &res, nil); err == nil {
 		if res["Type"] != nil && res["Type"].(string) == "success" {
 			mongoData["ApropiacionInicial"], _ = strconv.Atoi(valStr)
@@ -219,7 +219,7 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 	compareFlag := CompareApropiationNodes(&asignationInfo, unidadejecutora, vigencia)
 	aprobFlag := PresupuestoAprobado(vigencia, unidadejecutora)
 	if compareFlag && !aprobFlag {
-		if err := request.GetJson(beego.AppConfig.String("presupuestoApiService")+"apropiacion/AprobacionAsignacionInicial"+"?Vigencia="+strconv.Itoa(vigencia)+"&UnidadEjecutora="+strconv.Itoa(unidadejecutora), &res); err == nil {
+		if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion/AprobacionAsignacionInicial"+"?Vigencia="+strconv.Itoa(vigencia)+"&UnidadEjecutora="+strconv.Itoa(unidadejecutora), &res); err == nil {
 			if res["Type"] != nil && res["Type"].(string) == "success" {
 				return
 			} else {
@@ -233,7 +233,7 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	var res []interface{}
-	if err := request.GetJson(beego.AppConfig.String("presupuestoApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",Rubro.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",Estado:2", &res); err == nil {
+	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",Rubro.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",Estado:2", &res); err == nil {
 		if len(res) > 0 {
 			return true
 		} else {
