@@ -2,10 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/astaxie/beego"
-	"github.com/manucorporat/try"
 	"github.com/udistrital/plan_cuentas_mid/helpers/apropiacionHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/request"
@@ -86,26 +84,26 @@ func (c *ApropiacionController) Put() {
 // @router /ArbolApropiaciones/:unidadEjecutora/:vigencia [get]
 func (c *ApropiacionController) ArbolApropiaciones() {
 
-	try.This(func() {
-		ueStr := c.Ctx.Input.Param(":unidadEjecutora")
-		vigenciaStr := c.Ctx.Input.Param(":vigencia")
-		rama := c.GetString("rama")
-		urlmongo := ""
-		var res []map[string]interface{}
-		if rama == "" {
-			urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RaicesArbolApropiacion/" + ueStr + "/" + vigenciaStr
-		} else {
-			urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/ArbolApropiacion/" + rama + "/" + ueStr + "/" + vigenciaStr
+	var response []map[string]interface{}
+	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
+	vigenciaStr := c.Ctx.Input.Param(":vigencia")
+	rama := c.GetString("rama")
+	urlmongo := ""
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
 		}
-		if err := request.GetJson(urlmongo, &res); err != nil {
-			panic("Mongo API Service Error")
-		}
-		c.Data["json"] = res
-	}).Catch(func(e try.E) {
-		fmt.Println("expc ", e)
-		c.Data["json"] = map[string]interface{}{"Code": "E_0458", "Body": e, "Type": "error"}
-	})
-	c.ServeJSON()
+	}()
+	if rama == "" {
+		urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RaicesArbolApropiacion/" + ueStr + "/" + vigenciaStr
+	} else {
+		urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/ArbolApropiacion/" + rama + "/" + ueStr + "/" + vigenciaStr
+	}
+	if err := request.GetJson(urlmongo, &response); err != nil {
+		panic("Mongo API Service Error")
+	}
+	c.Data["json"] = response
 }
 
 // SaldoApropiacion ...
