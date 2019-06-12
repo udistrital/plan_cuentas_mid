@@ -41,7 +41,7 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 
 	urlcrud = beego.AppConfig.String("planCuentasApiService") + "apropiacion"
 
-	if err := request.GetJson(urlcrud+"apropiacion?query=Rubro.Codigo:"+data.Rubro.Codigo+",Vigencia:"+strconv.Itoa(int(data.Vigencia)), &aprComp); err != nil {
+	if err := request.GetJson(urlcrud+"apropiacion?query=RubroId.Codigo:"+data.RubroId.Codigo+",Vigencia:"+strconv.Itoa(int(data.Vigencia)), &aprComp); err != nil {
 		if len(aprComp) > 0 {
 			panic("Apr Exist")
 		}
@@ -51,12 +51,12 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 
 	if err := request.SendJson(urlcrud, "POST", &res, &data); err == nil {
 		if res["Type"] != nil && res["Type"].(string) == "success" {
-			if err = formatdata.FillStruct(data.Rubro, &mongoData); err != nil {
+			if err = formatdata.FillStruct(data.RubroId, &mongoData); err != nil {
 				panic(err.Error())
 			}
 			mongoData["Id"] = res["Body"].(map[string]interface{})["Id"]
 			mongoData["ApropiacionInicial"] = data.Valor
-			mongoData["UnidadEjecutora"] = strconv.Itoa(data.Rubro.UnidadEjecutora)
+			mongoData["UnidadEjecutora"] = strconv.Itoa(data.RubroId.UnidadEjecutora)
 			urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RegistrarApropiacionInicial/" + strconv.Itoa(int(res["Body"].(map[string]interface{})["Vigencia"].(float64)))
 
 			if err = request.SendJson(urlmongo, "POST", &resM, &mongoData); err == nil {
@@ -233,7 +233,7 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	var res []interface{}
-	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",Rubro.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",Estado:2", &res); err == nil {
+	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",RubroId.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",EstadoApropiacionId:2", &res); err == nil {
 		if len(res) > 0 {
 			return true
 		} else {

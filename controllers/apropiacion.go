@@ -37,7 +37,7 @@ func (c *ApropiacionController) Post() {
 	}()
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
-		v.Estado.Id = 1
+		v.EstadoApropiacionId.Id = 1
 		response := apropiacionHelper.AddApropiacion(v)
 		responseformat.SetResponseFormat(&c.Controller, response["Body"], response["Code"].(string), 200)
 	} else {
@@ -71,7 +71,6 @@ func (c *ApropiacionController) Put() {
 		beego.Error(err.Error())
 		responseformat.SetResponseFormat(&c.Controller, nil, "E_0459", 500)
 	}
-	c.ServeJSON()
 }
 
 // ArbolApropiaciones ...
