@@ -15,6 +15,233 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/aprobacion_apropiacion/AprobacionAsignacionInicial/": {
+            "post": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.AprobacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/Aprobado": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.Aprobado",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/InformacionAsignacionInicial/": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "Devuelve saldos iniciales antes de aprobar",
+                "operationId": "AprobacionController.InformacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/": {
+            "post": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "create Apropiacion",
+                "operationId": "ApropiacionController.Post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/apropiacion/ArbolApropiaciones/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.ArbolApropiaciones",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/SaldoApropiacion/{rubro}/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.SaldoApropiacion",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/{id}/{valor}/{vigencia}": {
+            "put": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Update Apropiacion",
+                "operationId": "ApropiacionController.Put",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/rubro/ArbolRubros/{unidadEjecutora}": {
             "get": {
                 "tags": [
@@ -114,6 +341,50 @@
             "title": "Alert",
             "type": "object"
         },
+        "models.Apropiacion": {
+            "title": "Apropiacion",
+            "type": "object",
+            "properties": {
+                "EstadoApropiacionId": {
+                    "$ref": "#/definitions/models.EstadoApropiacion"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroId": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.EstadoApropiacion": {
+            "title": "EstadoApropiacion",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Rubro": {
             "title": "Rubro",
             "type": "object",
@@ -146,6 +417,14 @@
         {
             "name": "rubro",
             "description": "RubroController operations for Rubro\n"
+        },
+        {
+            "name": "apropiacion",
+            "description": "ApropiacionController operations for  Apropiacion\n"
+        },
+        {
+            "name": "aprobacion_apropiacion",
+            "description": "AprobacionController operations for AprobacionController\n"
         }
     ]
 }
