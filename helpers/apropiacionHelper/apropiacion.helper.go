@@ -232,9 +232,9 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 }
 
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
-	var res []interface{}
+	var res map[string]interface{}
 	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",RubroId.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",EstadoApropiacionId:2", &res); err == nil {
-		if len(res) > 0 {
+		if len(res["Body"].([]interface{})) > 0 {
 			return true
 		} else {
 			return false

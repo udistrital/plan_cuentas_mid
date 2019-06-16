@@ -1,6 +1,8 @@
 # PLAN CUENTAS MID
 Middleware para modelo de negocio plan_cuentas, el proyecto está escrito en el lenguaje Go, generado mediante el **[framework beego](https://beego.me/)**
 ***
+### Arquitectura del proyecto
+![](arquitectura.png)
 ## Opciones de instalación 
 > ### En Ambiente Dockerizado :whale:
 
