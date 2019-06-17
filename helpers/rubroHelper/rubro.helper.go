@@ -25,7 +25,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 			go func() {
 				defer func() {
 					if routineRecv := recover(); routineRecv != nil {
-						beego.Error(helpers.RoutineError())  //todo: cambiar a manager
+						beego.Error(helpers.RoutineError()) //todo: cambiar a manager
 					}
 				}()
 				if resul, e := res["Body"].(map[string]interface{}); e {
@@ -55,7 +55,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 	urlCrud = beego.AppConfig.String("planCuentasApiService")
 	if data.RubroPadre != nil {
 		urlCrud += "rubro/?parentId=" + strconv.Itoa(data.RubroPadre.Id)
-		sendData = data
+		sendData = data.RubroHijo
 		padre = false
 	} else if data.RubroHijo != nil {
 		sendData = data.RubroHijo
@@ -73,9 +73,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 		if !padre {
 			sendDataMongo = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{}), "RubroPadre": data.RubroPadre}
 		} else {
-			sendDataMongo = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{}), "RubroPadre": map[string]interface{}{}}
-			res["Body"] = sendDataMongo
-
+			sendDataMongo = map[string]interface{}{"RubroHijo": res["Body"].(map[string]interface{})}
 		}
 
 		urlMongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/registrarRubro"
