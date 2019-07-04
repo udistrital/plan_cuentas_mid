@@ -31,6 +31,11 @@ func init() {
 				&controllers.AprobacionController{},
 			),
 		),
+		beego.NSNamespace("/fuente_financiamiento",
+			beego.NSInclude(
+				&controllers.FuenteFinanciamientoController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

@@ -242,6 +242,34 @@
                 }
             }
         },
+        "/fuente_financiamientoRegistrarFuenteFinanciamiento/": {
+            "post": {
+                "tags": [
+                    "fuente_financiamiento"
+                ],
+                "description": "Registra la fuente de financiamiento en postgres y mongo",
+                "operationId": "FuenteFinanciamientoController.RegistrarFuenteFinanciamiento",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "FuenteFinanciamiento",
+                        "description": "models.Fuentefinanciamiento",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/rubro/ArbolRubros/{unidadEjecutora}": {
             "get": {
                 "tags": [
@@ -385,6 +413,10 @@
                 }
             }
         },
+        "models.Fuentefinanciamiento": {
+            "title": "Fuentefinanciamiento",
+            "type": "object"
+        },
         "models.Rubro": {
             "title": "Rubro",
             "type": "object",
@@ -424,6 +456,10 @@
         },
         {
             "name": "aprobacion_apropiacion",
+            "description": "AprobacionController operations for AprobacionController\n"
+        },
+        {
+            "name": "fuente_financiamiento",
             "description": "AprobacionController operations for AprobacionController\n"
         }
     ]

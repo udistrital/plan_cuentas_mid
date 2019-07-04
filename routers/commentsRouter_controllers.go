@@ -70,6 +70,15 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoController"],
+        beego.ControllerComments{
+            Method: "RegistrarFuenteFinanciamiento",
+            Router: `RegistrarFuenteFinanciamiento/`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:RubroController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:RubroController"],
         beego.ControllerComments{
             Method: "ArbolRubros",
