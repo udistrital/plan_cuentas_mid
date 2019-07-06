@@ -31,9 +31,9 @@ func init() {
 				&controllers.AprobacionController{},
 			),
 		),
-		beego.NSNamespace("/fuente_financiamiento",
+		beego.NSNamespace("/fuente_financiamiento_apropiacion",
 			beego.NSInclude(
-				&controllers.FuenteFinanciamientoController{},
+				&controllers.FuenteFinanciamientoApropiacionController{},
 			),
 		),
 	)

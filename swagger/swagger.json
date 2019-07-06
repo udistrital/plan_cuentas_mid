@@ -242,13 +242,13 @@
                 }
             }
         },
-        "/fuente_financiamientoRegistrarFuenteFinanciamiento/": {
+        "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
             "post": {
                 "tags": [
-                    "fuente_financiamiento"
+                    "fuente_financiamiento_apropiacion"
                 ],
                 "description": "Registra la fuente de financiamiento en postgres y mongo",
-                "operationId": "FuenteFinanciamientoController.RegistrarFuenteFinanciamiento",
+                "operationId": "FuenteFinanciamientoApropiacionController.RegistrarFuenteConApropiacion",
                 "parameters": [
                     {
                         "in": "query",
@@ -459,8 +459,8 @@
             "description": "AprobacionController operations for AprobacionController\n"
         },
         {
-            "name": "fuente_financiamiento",
-            "description": "AprobacionController operations for AprobacionController\n"
+            "name": "fuente_financiamiento_apropiacion",
+            "description": "FuenteFinanciamientoApropiacionController operations for FuenteFinanciamientoApropiacionController\n"
         }
     ]
 }
