@@ -53,8 +53,11 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarFuenteConApropiacio
 
 		fuentesContatenadas := fuenteApropiacionHelper.ConcatenarFuente(fuenteFinanciamiento, fuentesFinanciamientoApropiacion...)
 
-		fuenteApropiacionHelper.RegistrarMultipleFuenteApropiacion(fuentesContatenadas)
-		
+		idsFuentesRegistrados := fuenteApropiacionHelper.RegistrarMultipleFuenteApropiacion(fuentesContatenadas)
+
+		dataFormateada := fuenteApropiacionHelper.FormatDataMovimientoExterno(idsFuentesRegistrados, fuentesFinanciamientoApropiacion...)
+
+		fuenteApropiacionHelper.RegistrarMultipleMovimientoExterno(dataFormateada)
 
 		if fuentesContatenadas == nil {
 			log.Panicln(err.Error())

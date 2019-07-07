@@ -2,6 +2,7 @@ package fuenteapropiacionhelper
 
 import (
 	"log"
+	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/udistrital/plan_cuentas_mid/models"
@@ -10,10 +11,10 @@ import (
 )
 
 // URLCRUD Path de plan_cuentas_crud
-var URLCRUD = beego.AppConfig.String("planCuentasApiService") + "fuente_financiamiento_apropiacion/registrar_multiple"
+var URLCRUD = beego.AppConfig.String("planCuentasApiService")
 
 // URLMOVIMIENTOSCRUD Path de movimientos_crud
-var URLMOVIMIENTOSCRUD = beego.AppConfig.String("movimientosCrudService") + "movimiento_proceso_externo/registrar_multiple"
+var URLMOVIMIENTOSCRUD = beego.AppConfig.String("movimientosCrudService")
 
 // RegistrarMultipleFuenteApropiacion utiliza la transacción de fuente_financiamiento_apropiacion/registrar_multiple
 // para registrar multiples datos en fuente_financiamiento_apropiacion
@@ -23,7 +24,8 @@ func RegistrarMultipleFuenteApropiacion(fuentesApropiacion []*models.FuenteFinan
 		bodyResponse map[string][]int
 	)
 
-	if err := request.SendJson(URLCRUD, "POST", &res, &fuentesApropiacion); err != nil {
+	requestPath := URLCRUD + "fuente_financiamiento_apropiacion/registrar_multiple"
+	if err := request.SendJson(requestPath, "POST", &res, &fuentesApropiacion); err != nil {
 		log.Panicln(err.Error())
 		return
 	}
@@ -38,26 +40,55 @@ func RegistrarMultipleFuenteApropiacion(fuentesApropiacion []*models.FuenteFinan
 
 // RegistrarMultipleMovimientoExterno utiliza la transacción registrar_multiple de movimientos_crud
 // para registrar multiples movimientos en una sola petición
-// @param el parámetro movimientos es un arreglo con la información de todos los movimientos a registar
-func RegistrarMultipleMovimientoExterno(movimientos []interface) (idRegisrados []int) {	
-	// var (
-	// 	res map[string]interface{} // Respuesta de una petición
-	// 	bodyResponse map[string][int] // Cuerpo de respuesta de la petición
-	// )
 
-	// data := movimientos
+func RegistrarMultipleMovimientoExterno(data interface{}) (idRegistrados []int) {
+	var (
+		res          map[string]interface{}   // res: Respuesta de la petición
+		bodyResponse map[string][]int         // Cuerpo de respuesta de la petición
+	)
 
-	// if err := request.SendJson(URLMOVIMIENTOSCRUD, "POST", &res, &movimientos); err != nil {
-	// 	log.Panicln(err.Error())
-	// 	return
-	// }
+	
+	requestPath := URLMOVIMIENTOSCRUD + "movimiento_detalle/registrar_multiple"
+	if err := request.SendJson(requestPath, "POST", &res, &data); err != nil {
+		log.Panicln(err.Error())
+		return
+	}
 
-	// if err := formatdata.FillStruct(res["Body"], &bodyResponse); err != nil {
-	// 	log.Panicln(err.Error())
-	// 	return
-	// }
-	// idRegistrados = bodyResponse["Ids"]
+	if err := formatdata.FillStruct(res["Body"], &bodyResponse); err != nil {
+		log.Panicln(err.Error())
+		return
+	}
+
+	idRegistrados = bodyResponse["Ids"]
+
 	return
+}
+
+// formatDataMovimientoExterno Establece el formato para utilizar como parámetros en la transacción movimiento_detalle/registrar_multiple
+// @param idsFuentes: id de los registros en fuente_financiamiento_apropiacion
+// @param fuenteApropiaciones: la información del atributo FuentesFinanciamientoApropiacion enviado en la petición
+func FormatDataMovimientoExterno(idsFuentes []int, fuenteApropiaciones ...interface{}) (dataArray []map[string]interface{}) {
+	var valor        float64                  // valor enviado al movimiento
+
+	for i, fuente := range fuenteApropiaciones {
+
+		if err := formatdata.FillStruct(fuente.(map[string]interface{})["Valor"], &valor); err != nil {
+			log.Panicln(err.Error())
+			return nil
+		}
+
+		data := map[string]interface{}{
+			"Valor":         valor,
+			"FechaRegistro": time.Now(),
+			"MovimientoProcesoExternoId": map[string]interface{}{
+				"TipoMovimientoId": map[string]int{"Id": 3},
+				"ProcesoExterno":   idsFuentes[i],
+			},
+		}
+
+		dataArray = append(dataArray, data)
+	}
+	return 
 }
 
 // ConcatenarFuente recibe un arreglo de interfaces y las contatena para formar un arreglo de models.FuenteFinanciamientoApropiacion
@@ -69,7 +100,7 @@ func ConcatenarFuente(fuenteFinanciamiento *models.FuenteFinanciamiento, fuenteA
 	)
 
 	for _, value := range fuenteApropiaciones {
-		// // Obtiene la información de la apropición
+		// Obtiene la información de la apropición
 		if err := formatdata.FillStruct(value.(map[string]interface{})["Apropiacion"], &apropiacion); err != nil {
 			log.Panicln(err.Error())
 			return nil
