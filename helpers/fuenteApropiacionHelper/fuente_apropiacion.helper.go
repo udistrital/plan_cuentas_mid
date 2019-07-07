@@ -40,14 +40,12 @@ func RegistrarMultipleFuenteApropiacion(fuentesApropiacion []*models.FuenteFinan
 
 // RegistrarMultipleMovimientoExterno utiliza la transacción registrar_multiple de movimientos_crud
 // para registrar multiples movimientos en una sola petición
-
 func RegistrarMultipleMovimientoExterno(data interface{}) (idRegistrados []int) {
 	var (
-		res          map[string]interface{}   // res: Respuesta de la petición
-		bodyResponse map[string][]int         // Cuerpo de respuesta de la petición
+		res          map[string]interface{} // res: Respuesta de la petición
+		bodyResponse map[string][]int       // Cuerpo de respuesta de la petición
 	)
 
-	
 	requestPath := URLMOVIMIENTOSCRUD + "movimiento_detalle/registrar_multiple"
 	if err := request.SendJson(requestPath, "POST", &res, &data); err != nil {
 		log.Panicln(err.Error())
@@ -68,7 +66,7 @@ func RegistrarMultipleMovimientoExterno(data interface{}) (idRegistrados []int) 
 // @param idsFuentes: id de los registros en fuente_financiamiento_apropiacion
 // @param fuenteApropiaciones: la información del atributo FuentesFinanciamientoApropiacion enviado en la petición
 func FormatDataMovimientoExterno(idsFuentes []int, fuenteApropiaciones ...interface{}) (dataArray []map[string]interface{}) {
-	var valor        float64                  // valor enviado al movimiento
+	var valor float64 // valor enviado al movimiento
 
 	for i, fuente := range fuenteApropiaciones {
 
@@ -88,7 +86,7 @@ func FormatDataMovimientoExterno(idsFuentes []int, fuenteApropiaciones ...interf
 
 		dataArray = append(dataArray, data)
 	}
-	return 
+	return
 }
 
 // ConcatenarFuente recibe un arreglo de interfaces y las contatena para formar un arreglo de models.FuenteFinanciamientoApropiacion

@@ -44,19 +44,24 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarFuenteConApropiacio
 			log.Panicln(err.Error())
 		}
 
+		// Primero registra la fuente
 		idFuente := fuenteHelper.RegistrarFuenteHelper(fuenteFinanciamiento)
+		// Le asigna el id registrado
 		fuenteFinanciamiento.Id = idFuente
 
 		if err := formatdata.FillStruct(v["FuentesFinanciamientoApropiacion"], &fuentesFinanciamientoApropiacion); err != nil {
 			log.Panicln(err.Error())
 		}
-
+		/*
+		 Apartir del atributo FuentesFinanciamientoApropiacion del json enviado como parámetro de esta petición, concatena todos
+		 los valores en el arreglo y les asigna los id correspondientes de ApropiacionId y FuenteFinanciamientoId
+		*/
 		fuentesContatenadas := fuenteApropiacionHelper.ConcatenarFuente(fuenteFinanciamiento, fuentesFinanciamientoApropiacion...)
-
+		// Registra todos los fuentes_financiamiento_apropiacion
 		idsFuentesRegistrados := fuenteApropiacionHelper.RegistrarMultipleFuenteApropiacion(fuentesContatenadas)
-
+		// Formatea los datos para que puedan ser enviados  para registrar movimientos
 		dataFormateada := fuenteApropiacionHelper.FormatDataMovimientoExterno(idsFuentesRegistrados, fuentesFinanciamientoApropiacion...)
-
+		// Registra los movimientos
 		fuenteApropiacionHelper.RegistrarMultipleMovimientoExterno(dataFormateada)
 
 		if fuentesContatenadas == nil {
