@@ -36,6 +36,11 @@ func init() {
 				&controllers.FuenteFinanciamientoApropiacionController{},
 			),
 		),
+		beego.NSNamespace("/movimiento",
+			beego.NSInclude(
+				&controllers.MovimientoController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
