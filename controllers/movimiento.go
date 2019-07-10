@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/udistrital/plan_cuentas_mid/compositor"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/requestmanager"
 )
@@ -33,5 +34,12 @@ func (c *MovimientoController) Post() {
 	}()
 
 	requestmanager.FillRequestWithPanic(&c.Controller, &movimientoData)
+
+	// Send Data to Movimientos API to Add the current movimiento data to postgres.
+	err := compositor.AddMovimientoTransaction(movimientoData)
+
+	if err != nil {
+		panic(err.Error())
+	}
 
 }

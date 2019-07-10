@@ -270,6 +270,37 @@
                 }
             }
         },
+        "/movimiento/": {
+            "post": {
+                "tags": [
+                    "movimiento"
+                ],
+                "description": "create Movimiento",
+                "operationId": "MovimientoController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Movimiento content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/rubro/ArbolRubros/{unidadEjecutora}": {
             "get": {
                 "tags": [
@@ -365,6 +396,10 @@
         }
     },
     "definitions": {
+        "10708.0xc000311d70.false": {
+            "title": "false",
+            "type": "object"
+        },
         "models.Alert": {
             "title": "Alert",
             "type": "object"
@@ -417,6 +452,29 @@
             "title": "Fuentefinanciamiento",
             "type": "object"
         },
+        "models.Movimiento": {
+            "title": "Movimiento",
+            "type": "object",
+            "properties": {
+                "Afectacion": {
+                    "$ref": "#/definitions/10708.0xc000311d70.false"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MovimientoPadre": {
+                    "$ref": "#/definitions/models.Movimiento"
+                },
+                "Tipo": {
+                    "$ref": "#/definitions/models.TipoMovimiento"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
         "models.Rubro": {
             "title": "Rubro",
             "type": "object",
@@ -443,6 +501,25 @@
                     "format": "int64"
                 }
             }
+        },
+        "models.TipoMovimiento": {
+            "title": "TipoMovimiento",
+            "type": "object",
+            "properties": {
+                "Acronimo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
         }
     },
     "tags": [
@@ -461,6 +538,10 @@
         {
             "name": "fuente_financiamiento_apropiacion",
             "description": "FuenteFinanciamientoApropiacionController operations for FuenteFinanciamientoApropiacionController\n"
+        },
+        {
+            "name": "movimiento",
+            "description": "MovimientoController operations for Movimiento\n"
         }
     ]
 }
