@@ -5,24 +5,24 @@ import "time"
 // Movimiento ... define the movimiento mase structure.
 type Movimiento struct {
 	Id                         int
-	MovimientoProcesoExternoId *MovimientoProcesoExterno
-	Valor                      float64
+	MovimientoProcesoExternoId *MovimientoProcesoExterno `validate:"required"`
+	Valor                      float64                   `validate:"required"`
 	FechaRegistro              time.Time
-	Descripcion                string
+	Descripcion                string `validate:"required"`
 }
 
 // TipoMovimiento ... define the TipoMovimiento struct for movimiento_crud api.
 type TipoMovimiento struct {
-	Id          int
+	Id          int `validate:"required"`
 	Nombre      string
 	Descripcion string
-	Acronimo    string
+	Acronimo    string `validate:"required"`
 }
 
 type MovimientoProcesoExterno struct {
 	Id                       int
-	TipoMovimientoId         *TipoMovimiento
-	ProcesoExterno           int64
+	TipoMovimientoId         *TipoMovimiento `validate:"required"`
+	ProcesoExterno           int64           `validate:"required"`
 	MovimientoProcesoExterno int
 }
 

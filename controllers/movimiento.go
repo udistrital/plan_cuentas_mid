@@ -2,6 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"time"
+
+	"github.com/udistrital/utils_oas/formatdata"
+	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -38,6 +42,13 @@ func (c *MovimientoController) Post() {
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &movimientoData); err != nil {
 		logs.Error(err.Error())
 		panic(err.Error())
+	}
+
+	for i, elmnt := range movimientoData {
+		movimientoData[i].FechaRegistro = time.Now()
+		if errStrc := formatdata.StructValidation(elmnt); len(errStrc) > 0 {
+			responseformat.SetResponseFormat(&c.Controller, errStrc, "", 422)
+		}
 	}
 
 	// Send Data to Movimientos API to Add the current movimiento data to postgres.
