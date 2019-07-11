@@ -1,14 +1,23 @@
 package movimientohelper
 
 import (
+	"time"
+
 	"github.com/udistrital/plan_cuentas_mid/models"
-	"github.com/udistrital/utils_oas/formatdata"
 )
 
-// FormatDataForMovimientosAPI ... format Movimiento Data to MoimientosAPI data structure.
-func FormatDataForMovimientosAPI(data models.Movimiento) (map[string]interface{}, error) {
-	res := make(map[string]interface{})
-	err := formatdata.FillStruct(data, &res)
+// FormatDataForMovimientosMongoAPI ... format Movimiento Data to MoimientosMOngoAPI data structure.
+func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated []models.MovimientoMongo) {
+	for _, movimiento := range data {
+		var element models.MovimientoMongo
+		element.Tipo = movimiento.MovimientoProcesoExternoId.TipoMovimientoId.Acronimo
+		element.DocumentoPadre = movimiento.MovimientoProcesoExternoId.ProcesoExterno
+		element.Descripcion = movimiento.Descripcion
+		element.Valor = movimiento.Valor
+		element.IDPsql = movimiento.Id
+		element.FechaRegistro = time.Now().String()
+		dataFormated = append(dataFormated, element)
+	}
 
-	return res, err
+	return
 }

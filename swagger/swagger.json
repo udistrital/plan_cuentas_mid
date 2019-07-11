@@ -396,10 +396,6 @@
         }
     },
     "definitions": {
-        "10708.0xc000311d70.false": {
-            "title": "false",
-            "type": "object"
-        },
         "models.Alert": {
             "title": "Alert",
             "type": "object"
@@ -456,22 +452,44 @@
             "title": "Movimiento",
             "type": "object",
             "properties": {
-                "Afectacion": {
-                    "$ref": "#/definitions/10708.0xc000311d70.false"
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string",
+                    "format": "datetime"
                 },
                 "Id": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "MovimientoPadre": {
-                    "$ref": "#/definitions/models.Movimiento"
+                "MovimientoProcesoExternoId": {
+                    "$ref": "#/definitions/models.MovimientoProcesoExterno"
                 },
-                "Tipo": {
-                    "$ref": "#/definitions/models.TipoMovimiento"
-                },
-                "UnidadEjecutora": {
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.MovimientoProcesoExterno": {
+            "title": "MovimientoProcesoExterno",
+            "type": "object",
+            "properties": {
+                "Id": {
                     "type": "integer",
                     "format": "int64"
+                },
+                "MovimientoProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoMovimientoId": {
+                    "$ref": "#/definitions/models.TipoMovimiento"
                 }
             }
         },

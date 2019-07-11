@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/udistrital/plan_cuentas_mid/compositor"
 	"github.com/udistrital/plan_cuentas_mid/models"
-	"github.com/udistrital/utils_oas/requestmanager"
 )
 
 // MovimientoController operations for Movimiento
@@ -26,17 +28,20 @@ func (c *MovimientoController) URLMapping() {
 // @router / [post]
 func (c *MovimientoController) Post() {
 	var (
-		movimientoData models.Movimiento
+		movimientoData []models.Movimiento
 	)
 
 	defer func() {
 		c.Data["json"] = movimientoData
 	}()
 
-	requestmanager.FillRequestWithPanic(&c.Controller, &movimientoData)
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &movimientoData); err != nil {
+		logs.Error(err.Error())
+		panic(err.Error())
+	}
 
 	// Send Data to Movimientos API to Add the current movimiento data to postgres.
-	err := compositor.AddMovimientoTransaction(movimientoData)
+	err := compositor.AddMovimientoTransaction(movimientoData...)
 
 	if err != nil {
 		panic(err.Error())
