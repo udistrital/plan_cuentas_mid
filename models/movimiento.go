@@ -1,13 +1,11 @@
 package models
 
-import "time"
-
 // Movimiento ... define the movimiento mase structure.
 type Movimiento struct {
 	Id                         int
 	MovimientoProcesoExternoId *MovimientoProcesoExterno `validate:"required"`
 	Valor                      float64                   `validate:"required"`
-	FechaRegistro              time.Time
+	FechaRegistro              string
 	Descripcion                string `validate:"required"`
 }
 
@@ -28,10 +26,10 @@ type MovimientoProcesoExterno struct {
 
 type MovimientoMongo struct {
 	ID             string  `json:"_id" bson:"_id,omitempty"`
-	IDPsql         int     `json:"idpsql"`
-	Valor          float64 `json:"valor"`
-	Tipo           string  `json:"tipo"`
-	DocumentoPadre int64   `json:"documento_padre"`
-	FechaRegistro  string  `json:"fecha_registro"`
-	Descripcion    string  `json:"unidad_ejecutora"`
+	IDPsql         int     `json:"IDPsql"`
+	Valor          float64 `json:"Valor"`
+	Tipo           string  `json:"Tipo"`
+	DocumentoPadre int64   `json:"DocumentoPadre"`
+	FechaRegistro  string  `json:"FechaRegistro"`
+	Descripcion    string  `json:"Descripcion"`
 }

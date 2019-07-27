@@ -1,8 +1,6 @@
 package movimientohelper
 
 import (
-	"time"
-
 	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
@@ -15,7 +13,7 @@ func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated [
 		element.Descripcion = movimiento.Descripcion
 		element.Valor = movimiento.Valor
 		element.IDPsql = movimiento.Id
-		element.FechaRegistro = time.Now().String()
+		element.FechaRegistro = movimiento.FechaRegistro
 		dataFormated = append(dataFormated, element)
 	}
 

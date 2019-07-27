@@ -23,7 +23,7 @@ func TestFormatDataForMovimientosMongoAPI(t *testing.T) {
 	movimientosTestData.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{}
 	movimientosTestData.MovimientoProcesoExternoId.TipoMovimientoId = &models.TipoMovimiento{}
 	movimientosTestData.Descripcion = "test"
-	movimientosTestData.FechaRegistro = time.Now()
+	movimientosTestData.FechaRegistro = time.Now().Format(time.RFC3339)
 	movimientosTestData.MovimientoProcesoExternoId.ProcesoExterno = 3
 	movimientosTestData.MovimientoProcesoExternoId.TipoMovimientoId.Acronimo = "rdc_apr"
 	movimientosTestData.MovimientoProcesoExternoId.TipoMovimientoId.Id = 1
