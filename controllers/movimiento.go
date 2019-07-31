@@ -54,8 +54,8 @@ func (c *MovimientoController) Post() {
 
 	// Send Data to Movimientos API to Add the current movimiento data to postgres.
 	err := compositor.AddMovimientoTransaction(movimientoData...)
-	logs.Debug("error", err)
 	if err != nil {
+		logs.Debug("error", err)
 		panic(err.Error())
 	}
 

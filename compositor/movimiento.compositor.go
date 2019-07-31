@@ -1,7 +1,6 @@
 package compositor
 
 import (
-	"github.com/astaxie/beego/logs"
 	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/plan_cuentas_mid/models"
@@ -10,7 +9,7 @@ import (
 // AddMovimientoTransaction ... perform the transaction between mongo and postgres services for
 // movimiento's data registration.
 func AddMovimientoTransaction(data ...models.Movimiento) (err error) {
-
+	var idsMovimientos []int
 	// Send Data to CRUD
 	response, err := movimientomanager.AddMovimientoAPICrud(data...)
 
@@ -22,11 +21,14 @@ func AddMovimientoTransaction(data ...models.Movimiento) (err error) {
 	intArr := crudIDs["Ids"].([]interface{})
 	for i := 0; i < len(intArr); i++ {
 		data[i].Id = int(intArr[i].(float64))
+		idsMovimientos = append(idsMovimientos, data[i].Id)
 	}
 	mongoData := movimientohelper.FormatDataForMovimientosMongoAPI(data...)
-	logs.Debug(mongoData)
 	// Send Data to Mongo
 	_, err = movimientomanager.AddMovimientoAPIMongo(mongoData...)
 
+	if err != nil {
+		go movimientomanager.DeleteMovimientoAPICrud(idsMovimientos...)
+	}
 	return
 }
