@@ -45,16 +45,17 @@ func (c *MovimientoController) Post() {
 	}
 
 	for i, elmnt := range movimientoData {
-		movimientoData[i].FechaRegistro = time.Now()
+		movimientoData[i].FechaRegistro = time.Now().Format(time.RFC3339)
 		if errStrc := formatdata.StructValidation(elmnt); len(errStrc) > 0 {
 			responseformat.SetResponseFormat(&c.Controller, errStrc, "", 422)
+			return
 		}
 	}
 
 	// Send Data to Movimientos API to Add the current movimiento data to postgres.
 	err := compositor.AddMovimientoTransaction(movimientoData...)
-
 	if err != nil {
+		logs.Debug("error", err)
 		panic(err.Error())
 	}
 

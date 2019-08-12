@@ -12,13 +12,12 @@ import (
 
 // AddMovimientoAPICrud ... Send movimiento data to crud for its registration.
 // Returns in data["Id"] the result id for the operation.
-func AddMovimientoAPICrud(data ...models.Movimiento) (responseformat.Response, error) {
-	var response responseformat.Response
+func AddMovimientoAPICrud(data ...models.Movimiento) (response responseformat.Response, err error) {
 
-	err := request.SendJson(beego.AppConfig.String("movimientosCrudService")+"movimiento_detalle/registrar_multiple", "POST", &response, data)
-	if responseformat.CheckResponseError(response) {
-		err = errors.New("Movimientos API Error")
-		logs.Error(err.Error())
+	if err = request.SendJson(beego.AppConfig.String("movimientosCrudService")+"movimiento_detalle/registrar_multiple", "POST", &response, data); err == nil {
+		if responseformat.CheckResponseError(response) {
+			err = errors.New("Movimientos API Error")
+		}
 	}
 
 	return response, err
@@ -26,20 +25,31 @@ func AddMovimientoAPICrud(data ...models.Movimiento) (responseformat.Response, e
 
 // AddMovimientoAPIMongo ... Send movimiento data to mongo for its registration.
 // Returns in data["Id"] the result id for the operation.
-func AddMovimientoAPIMongo(data ...models.MovimientoMongo) (responseformat.Response, error) {
-	var response responseformat.Response
-
-	err := request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"movimiento/RegistrarMovimientos", "POST", &response, data)
-	if responseformat.CheckResponseError(response) {
-		err = errors.New("Mongo API Error")
-		logs.Error(err.Error())
+func AddMovimientoAPIMongo(data ...models.MovimientoMongo) (response responseformat.Response, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			logs.Error("catch", r)
+			err = errors.New("Mongo API Error")
+		}
+	}()
+	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"movimiento/RegistrarMovimientos", "POST", &response, data); err == nil {
+		if responseformat.CheckResponseError(response) {
+			err = errors.New("Mongo API Error")
+			logs.Error(err.Error())
+		}
 	}
 
-	return response, err
+	return
 }
 
 // DeleteMovimientoAPICrud ... Delete movimiento data in Movimiento API CRUD By Id.
-func DeleteMovimientoAPICrud(id int) error {
-	logs.Debug("Delete Movimiento From CRUD", id)
-	return nil
+func DeleteMovimientoAPICrud(id ...int) (response responseformat.Response, err error) {
+
+	if err = request.SendJson(beego.AppConfig.String("movimientosCrudService")+"movimiento_detalle/eliminar_multiple", "POST", &response, id); err == nil {
+		if responseformat.CheckResponseError(response) {
+			err = errors.New("Movimientos API Error")
+		}
+	}
+
+	return response, err
 }

@@ -456,8 +456,7 @@
                     "type": "string"
                 },
                 "FechaRegistro": {
-                    "type": "string",
-                    "format": "datetime"
+                    "type": "string"
                 },
                 "Id": {
                     "type": "integer",

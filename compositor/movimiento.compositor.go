@@ -9,18 +9,26 @@ import (
 // AddMovimientoTransaction ... perform the transaction between mongo and postgres services for
 // movimiento's data registration.
 func AddMovimientoTransaction(data ...models.Movimiento) (err error) {
-
+	var idsMovimientos []int
 	// Send Data to CRUD
-	if response, err := movimientomanager.AddMovimientoAPICrud(data...); err == nil {
-		crudIDs := response.Body.(map[string]interface{})
-		intArr := crudIDs["Ids"].([]interface{})
-		for i := 0; i < len(intArr); i++ {
-			data[i].Id = int(intArr[i].(float64))
-		}
-		mongoData := movimientohelper.FormatDataForMovimientosMongoAPI(data...)
-		// Send Data to Mongo
-		_, err = movimientomanager.AddMovimientoAPIMongo(mongoData...)
+	response, err := movimientomanager.AddMovimientoAPICrud(data...)
 
+	if err != nil {
+		return
 	}
-	return err
+
+	crudIDs := response.Body.(map[string]interface{})
+	intArr := crudIDs["Ids"].([]interface{})
+	for i := 0; i < len(intArr); i++ {
+		data[i].Id = int(intArr[i].(float64))
+		idsMovimientos = append(idsMovimientos, data[i].Id)
+	}
+	mongoData := movimientohelper.FormatDataForMovimientosMongoAPI(data...)
+	// Send Data to Mongo
+	_, err = movimientomanager.AddMovimientoAPIMongo(mongoData...)
+
+	if err != nil {
+		go movimientomanager.DeleteMovimientoAPICrud(idsMovimientos...)
+	}
+	return
 }
