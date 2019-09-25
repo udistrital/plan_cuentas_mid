@@ -7,6 +7,7 @@ type Movimiento struct {
 	Valor                      float64                   `validate:"required"`
 	FechaRegistro              string
 	Descripcion                string `validate:"required"`
+	DocumentoPadre             string
 }
 
 // TipoMovimiento ... define the TipoMovimiento struct for movimiento_crud api.
@@ -20,16 +21,16 @@ type TipoMovimiento struct {
 type MovimientoProcesoExterno struct {
 	Id                       int
 	TipoMovimientoId         *TipoMovimiento `validate:"required"`
-	ProcesoExterno           int64           `validate:"required"`
+	ProcesoExterno           int64
 	MovimientoProcesoExterno int
 }
 
 type MovimientoMongo struct {
-	ID             string  `json:"_id" bson:"_id,omitempty"`
-	IDPsql         int     `json:"IDPsql"`
-	Valor          float64 `json:"Valor"`
-	Tipo           string  `json:"Tipo"`
-	DocumentoPadre int64   `json:"DocumentoPadre"`
-	FechaRegistro  string  `json:"FechaRegistro"`
-	Descripcion    string  `json:"Descripcion"`
+	ID            string  `json:"_id" bson:"_id,omitempty"`
+	IDPsql        int     `json:"IDPsql"`
+	Valor         float64 `json:"Valor"`
+	Tipo          string  `json:"Tipo"`
+	Padre         string  `json:"Padre"`
+	FechaRegistro string  `json:"FechaRegistro"`
+	Descripcion   string  `json:"Descripcion"`
 }

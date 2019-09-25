@@ -9,7 +9,7 @@ func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated [
 	for _, movimiento := range data {
 		var element models.MovimientoMongo
 		element.Tipo = movimiento.MovimientoProcesoExternoId.TipoMovimientoId.Acronimo
-		element.DocumentoPadre = movimiento.MovimientoProcesoExternoId.ProcesoExterno
+		element.Padre = movimiento.DocumentoPadre
 		element.Descripcion = movimiento.Descripcion
 		element.Valor = movimiento.Valor
 		element.IDPsql = movimiento.Id
