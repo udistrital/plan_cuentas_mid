@@ -1,6 +1,8 @@
 package compositor
 
 import (
+	"time"
+
 	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/plan_cuentas_mid/models"
@@ -8,10 +10,12 @@ import (
 
 // AddMovimientoTransaction ... perform the transaction between mongo and postgres services for
 // movimiento's data registration.
-func AddMovimientoTransaction(data ...models.Movimiento) (err error) {
+func AddMovimientoTransaction(data models.DocumentoPresupuestal) (finalData interface{}, err error) {
+	fechaRegistro := time.Now().Format(time.RFC3339)
+	data.FechaRegistro = fechaRegistro
 	var idsMovimientos []int
 	// Send Data to CRUD
-	response, err := movimientomanager.AddMovimientoAPICrud(data...)
+	response, err := movimientomanager.AddMovimientoAPICrud(data.AfectacionMovimiento...)
 
 	if err != nil {
 		return
@@ -20,13 +24,17 @@ func AddMovimientoTransaction(data ...models.Movimiento) (err error) {
 	crudIDs := response.Body.(map[string]interface{})
 	intArr := crudIDs["Ids"].([]interface{})
 	for i := 0; i < len(intArr); i++ {
-		data[i].Id = int(intArr[i].(float64))
-		idsMovimientos = append(idsMovimientos, data[i].Id)
+		id := int(intArr[i].(float64))
+		data.AfectacionMovimiento[i].Id = id
+		idsMovimientos = append(idsMovimientos, id)
 	}
-	mongoData := movimientohelper.FormatDataForMovimientosMongoAPI(data...)
+	data.Afectacion = movimientohelper.FormatDataForMovimientosMongoAPI(data.AfectacionMovimiento...)
+	for i := range data.Afectacion {
+		data.Afectacion[i].FechaRegistro = fechaRegistro
+	}
 	// Send Data to Mongo
-	_, err = movimientomanager.AddMovimientoAPIMongo(mongoData...)
-
+	response, err = movimientomanager.AddMovimientoAPIMongo(data)
+	finalData = response.Body
 	if err != nil {
 		go movimientomanager.DeleteMovimientoAPICrud(idsMovimientos...)
 	}

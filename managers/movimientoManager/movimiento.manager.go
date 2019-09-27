@@ -25,7 +25,7 @@ func AddMovimientoAPICrud(data ...models.Movimiento) (response responseformat.Re
 
 // AddMovimientoAPIMongo ... Send movimiento data to mongo for its registration.
 // Returns in data["Id"] the result id for the operation.
-func AddMovimientoAPIMongo(data ...models.MovimientoMongo) (response responseformat.Response, err error) {
+func AddMovimientoAPIMongo(data models.DocumentoPresupuestal) (response responseformat.Response, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			logs.Error("catch", r)

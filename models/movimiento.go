@@ -34,3 +34,14 @@ type MovimientoMongo struct {
 	FechaRegistro string  `json:"FechaRegistro"`
 	Descripcion   string  `json:"Descripcion"`
 }
+
+// DocumentoPresupuestal ... estructura para guardar información de documentos presupuestales.
+type DocumentoPresupuestal struct {
+	ID                   string            `json:"Codigo" bson:"_id,omitempty"`
+	Data                 interface{}       `json:"Data" bson:"Data" validate:"required"`
+	Tipo                 string            `json:"Tipo" bson:"Tipo" validate:"required"`
+	AfectacionIds        []string          `json:"AfectacionIds" bson:"AfectacionIds"`
+	AfectacionMovimiento []Movimiento      `json:"AfectacionMovimiento" validate:"required"`
+	Afectacion           []MovimientoMongo `json:"Afectacion"`
+	FechaRegistro        string
+}
