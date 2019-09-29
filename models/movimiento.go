@@ -28,7 +28,7 @@ type MovimientoProcesoExterno struct {
 type MovimientoMongo struct {
 	ID            string  `json:"_id" bson:"_id,omitempty"`
 	IDPsql        int     `json:"IDPsql"`
-	Valor         float64 `json:"Valor"`
+	ValorInicial  float64 `json:"ValorInicial"`
 	Tipo          string  `json:"Tipo"`
 	Padre         string  `json:"Padre"`
 	FechaRegistro string  `json:"FechaRegistro"`

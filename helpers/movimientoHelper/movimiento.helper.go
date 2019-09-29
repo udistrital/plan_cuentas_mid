@@ -11,7 +11,7 @@ func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated [
 		element.Tipo = movimiento.MovimientoProcesoExternoId.TipoMovimientoId.Acronimo
 		element.Padre = movimiento.DocumentoPadre
 		element.Descripcion = movimiento.Descripcion
-		element.Valor = movimiento.Valor
+		element.ValorInicial = movimiento.Valor
 		element.IDPsql = movimiento.Id
 		element.FechaRegistro = movimiento.FechaRegistro
 		dataFormated = append(dataFormated, element)
