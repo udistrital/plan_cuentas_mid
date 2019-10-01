@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/udistrital/utils_oas/formatdata"
 	"github.com/udistrital/utils_oas/responseformat"
@@ -32,20 +31,25 @@ func (c *MovimientoController) URLMapping() {
 // @router / [post]
 func (c *MovimientoController) Post() {
 	var (
-		movimientoData []models.Movimiento
+		documentoPresupuestalData models.DocumentoPresupuestal
+		finalData                 interface{}
 	)
 
 	defer func() {
-		c.Data["json"] = movimientoData
+		c.Data["json"] = finalData
 	}()
 
-	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &movimientoData); err != nil {
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &documentoPresupuestalData); err != nil {
 		logs.Error(err.Error())
 		panic(err.Error())
 	}
 
-	for i, elmnt := range movimientoData {
-		movimientoData[i].FechaRegistro = time.Now().Format(time.RFC3339)
+	if errStrc := formatdata.StructValidation(documentoPresupuestalData); len(errStrc) > 0 {
+		responseformat.SetResponseFormat(&c.Controller, errStrc, "", 422)
+		return
+	}
+
+	for _, elmnt := range documentoPresupuestalData.Afectacion {
 		if errStrc := formatdata.StructValidation(elmnt); len(errStrc) > 0 {
 			responseformat.SetResponseFormat(&c.Controller, errStrc, "", 422)
 			return
@@ -53,7 +57,7 @@ func (c *MovimientoController) Post() {
 	}
 
 	// Send Data to Movimientos API to Add the current movimiento data to postgres.
-	err := compositor.AddMovimientoTransaction(movimientoData...)
+	finalData, err := compositor.AddMovimientoTransaction(documentoPresupuestalData)
 	if err != nil {
 		logs.Debug("error", err)
 		panic(err.Error())

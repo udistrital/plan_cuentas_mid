@@ -16,7 +16,12 @@ func AddMovimientoAPICrud(data ...models.Movimiento) (response responseformat.Re
 
 	if err = request.SendJson(beego.AppConfig.String("movimientosCrudService")+"movimiento_detalle/registrar_multiple", "POST", &response, data); err == nil {
 		if responseformat.CheckResponseError(response) {
-			err = errors.New("Movimientos API Error")
+			var errMessage = "Movimientos API Error"
+			if messageStr, e := response.Body.(string); e {
+				errMessage = errMessage + ": " + messageStr
+			}
+			err = errors.New(errMessage)
+			logs.Error(err.Error())
 		}
 	}
 
@@ -25,7 +30,7 @@ func AddMovimientoAPICrud(data ...models.Movimiento) (response responseformat.Re
 
 // AddMovimientoAPIMongo ... Send movimiento data to mongo for its registration.
 // Returns in data["Id"] the result id for the operation.
-func AddMovimientoAPIMongo(data ...models.MovimientoMongo) (response responseformat.Response, err error) {
+func AddMovimientoAPIMongo(data models.DocumentoPresupuestal) (response responseformat.Response, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			logs.Error("catch", r)
@@ -34,7 +39,11 @@ func AddMovimientoAPIMongo(data ...models.MovimientoMongo) (response responsefor
 	}()
 	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"movimiento/RegistrarMovimientos", "POST", &response, data); err == nil {
 		if responseformat.CheckResponseError(response) {
-			err = errors.New("Mongo API Error")
+			var errMessage = "Mongo API Error"
+			if messageStr, e := response.Body.(string); e {
+				errMessage = errMessage + ": " + messageStr
+			}
+			err = errors.New(errMessage)
 			logs.Error(err.Error())
 		}
 	}
@@ -47,7 +56,12 @@ func DeleteMovimientoAPICrud(id ...int) (response responseformat.Response, err e
 
 	if err = request.SendJson(beego.AppConfig.String("movimientosCrudService")+"movimiento_detalle/eliminar_multiple", "POST", &response, id); err == nil {
 		if responseformat.CheckResponseError(response) {
-			err = errors.New("Movimientos API Error")
+			var errMessage = "Movimientos API Error"
+			if messageStr, e := response.Body.(string); e {
+				errMessage = errMessage + ": " + messageStr
+			}
+			err = errors.New(errMessage)
+			logs.Error(err.Error())
 		}
 	}
 
