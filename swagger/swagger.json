@@ -301,6 +301,35 @@
                 }
             }
         },
+        "/necesidad/initnecesidad/{id}": {
+            "get": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "retorna full Necesidad",
+                "operationId": "NecesidadController.initnecesidad",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for necesidad",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Necesidad"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/rubro/ArbolRubros/{unidadEjecutora}": {
             "get": {
                 "tags": [
@@ -455,6 +484,9 @@
                 "Descripcion": {
                     "type": "string"
                 },
+                "DocumentoPadre": {
+                    "type": "string"
+                },
                 "FechaRegistro": {
                     "type": "string"
                 },
@@ -491,6 +523,10 @@
                     "$ref": "#/definitions/models.TipoMovimiento"
                 }
             }
+        },
+        "models.Necesidad": {
+            "title": "Necesidad",
+            "type": "object"
         },
         "models.Rubro": {
             "title": "Rubro",
@@ -559,6 +595,10 @@
         {
             "name": "movimiento",
             "description": "MovimientoController operations for Movimiento\n"
+        },
+        {
+            "name": "necesidad",
+            "description": "NecesidadController operations for Necesidad\n"
         }
     ]
 }
