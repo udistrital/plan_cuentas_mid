@@ -3,10 +3,10 @@ package controllers
 import (
 	"encoding/json"
 
-	"github.com/udistrital/utils_oas/formatdata"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"github.com/udistrital/plan_cuentas_mid/compositor"
+	modificacionpresupuestalhelper "github.com/udistrital/plan_cuentas_mid/helpers/modificacionPresupuestalHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
@@ -42,8 +42,12 @@ func (c *ModificacionPresupuestalController) Post() {
 		panic(err.Error())
 	}
 
-	formatdata.JsonPrint(modificacionPresupuestalData)
+	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 
-	finalData = modificacionPresupuestalData
+	finalData, err := compositor.AddMovimientoTransaction(documentoPresupuestalDataFormated)
+	if err != nil {
+		logs.Debug("error", err)
+		panic(err.Error())
+	}
 
 }
