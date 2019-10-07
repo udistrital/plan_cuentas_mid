@@ -1,8 +1,6 @@
 package necesidadhelper
 
 import (
-	"fmt"
-
 	"github.com/astaxie/beego"
 	"github.com/udistrital/utils_oas/request"
 )
@@ -17,7 +15,6 @@ func InitNecesidad(id string) (necesidad map[string]interface{}, outputError map
 	necesidad["id"] = id
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "necesidades/?query=idAdministrativa:" + id
 	urladm := beego.AppConfig.String("adminCrudService") + "necesidad/?query=Id:" + id
-	fmt.Println(urladm)
 	if err := request.GetJson(urladm, &necesidadADM); err != nil {
 		panic("ADM API Service Error")
 	} else {
