@@ -1,15 +1,17 @@
 package modificacionpresupuestalhelper
 
 import (
+	"time"
+
 	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
 func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresupuestalReceiver) (dataFormated models.DocumentoPresupuestal) {
 	var movimientos []models.Movimiento
-	dataFormated.Data = modData.Data
+	currDate := time.Now()
 	dataFormated.Tipo = "modificacion_presupuestal"
-	dataFormated.Vigencia = 2020
-	dataFormated.CentroGestor = "1"
+	dataFormated.Vigencia = currDate.Year()
+	dataFormated.CentroGestor = modData.Data.CentroGestor
 	for _, afectation := range modData.Afectation {
 		movimiento := models.Movimiento{}
 		movimiento.Descripcion = modData.Data.Descripcion

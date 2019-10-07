@@ -44,7 +44,7 @@ func (c *ModificacionPresupuestalController) Post() {
 
 	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 
-	finalData, err := compositor.AddMovimientoTransaction(documentoPresupuestalDataFormated)
+	finalData, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 	if err != nil {
 		logs.Debug("error", err)
 		panic(err.Error())
