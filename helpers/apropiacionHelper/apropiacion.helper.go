@@ -56,7 +56,7 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 			}
 			mongoData["Id"] = res["Body"].(map[string]interface{})["Id"]
 			mongoData["ApropiacionInicial"] = data.Valor
-			mongoData["UnidadEjecutora"] = strconv.Itoa(data.RubroId.UnidadEjecutora)
+			mongoData["UnidadEjecutora"] = data.RubroId.UnidadEjecutora
 			urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RegistrarApropiacionInicial/" + strconv.Itoa(int(res["Body"].(map[string]interface{})["Vigencia"].(float64)))
 
 			if err = request.SendJson(urlmongo, "POST", &resM, &mongoData); err == nil {
