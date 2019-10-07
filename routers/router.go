@@ -41,6 +41,11 @@ func init() {
 				&controllers.MovimientoController{},
 			),
 		),
+		beego.NSNamespace("/solicitud_crp",
+			beego.NSInclude(
+				&controllers.SolicitudCrpController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

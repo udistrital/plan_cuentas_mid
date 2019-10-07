@@ -455,6 +455,9 @@
                 "Descripcion": {
                     "type": "string"
                 },
+                "DocumentoPadre": {
+                    "type": "string"
+                },
                 "FechaRegistro": {
                     "type": "string"
                 },
@@ -559,6 +562,10 @@
         {
             "name": "movimiento",
             "description": "MovimientoController operations for Movimiento\n"
+        },
+        {
+            "name": "solicitud_crp",
+            "description": "SolicitudCrpController operations for SolicitudCrp\n"
         }
     ]
 }
