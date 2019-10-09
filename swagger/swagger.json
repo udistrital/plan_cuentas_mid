@@ -526,7 +526,33 @@
         },
         "models.Necesidad": {
             "title": "Necesidad",
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "apropiaciones": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.apropiacion"
+                    }
+                },
+                "detalleServicio": {
+                    "$ref": "#/definitions/models.detalleServicio"
+                },
+                "idAdministrativa": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "tipoContrato": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
         },
         "models.Rubro": {
             "title": "Rubro",
@@ -571,6 +597,103 @@
                 },
                 "Nombre": {
                     "type": "string"
+                }
+            }
+        },
+        "models.actividad": {
+            "title": "actividad",
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.apropiacion": {
+            "title": "apropiacion",
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "fuentes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.fuente"
+                    }
+                },
+                "metas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.meta"
+                    }
+                },
+                "productos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.producto"
+                    }
+                }
+            }
+        },
+        "models.detalleServicio": {
+            "title": "detalleServicio",
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "descripcion": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.fuente": {
+            "title": "fuente",
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.meta": {
+            "title": "meta",
+            "type": "object",
+            "properties": {
+                "actividades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.actividad"
+                    }
+                },
+                "codigo": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.producto": {
+            "title": "producto",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
                 }
             }
         }
