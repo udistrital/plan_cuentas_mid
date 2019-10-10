@@ -32,7 +32,6 @@ func (c *NecesidadController) InitNecesidad() {
 	}()
 	id := c.Ctx.Input.Param(":id")
 	response := make(map[string]interface{})
-	response["Body"] = "success"
-	response["data"], _ = necesidadhelper.InitNecesidad(id)
+	response, _ = necesidadhelper.InitNecesidad(id)
 	responseformat.SetResponseFormat(&c.Controller, response, "", 200)
 }

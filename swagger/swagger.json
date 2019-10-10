@@ -242,6 +242,60 @@
                 }
             }
         },
+        "/cdp/expedirCdp/{id}": {
+            "get": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "operationId": "CdpController.ExpedirCdp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcdp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/cdp/solicitarCDP": {
+            "post": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "create SolicitudCDP",
+                "operationId": "CdpController.SolicitarCDP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCDP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
             "post": {
                 "tags": [
@@ -581,6 +635,59 @@
                 }
             }
         },
+        "models.SolicitudCDP": {
+            "title": "SolicitudCDP",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "centroGestor": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "entidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "fechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaRegistro": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "infoCdp": {
+                    "$ref": "#/definitions/models.infoCdp"
+                },
+                "justificacionRechazo": {
+                    "type": "string"
+                },
+                "necesidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "vigencia": {
+                    "type": "string"
+                }
+            }
+        },
         "models.TipoMovimiento": {
             "title": "TipoMovimiento",
             "type": "object",
@@ -669,6 +776,24 @@
                 }
             }
         },
+        "models.infoCdp": {
+            "title": "infoCdp",
+            "type": "object",
+            "properties": {
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "fechaExpedicion": {
+                    "type": "string",
+                    "format": "datetime"
+                }
+            }
+        },
         "models.meta": {
             "title": "meta",
             "type": "object",
@@ -722,6 +847,10 @@
         {
             "name": "necesidad",
             "description": "NecesidadController operations for Necesidad\n"
+        },
+        {
+            "name": "cdp",
+            "description": "CdpController operations for Cdp\n"
         }
     ]
 }
