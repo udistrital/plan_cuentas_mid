@@ -8,10 +8,10 @@ type ModificacionPresupuestalReceiver struct {
 }
 
 type ModificacionPresupuestalReceiverDetail struct {
-	DocumentNumber int          `json:"nDocumento" bson:"numero_documento"`
-	DocumentDate   time.Time    `json:"fDocumento" bson:"fecha_documento"`
-	DocumentType   *TipoGeneral `json:"tipoDocumento" bson:"tipo_documento"`
-	Descripcion    string       `json:"descripcion" bson:"descripcion_documento"`
+	DocumentNumber int          `json:"NumeroDocumento" bson:"numero_documento"`
+	DocumentDate   time.Time    `json:"FechaDocumento" bson:"fecha_documento"`
+	DocumentType   *TipoGeneral `json:"TipoDocumento" bson:"tipo_documento"`
+	Descripcion    string       `json:"Descripcion" bson:"descripcion_documento"`
 	CentroGestor   string       `json:"CentroGestor" bson:"-"`
 }
 
