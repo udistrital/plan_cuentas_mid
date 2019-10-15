@@ -6,4 +6,5 @@ type TipoGeneral struct {
 	Nombre      string
 	Descripcion string
 	Acronimo    string `validate:"required"`
+	Parametros  string
 }
