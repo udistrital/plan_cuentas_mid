@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/udistrital/utils_oas/formatdata"
-
 	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
@@ -28,7 +26,6 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresu
 			if err := json.Unmarshal([]byte(afectation.TypeMod.Parametros), &parametersMap); err != nil {
 				panic(err.Error())
 			}
-			formatdata.JsonPrint(parametersMap)
 			if targetAccType, e := parametersMap["TipoMovimientoCuentaCredito"].(string); e {
 				movimientoTargetAcc := models.Movimiento{}
 				movimientoTargetAcc.Descripcion = modData.Data.Descripcion
