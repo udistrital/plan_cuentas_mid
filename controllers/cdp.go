@@ -54,7 +54,9 @@ func (c *CdpController) SolicitarCdp() {
 	} else {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
-	response := make(map[string]interface{})
-	response, _ = cdphelper.SolicitarCDP(v)
-	responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	if response, err := cdphelper.SolicitarCDP(v); err == nil {
+		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	} else {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
 }
