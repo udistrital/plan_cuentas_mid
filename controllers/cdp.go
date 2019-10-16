@@ -18,7 +18,7 @@ type CdpController struct {
 // @Description expedir cdp creando objeto infocdp en la solicitud
 // @Param	id		path 	string	true		"The key for solicitudcdp"
 // @Success 201 {object} models.SolicitudCDP
-// @router /expedirCdp/:id [get]
+// @router /expedirCDP/:id [get]
 func (c *CdpController) ExpedirCdp() {
 	defer func() {
 		if r := recover(); r != nil {
@@ -27,9 +27,11 @@ func (c *CdpController) ExpedirCdp() {
 		}
 	}()
 	id := c.Ctx.Input.Param(":id")
-	response := make(map[string]interface{})
-	response, _ = cdphelper.ExpedirCdp(id)
-	responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	if response, err := cdphelper.ExpedirCdp(id); err == nil {
+		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	} else {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
 }
 
 // SolicitarCdp ...

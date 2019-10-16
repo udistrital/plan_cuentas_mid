@@ -8,8 +8,22 @@ import (
 )
 
 // ExpedirCDP init necesidad
-func ExpedirCdp(id string) (cdp map[string]interface{}, err map[string]interface{}) {
-	return cdp, nil
+func ExpedirCdp(id string) (cdp map[string]interface{}, outErr map[string]interface{}) {
+	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCDP/" + id
+	var solicitud = make(map[string]map[string]interface{})
+	cdp = make(map[string]interface{})
+	solicitud["infoCdp"] = make(map[string]interface{})
+	solicitud["infoCdp"]["consecutivo"] = GetConsecutivoCDP()
+	solicitud["infoCdp"]["fechaExpedicion"] = time.Now().Format(time.RFC3339)
+	solicitud["infoCdp"]["estado"] = 1
+	if err := request.SendJson(urlmongo, "PUT", &cdp, &solicitud); err == nil {
+		cdp["data"] = solicitud
+		return cdp, nil
+	} else {
+		outErr = map[string]interface{}{"Function": "SolicitarCDP", "Error": err.Error()}
+		return nil, outErr
+	}
+
 }
 
 // SolicitarCDP init necesidad
@@ -22,7 +36,7 @@ func SolicitarCDP(necesidad map[string]interface{}) (solicitud map[string]interf
 	)
 
 	solicitud = make(map[string]interface{})
-	solicitud["consecutivo"] = GetCosecutivoSolicitudCDP()
+	solicitud["consecutivo"] = GetConsecutivoSolicitudCDP()
 	solicitud["entidad"] = 1
 	solicitud["centroGestor"], okEntidad = necesidad["UnidadEjecutora"]
 	solicitud["necesidad"], okId = necesidad["Id"]
@@ -51,6 +65,11 @@ func SolicitarCDP(necesidad map[string]interface{}) (solicitud map[string]interf
 }
 
 // GetCosecutivoSolicitudCDP Get Cosecutivo Solicitud CDP
-func GetCosecutivoSolicitudCDP() (consecutivo int64) {
+func GetConsecutivoSolicitudCDP() (consecutivo int64) {
 	return 100
+}
+
+// GetCosecutivoSolicitudCDP Get Cosecutivo Solicitud CDP
+func GetConsecutivoCDP() (consecutivo int64) {
+	return 666
 }

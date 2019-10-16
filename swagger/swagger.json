@@ -242,7 +242,7 @@
                 }
             }
         },
-        "/cdp/expedirCdp/{id}": {
+        "/cdp/expedirCDP/{id}": {
             "get": {
                 "tags": [
                     "cdp"

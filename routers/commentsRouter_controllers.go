@@ -73,7 +73,7 @@ func init() {
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
         beego.ControllerComments{
             Method: "ExpedirCdp",
-            Router: `/expedirCdp/:id`,
+            Router: `/expedirCDP/:id`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
