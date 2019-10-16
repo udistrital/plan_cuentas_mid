@@ -4,6 +4,13 @@ import (
 	"time"
 )
 
+// infoCrp asociado a una solicitud de CRP
+type infoCrp struct {
+	Consecutivo     int       `json:"consecutivo" bson:"consecutivo"`
+	FechaExpedicion time.Time `json:"fechaExpedicion" bson:"fechaExpedicion"`
+	Estado          int       `json:"estado" bson:"estado"`
+}
+
 // SolicitudCrp ...
 type SolicitudCrp struct {
 	ID                string      `json:"_id" bson:"_id,omitempty"`

@@ -242,6 +242,60 @@
                 }
             }
         },
+        "/crp/expedirCRP/{id}": {
+            "get": {
+                "tags": [
+                    "crp"
+                ],
+                "description": "expedir crp creando objeto infocrp en la solicitud",
+                "operationId": "CrpController.ExpedirCrp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcrp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCRP"
+                        }
+                    }
+                }
+            }
+        },
+        "/crp/solicitarCRP": {
+            "post": {
+                "tags": [
+                    "crp"
+                ],
+                "description": "create SolicitudCRP",
+                "operationId": "CrpController.SolicitarCRP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCRP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCRP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
             "post": {
                 "tags": [
@@ -522,6 +576,10 @@
                 }
             }
         },
+        "models.SolicitudCRP": {
+            "title": "SolicitudCRP",
+            "type": "object"
+        },
         "models.TipoMovimiento": {
             "title": "TipoMovimiento",
             "type": "object",
@@ -564,8 +622,8 @@
             "description": "MovimientoController operations for Movimiento\n"
         },
         {
-            "name": "solicitud_crp",
-            "description": "SolicitudCrpController operations for SolicitudCrp\n"
+            "name": "crp",
+            "description": "CrpController operations for Crp\n"
         }
     ]
 }
