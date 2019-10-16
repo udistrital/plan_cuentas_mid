@@ -1,0 +1,564 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/aprobacion_apropiacion/AprobacionAsignacionInicial/": {
+            "post": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.AprobacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/Aprobado": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.Aprobado",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/InformacionAsignacionInicial/": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "Devuelve saldos iniciales antes de aprobar",
+                "operationId": "AprobacionController.InformacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/": {
+            "post": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "create Apropiacion",
+                "operationId": "ApropiacionController.Post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/apropiacion/ArbolApropiaciones/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.ArbolApropiaciones",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/SaldoApropiacion/{rubro}/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.SaldoApropiacion",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/{id}/{valor}/{vigencia}": {
+            "put": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Update Apropiacion",
+                "operationId": "ApropiacionController.Put",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
+            "post": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "Registra la fuente de financiamiento en postgres y mongo",
+                "operationId": "FuenteFinanciamientoApropiacionController.RegistrarFuenteConApropiacion",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "FuenteFinanciamiento",
+                        "description": "models.Fuentefinanciamiento",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/movimiento/": {
+            "post": {
+                "tags": [
+                    "movimiento"
+                ],
+                "description": "create Movimiento",
+                "operationId": "MovimientoController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Movimiento content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/rubro/ArbolRubros/{unidadEjecutora}": {
+            "get": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "RubroController.ArbolRubros",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/rubro/EliminarRubro/{id}": {
+            "delete": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "delete the Rubro",
+                "operationId": "RubroController.EliminarRubro",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/rubro/RegistrarRubro/": {
+            "post": {
+                "tags": [
+                    "rubro"
+                ],
+                "description": "Registra Rubro en postgres y mongo",
+                "operationId": "RubroController.RegistrarRubro",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Rubro content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Alert"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Alert": {
+            "title": "Alert",
+            "type": "object"
+        },
+        "models.Apropiacion": {
+            "title": "Apropiacion",
+            "type": "object",
+            "properties": {
+                "EstadoApropiacionId": {
+                    "$ref": "#/definitions/models.EstadoApropiacion"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroId": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.EstadoApropiacion": {
+            "title": "EstadoApropiacion",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Fuentefinanciamiento": {
+            "title": "Fuentefinanciamiento",
+            "type": "object"
+        },
+        "models.Movimiento": {
+            "title": "Movimiento",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MovimientoProcesoExternoId": {
+                    "$ref": "#/definitions/models.MovimientoProcesoExterno"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.MovimientoProcesoExterno": {
+            "title": "MovimientoProcesoExterno",
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MovimientoProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoMovimientoId": {
+                    "$ref": "#/definitions/models.TipoMovimiento"
+                }
+            }
+        },
+        "models.Rubro": {
+            "title": "Rubro",
+            "type": "object",
+            "properties": {
+                "Codigo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                },
+                "Organizacion": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.TipoMovimiento": {
+            "title": "TipoMovimiento",
+            "type": "object",
+            "properties": {
+                "Acronimo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "rubro",
+            "description": "RubroController operations for Rubro\n"
+        },
+        {
+            "name": "apropiacion",
+            "description": "ApropiacionController operations for  Apropiacion\n"
+        },
+        {
+            "name": "aprobacion_apropiacion",
+            "description": "AprobacionController operations for AprobacionController\n"
+        },
+        {
+            "name": "fuente_financiamiento_apropiacion",
+            "description": "FuenteFinanciamientoApropiacionController operations for FuenteFinanciamientoApropiacionController\n"
+        },
+        {
+            "name": "movimiento",
+            "description": "MovimientoController operations for Movimiento\n"
+        }
+    ]
+}
