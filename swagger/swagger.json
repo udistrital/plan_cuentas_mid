@@ -455,6 +455,9 @@
                 "Descripcion": {
                     "type": "string"
                 },
+                "DocumentoPadre": {
+                    "type": "string"
+                },
                 "FechaRegistro": {
                     "type": "string"
                 },
