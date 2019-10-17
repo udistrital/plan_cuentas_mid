@@ -71,3 +71,27 @@ func DeleteMovimientoAPICrud(id ...int) (response responseformat.Response, err e
 
 	return response, err
 }
+
+func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMongo) (response responseformat.Response, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			logs.Error("catch", r)
+			errStr := fmt.Sprintf("%s", r)
+			err = errors.New("Mongo API Error: " + errStr)
+		}
+	}()
+	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"arbol_rubro_apropiacion/comprobar_balance/"+cg+"/"+vigencia, "POST", &response, data); err == nil {
+		if responseformat.CheckResponseError(response) {
+			var errMessage = "Mongo API Error"
+			if messageStr, e := response.Body.(string); e {
+				errMessage = errMessage + ": " + messageStr
+			} else {
+				errMessage = errMessage + ": " + fmt.Sprintf("%s", response.Body)
+			}
+			err = errors.New(errMessage)
+			logs.Error(err.Error())
+		}
+	}
+
+	return
+}
