@@ -69,6 +69,7 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	)
 	cgStr := c.Ctx.Input.Param(":centroGestor")
 	vigenciaStr := c.GetString(":vigencia")
+	var afectation []models.MovimientoMongo
 	defer func() {
 		c.Data["json"] = finalData
 	}()
@@ -77,9 +78,10 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 		logs.Error(err.Error())
 		panic(err.Error())
 	}
-
-	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
-	afectation := movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
+	if modificacionPresupuestalData.Data != nil && modificacionPresupuestalData.Afectation != nil {
+		documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
+		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
+	}
 	response, err := movimientomanager.SimualteAfectationAPIMongo(cgStr, vigenciaStr, afectation...)
 	if err != nil {
 		panic(err.Error())
