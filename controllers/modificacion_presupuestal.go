@@ -78,7 +78,8 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 		logs.Error(err.Error())
 		panic(err.Error())
 	}
-	if modificacionPresupuestalData.Data != nil && modificacionPresupuestalData.Afectation != nil {
+	if modificacionPresupuestalData.Afectation != nil {
+		modificacionPresupuestalData.Data = &models.ModificacionPresupuestalReceiverDetail{}
 		documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
 	}
