@@ -108,8 +108,8 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"],
         beego.ControllerComments{
-            Method: "InitNecesidad",
-            Router: `/initnecesidad/:id`,
+            Method: "GetFullNecesidad",
+            Router: `/getfullnecesidad/:id`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,

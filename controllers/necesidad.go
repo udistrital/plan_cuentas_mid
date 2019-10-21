@@ -13,17 +13,17 @@ type NecesidadController struct {
 
 // URLMapping ...
 func (c *NecesidadController) URLMapping() {
-	c.Mapping("InitNecesidad", c.InitNecesidad)
+	c.Mapping("GetFullNecesidad", c.GetFullNecesidad)
 }
 
-// InitNecesidad ...
-// @Title initnecesidad
+// GetFullNecesidad ...
+// @Title GetFullNecesidad
 // @Description retorna full Necesidad
 // @Param	id		path 	string	true		"The key for necesidad"
-// @Success 201 {object} models.Necesidad
+// @Success 201 {object} models.TrNecesidad
 // @Failure 403 body is empty
-// @router /initnecesidad/:id [get]
-func (c *NecesidadController) InitNecesidad() {
+// @router /getfullnecesidad/:id [get]
+func (c *NecesidadController) GetFullNecesidad() {
 	defer func() {
 		if r := recover(); r != nil {
 			beego.Error(r)
@@ -31,7 +31,9 @@ func (c *NecesidadController) InitNecesidad() {
 		}
 	}()
 	id := c.Ctx.Input.Param(":id")
-	response := make(map[string]interface{})
-	response, _ = necesidadhelper.InitNecesidad(id)
-	responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	if response, err := necesidadhelper.GetTrNecesidad(id); err == nil {
+		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	} else {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
 }

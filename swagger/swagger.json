@@ -355,13 +355,13 @@
                 }
             }
         },
-        "/necesidad/initnecesidad/{id}": {
+        "/necesidad/getfullnecesidad/{id}": {
             "get": {
                 "tags": [
                     "necesidad"
                 ],
                 "description": "retorna full Necesidad",
-                "operationId": "NecesidadController.initnecesidad",
+                "operationId": "NecesidadController.GetFullNecesidad",
                 "parameters": [
                     {
                         "in": "path",
@@ -375,7 +375,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Necesidad"
+                            "$ref": "#/definitions/models.TrNecesidad"
                         }
                     },
                     "403": {
@@ -479,6 +479,54 @@
         }
     },
     "definitions": {
+        "12905.0xc00031a540.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "12964.string.0xc00030df80": {
+            "title": "0xc00030df80",
+            "type": "object"
+        },
+        "13183.0xc00031a690.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "13235.string.0xc00031e1e0": {
+            "title": "0xc00031e1e0",
+            "type": "object"
+        },
+        "13291.string.0xc00031e280": {
+            "title": "0xc00031e280",
+            "type": "object"
+        },
+        "13506.string.0xc00031e420": {
+            "title": "0xc00031e420",
+            "type": "object"
+        },
+        "13604.string.0xc00031e4c0": {
+            "title": "0xc00031e4c0",
+            "type": "object"
+        },
+        "13700.string.0xc00031e560": {
+            "title": "0xc00031e560",
+            "type": "object"
+        },
+        "13808.string.0xc00031e620": {
+            "title": "0xc00031e620",
+            "type": "object"
+        },
+        "13906.string.0xc00031e6c0": {
+            "title": "0xc00031e6c0",
+            "type": "object"
+        },
+        "13997.string.0xc00031e760": {
+            "title": "0xc00031e760",
+            "type": "object"
+        },
+        "14097.string.0xc00031e800": {
+            "title": "0xc00031e800",
+            "type": "object"
+        },
         "models.Alert": {
             "title": "Alert",
             "type": "object"
@@ -531,6 +579,29 @@
             "title": "Fuentefinanciamiento",
             "type": "object"
         },
+        "models.MetaRubroNecesidad": {
+            "title": "MetaRubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Actividades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/12964.string.0xc00030df80"
+                    }
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MetaId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroNecesidadId": {
+                    "$ref": "#/definitions/12905.0xc00031a540.false"
+                }
+            }
+        },
         "models.Movimiento": {
             "title": "Movimiento",
             "type": "object",
@@ -578,36 +649,6 @@
                 }
             }
         },
-        "models.Necesidad": {
-            "title": "Necesidad",
-            "type": "object",
-            "properties": {
-                "_id": {
-                    "type": "string"
-                },
-                "apropiaciones": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.apropiacion"
-                    }
-                },
-                "detalleServicio": {
-                    "$ref": "#/definitions/models.detalleServicio"
-                },
-                "idAdministrativa": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "tipoContrato": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "valor": {
-                    "type": "number",
-                    "format": "double"
-                }
-            }
-        },
         "models.Rubro": {
             "title": "Rubro",
             "type": "object",
@@ -632,6 +673,40 @@
                 "UnidadEjecutora": {
                     "type": "integer",
                     "format": "int64"
+                }
+            }
+        },
+        "models.RubroNecesidad": {
+            "title": "RubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Fuentes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13235.string.0xc00031e1e0"
+                    }
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Metas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MetaRubroNecesidad"
+                    }
+                },
+                "NecesidadId": {
+                    "$ref": "#/definitions/13183.0xc00031a690.false"
+                },
+                "Productos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13291.string.0xc00031e280"
+                    }
+                },
+                "RubroId": {
+                    "type": "string"
                 }
             }
         },
@@ -707,72 +782,48 @@
                 }
             }
         },
-        "models.actividad": {
-            "title": "actividad",
+        "models.TrNecesidad": {
+            "title": "TrNecesidad",
             "type": "object",
             "properties": {
-                "codigo": {
-                    "type": "string"
-                },
-                "valor": {
-                    "type": "number",
-                    "format": "double"
-                }
-            }
-        },
-        "models.apropiacion": {
-            "title": "apropiacion",
-            "type": "object",
-            "properties": {
-                "codigo": {
-                    "type": "string"
-                },
-                "fuentes": {
+                "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.fuente"
+                        "$ref": "#/definitions/14097.string.0xc00031e800"
                     }
                 },
-                "metas": {
+                "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.meta"
+                        "$ref": "#/definitions/13997.string.0xc00031e760"
                     }
                 },
-                "productos": {
+                "DetallePrestacionServicioNecesidad": {
+                    "$ref": "#/definitions/13700.string.0xc00031e560"
+                },
+                "DetalleServicioNecesidad": {
+                    "$ref": "#/definitions/13604.string.0xc00031e4c0"
+                },
+                "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.producto"
+                        "$ref": "#/definitions/13906.string.0xc00031e6c0"
                     }
-                }
-            }
-        },
-        "models.detalleServicio": {
-            "title": "detalleServicio",
-            "type": "object",
-            "properties": {
-                "codigo": {
-                    "type": "string"
                 },
-                "descripcion": {
-                    "type": "string"
+                "Necesidad": {
+                    "$ref": "#/definitions/13506.string.0xc00031e420"
                 },
-                "valor": {
-                    "type": "number",
-                    "format": "double"
-                }
-            }
-        },
-        "models.fuente": {
-            "title": "fuente",
-            "type": "object",
-            "properties": {
-                "codigo": {
-                    "type": "string"
+                "ProductosCatalogoNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13808.string.0xc00031e620"
+                    }
                 },
-                "valor": {
-                    "type": "number",
-                    "format": "double"
+                "Rubros": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.RubroNecesidad"
+                    }
                 }
             }
         },
@@ -791,34 +842,6 @@
                 "fechaExpedicion": {
                     "type": "string",
                     "format": "datetime"
-                }
-            }
-        },
-        "models.meta": {
-            "title": "meta",
-            "type": "object",
-            "properties": {
-                "actividades": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.actividad"
-                    }
-                },
-                "codigo": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.producto": {
-            "title": "producto",
-            "type": "object",
-            "properties": {
-                "_id": {
-                    "type": "string"
-                },
-                "valor": {
-                    "type": "number",
-                    "format": "double"
                 }
             }
         }
