@@ -83,6 +83,7 @@ type MetaRubroNecesidad struct {
 type RubroNecesidad struct {
 	Id          int                       `json:"Id"`
 	RubroId     string                    `json:"RubroId"`
+	InfoRubro   *map[string]interface{}   `json:"InfoRubro"`
 	NecesidadId map[string]interface{}    `json:"NecesidadId"`
 	Fuentes     []*map[string]interface{} `json:"Fuentes"`
 	Productos   []*map[string]interface{} `json:"Productos"`

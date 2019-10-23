@@ -14,9 +14,13 @@ import (
 // GetTrNecesidad obtiene necesidad de crud apí con sus objetos relacionados
 func GetTrNecesidad(id string) (trnecesidad models.TrNecesidad, outErr map[string]interface{}) {
 	var err map[string]interface{}
+
 	if trnecesidad.Necesidad, err = getNecesidadCrud(id); err != nil {
 		return trnecesidad, err
 	} else {
+		nec := trnecesidad.Necesidad
+		vig := (*nec)["Vigencia"].(string)
+		af := fmt.Sprintf("%.0f", (*nec)["AreaFuncional"].(float64))
 		if trnecesidad.DetalleServicioNecesidad, err = getDetalleServicio(id); err != nil {
 			return trnecesidad, err
 		}
@@ -35,7 +39,7 @@ func GetTrNecesidad(id string) (trnecesidad models.TrNecesidad, outErr map[strin
 		if trnecesidad.ActividadEspecificaNecesidad, err = getActividadEspecifica(id); err != nil {
 			return trnecesidad, err
 		}
-		if trnecesidad.Rubros, err = getRubrosNecesidad(id); err != nil {
+		if trnecesidad.Rubros, err = getRubrosNecesidad(id, vig, af); err != nil {
 			return trnecesidad, err
 		}
 		return trnecesidad, nil
@@ -188,7 +192,7 @@ func getActividadEconomica(id string) (aec []*map[string]interface{}, outErr map
 }
 
 // get rubros de la necesidad
-func getRubrosNecesidad(id string) (rubros []*models.RubroNecesidad, outErr map[string]interface{}) {
+func getRubrosNecesidad(id string, vigencia string, areafuncional string) (rubros []*models.RubroNecesidad, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "rubro_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
 	if err := request.GetJson(urlcrud, &res); err != nil {
@@ -198,6 +202,12 @@ func getRubrosNecesidad(id string) (rubros []*models.RubroNecesidad, outErr map[
 		for _, value := range res {
 			if len(value) > 0 {
 				value["NecesidadId"] = nil
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiacion/" + value["RubroId"].(string) + "/" + vigencia + "/" + areafuncional
+				var resMongo map[string]interface{}
+				fmt.Println("url", urlmongo)
+				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
+					value["InfoRubro"] = resMongo["Body"]
+				}
 				var rubro models.RubroNecesidad
 				if err = formatdata.FillStruct(value, &rubro); err != nil {
 					outErr = map[string]interface{}{"Function": "getRubrosNecesidad", "Error": err.Error()}
@@ -232,6 +242,11 @@ func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[s
 	} else {
 		for _, value := range res {
 			if len(value) > 0 {
+				var resMongo map[string]interface{}
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + value["FuenteId"].(string)
+				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
+					value["InfoFuente"] = resMongo["Body"]
+				}
 				value["RubroNecesidadId"] = nil
 				fuentes = append(fuentes, &value)
 			}
@@ -250,6 +265,11 @@ func getProductosRubro(id string) (productos []*map[string]interface{}, outErr m
 	} else {
 		for _, value := range res {
 			if len(value) > 0 {
+				var resMongo map[string]interface{}
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "producto/" + value["ProductoId"].(string)
+				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
+					value["InfoProducto"] = resMongo["Body"]
+				}
 				value["RubroNecesidadId"] = nil
 				productos = append(productos, &value)
 			}
@@ -496,6 +516,11 @@ func postRubros(rubros []*models.RubroNecesidad, necesidad *map[string]interface
 		if rOut["Productos"], errOut = postProductosRubro(rubro.Productos, &rOut); errOut == nil {
 
 		}
+		if rOut["Metas"], errOut = postMetasRubro(rubro.Metas, &rOut); errOut == nil {
+
+		} else {
+			return nil, map[string]interface{}{"Function": "postRubros", "Error": errOut}
+		}
 		var rubroOut models.RubroNecesidad
 		if errConvert := formatdata.FillStruct(rOut, &rubroOut); errConvert == nil {
 			out = append(out, &rubroOut)
@@ -549,4 +574,51 @@ func postProductosRubro(p []*map[string]interface{}, rubro *map[string]interface
 
 // post metas
 
+func postMetasRubro(m []*models.MetaRubroNecesidad, rubro *map[string]interface{}) (out []*models.MetaRubroNecesidad, outErr map[string]interface{}) {
+	var errOut map[string]interface{}
+	if m == nil || len(m) == 0 {
+		return nil, nil
+	}
+	for _, meta := range m {
+		meta.RubroNecesidadId = *rubro
+		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "meta_rubro_necesidad/"
+		var mOut map[string]interface{}
+		if err := request.SendJson(urlcrud, "POST", &mOut, meta); err == nil {
+
+		} else {
+			return nil, map[string]interface{}{"Function": "postMetasRubro", "Error": err.Error()}
+		}
+		mOut["RubroNecesidadId"] = nil
+		if mOut["Actividades"], errOut = postActividadesMeta(meta.Actividades, &mOut); errOut == nil {
+
+		}
+		var metaOut models.MetaRubroNecesidad
+		if errConvert := formatdata.FillStruct(mOut, &metaOut); errConvert == nil {
+			out = append(out, &metaOut)
+		}
+
+	}
+	return out, nil
+
+}
+
 // post actividades
+func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
+	if act == nil || len(act) == 0 {
+		return nil, nil
+	}
+	for _, value := range act {
+		(*value)["MetaRubroNecesidadId"] = meta
+		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "actividad_meta/"
+		var actOut map[string]interface{}
+		if err := request.SendJson(urlcrud, "POST", &actOut, value); err == nil {
+
+		} else {
+			return nil, map[string]interface{}{"Function": "postActividadesMeta", "Error": err.Error()}
+		}
+		actOut["MetaRubroNecesidadId"] = nil
+		out = append(out, &actOut)
+	}
+	return out, nil
+
+}
