@@ -2,11 +2,11 @@ package main
 
 import (
 	_ "github.com/udistrital/plan_cuentas_mid/routers"
+	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	apistatus "github.com/udistrital/utils_oas/apiStatusLib"
-	"github.com/udistrital/utils_oas/responseformat"
 )
 
 func init() {

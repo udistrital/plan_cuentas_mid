@@ -10,17 +10,9 @@ type Movimiento struct {
 	DocumentoPadre             string
 }
 
-// TipoMovimiento ... define the TipoMovimiento struct for movimiento_crud api.
-type TipoMovimiento struct {
-	Id          int `validate:"required"`
-	Nombre      string
-	Descripcion string
-	Acronimo    string `validate:"required"`
-}
-
 type MovimientoProcesoExterno struct {
 	Id                       int
-	TipoMovimientoId         *TipoMovimiento `validate:"required"`
+	TipoMovimientoId         *TipoGeneral `validate:"required"`
 	ProcesoExterno           int64
 	MovimientoProcesoExterno int
 }
