@@ -101,13 +101,13 @@ func getProductosCatalogo(id string) (productos []*map[string]interface{}, outEr
 		outErr = map[string]interface{}{"Function": "getProductosCatalogo", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["NecesidadId"] = nil
-				if value["RequisitosMinimos"], outErr = getRequisitosProducto(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+				res[k]["NecesidadId"] = nil
+				if res[k]["RequisitosMinimos"], outErr = getRequisitosProducto(fmt.Sprintf("%.0f", res[k]["Id"].(float64))); outErr != nil {
 					return nil, outErr
 				} else {
-					productos = append(productos, &value)
+					productos = append(productos, &res[k])
 				}
 			}
 
@@ -124,10 +124,10 @@ func getRequisitosProducto(id string) (requisitos []*map[string]interface{}, out
 		outErr = map[string]interface{}{"Function": "getRequisitosProducto", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["ProductoCatalogoNecesidadId"] = nil
-				requisitos = append(requisitos, &value)
+				res[k]["ProductoCatalogoNecesidadId"] = nil
+				requisitos = append(requisitos, &res[k])
 			}
 		}
 		return requisitos, nil
@@ -142,10 +142,10 @@ func getMarcoLegal(id string) (ml []*map[string]interface{}, outErr map[string]i
 		outErr = map[string]interface{}{"Function": "getMarcoLegal", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["NecesidadId"] = nil
-				ml = append(ml, &value)
+				res[k]["NecesidadId"] = nil
+				ml = append(ml, &res[k])
 			}
 
 		}
@@ -161,10 +161,10 @@ func getActividadEspecifica(id string) (ae []*map[string]interface{}, outErr map
 		outErr = map[string]interface{}{"Function": "getActividadEspecifica", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["NecesidadId"] = nil
-				ae = append(ae, &value)
+				res[k]["NecesidadId"] = nil
+				ae = append(ae, &res[k])
 			}
 
 		}
@@ -180,10 +180,10 @@ func getActividadEconomica(id string) (aec []*map[string]interface{}, outErr map
 		outErr = map[string]interface{}{"Function": "getActividadEconomica", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["NecesidadId"] = nil
-				aec = append(aec, &value)
+				res[k]["NecesidadId"] = nil
+				aec = append(aec, &res[k])
 			}
 
 		}
@@ -199,27 +199,26 @@ func getRubrosNecesidad(id string, vigencia string, areafuncional string) (rubro
 		outErr = map[string]interface{}{"Function": "getRubrosNecesidad", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["NecesidadId"] = nil
-				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiacion/" + value["RubroId"].(string) + "/" + vigencia + "/" + areafuncional
+				res[k]["NecesidadId"] = nil
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiacion/" + res[k]["RubroId"].(string) + "/" + vigencia + "/" + areafuncional
 				var resMongo map[string]interface{}
-				fmt.Println("url", urlmongo)
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
-					value["InfoRubro"] = resMongo["Body"]
+					res[k]["InfoRubro"] = resMongo["Body"]
 				}
 				var rubro models.RubroNecesidad
-				if err = formatdata.FillStruct(value, &rubro); err != nil {
+				if err = formatdata.FillStruct(res[k], &rubro); err != nil {
 					outErr = map[string]interface{}{"Function": "getRubrosNecesidad", "Error": err.Error()}
 					return nil, outErr
 				} else {
-					if rubro.Fuentes, outErr = getFuentesRubro(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+					if rubro.Fuentes, outErr = getFuentesRubro(fmt.Sprintf("%.0f", res[k]["Id"].(float64))); outErr != nil {
 						return nil, outErr
 					}
-					if rubro.Productos, outErr = getProductosRubro(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+					if rubro.Productos, outErr = getProductosRubro(fmt.Sprintf("%.0f", res[k]["Id"].(float64))); outErr != nil {
 						return nil, outErr
 					}
-					if rubro.Metas, outErr = getMetasRubro(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+					if rubro.Metas, outErr = getMetasRubro(fmt.Sprintf("%.0f", res[k]["Id"].(float64))); outErr != nil {
 						return nil, outErr
 					} else {
 						rubros = append(rubros, &rubro)
@@ -240,15 +239,15 @@ func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[s
 		outErr = map[string]interface{}{"Function": "getFuentesRubro", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
 				var resMongo map[string]interface{}
-				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + value["FuenteId"].(string)
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + res[k]["FuenteId"].(string)
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
-					value["InfoFuente"] = resMongo["Body"]
+					res[k]["InfoFuente"] = resMongo["Body"]
 				}
-				value["RubroNecesidadId"] = nil
-				fuentes = append(fuentes, &value)
+				res[k]["RubroNecesidadId"] = nil
+				fuentes = append(fuentes, &res[k])
 			}
 		}
 		return fuentes, nil
@@ -263,15 +262,15 @@ func getProductosRubro(id string) (productos []*map[string]interface{}, outErr m
 		outErr = map[string]interface{}{"Function": "getProductosRubro", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
 				var resMongo map[string]interface{}
-				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "producto/" + value["ProductoId"].(string)
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "producto/" + res[k]["ProductoId"].(string)
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
-					value["InfoProducto"] = resMongo["Body"]
+					res[k]["InfoProducto"] = resMongo["Body"]
 				}
-				value["RubroNecesidadId"] = nil
-				productos = append(productos, &value)
+				res[k]["RubroNecesidadId"] = nil
+				productos = append(productos, &res[k])
 			}
 		}
 		return productos, nil
@@ -286,15 +285,15 @@ func getMetasRubro(id string) (metas []*models.MetaRubroNecesidad, outErr map[st
 		outErr = map[string]interface{}{"Function": "getMetasRubro", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["RubroNecesidadId"] = nil
+				res[k]["RubroNecesidadId"] = nil
 				var meta models.MetaRubroNecesidad
-				if err = formatdata.FillStruct(value, &meta); err != nil {
+				if err = formatdata.FillStruct(res[k], &meta); err != nil {
 					outErr = map[string]interface{}{"Function": "getMetasRubro", "Error": err.Error()}
 					return nil, outErr
 				} else {
-					if meta.Actividades, outErr = getActividadesMeta(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+					if meta.Actividades, outErr = getActividadesMeta(fmt.Sprintf("%.0f", res[k]["Id"].(float64))); outErr != nil {
 						return nil, outErr
 					} else {
 						metas = append(metas, &meta)
@@ -314,13 +313,44 @@ func getActividadesMeta(id string) (actividades []*map[string]interface{}, outEr
 		outErr = map[string]interface{}{"Function": "getActividadesMeta", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		for _, value := range res {
+		for k, value := range res {
 			if len(value) > 0 {
-				value["MetaRubroNecesidadId"] = nil
-				actividades = append(actividades, &value)
+				res[k]["MetaRubroNecesidadId"] = nil
+				if res[k]["FuentesActividad"], outErr = getFuentesActividad(fmt.Sprintf("%.0f", value["Id"].(float64))); outErr != nil {
+					return nil, outErr
+				} else {
+					actividades = append(actividades, &res[k])
+
+				}
+			}
+			fmt.Println("iterac: ", k)
+
+		}
+
+		return actividades, nil
+	}
+}
+
+// getFuentesActividad
+func getFuentesActividad(id string) (fuentes []*map[string]interface{}, outErr map[string]interface{}) {
+	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_actividad/?query=ActividadMetaNecesidadId:" + id
+	var res []map[string]interface{}
+	if err := request.GetJson(urlcrud, &res); err != nil {
+		outErr = map[string]interface{}{"Function": "getRequisitosProducto", "Error": err.Error()}
+		return nil, outErr
+	} else {
+		for k, value := range res {
+			if len(value) > 0 {
+				var resMongo map[string]interface{}
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + value["FuenteId"].(string)
+				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
+					res[k]["InfoFuente"] = resMongo["Body"]
+				}
+				res[k]["ActividadMetaNecesidadId"] = nil
+				fuentes = append(fuentes, &res[k])
 			}
 		}
-		return actividades, nil
+		return fuentes, nil
 	}
 }
 
@@ -618,6 +648,28 @@ func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interfa
 		}
 		actOut["MetaRubroNecesidadId"] = nil
 		out = append(out, &actOut)
+	}
+	return out, nil
+
+}
+
+// post fuentes actividades
+
+func postFuentesActividad(fuentes []*map[string]interface{}, act *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
+	if fuentes == nil || len(fuentes) == 0 {
+		return nil, nil
+	}
+	for _, value := range fuentes {
+		(*value)["ActividadMetaNecesidadId"] = act
+		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_actividad/"
+		var fOut map[string]interface{}
+		if err := request.SendJson(urlcrud, "POST", &fOut, value); err == nil {
+
+		} else {
+			return nil, map[string]interface{}{"Function": "postFuentesActividad", "Error": err.Error()}
+		}
+		fOut["ActividadMetaNecesidadId"] = nil
+		out = append(out, &fOut)
 	}
 	return out, nil
 
