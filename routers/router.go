@@ -49,6 +49,11 @@ func init() {
 		beego.NSNamespace("/cdp",
 			beego.NSInclude(
 				&controllers.CdpController{},
+	),
+		),
+		beego.NSNamespace("/modificacion_apropiacion",
+			beego.NSInclude(
+				&controllers.ModificacionPresupuestalController{},
 			),
 		),
 	)
