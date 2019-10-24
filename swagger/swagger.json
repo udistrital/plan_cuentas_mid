@@ -242,6 +242,60 @@
                 }
             }
         },
+        "/cdp/expedirCDP/{id}": {
+            "get": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "operationId": "CdpController.ExpedirCdp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcdp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/cdp/solicitarCDP": {
+            "post": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "create SolicitudCDP",
+                "operationId": "CdpController.SolicitarCDP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCDP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
             "post": {
                 "tags": [
@@ -293,6 +347,66 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/necesidad/getfullnecesidad/{id}": {
+            "get": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "retorna full Necesidad",
+                "operationId": "NecesidadController.GetFullNecesidad",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for necesidad",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/necesidad/postfullnecesidad": {
+            "post": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "create TrNecesidad",
+                "operationId": "NecesidadController.PostFullNecesidad",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for TrNecesidad content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
                         }
                     },
                     "403": {
@@ -396,6 +510,58 @@
         }
     },
     "definitions": {
+        "12905.0xc0003fd560.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "12964.string.0xc000414c80": {
+            "title": "0xc000414c80",
+            "type": "object"
+        },
+        "13173.string.0xc000414e40": {
+            "title": "0xc000414e40",
+            "type": "object"
+        },
+        "13241.0xc0003fd710.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "13293.string.0xc000414f80": {
+            "title": "0xc000414f80",
+            "type": "object"
+        },
+        "13349.string.0xc000415020": {
+            "title": "0xc000415020",
+            "type": "object"
+        },
+        "13564.string.0xc0004151c0": {
+            "title": "0xc0004151c0",
+            "type": "object"
+        },
+        "13662.string.0xc000415260": {
+            "title": "0xc000415260",
+            "type": "object"
+        },
+        "13758.string.0xc000415300": {
+            "title": "0xc000415300",
+            "type": "object"
+        },
+        "13866.string.0xc0004153c0": {
+            "title": "0xc0004153c0",
+            "type": "object"
+        },
+        "13964.string.0xc000415460": {
+            "title": "0xc000415460",
+            "type": "object"
+        },
+        "14055.string.0xc000415500": {
+            "title": "0xc000415500",
+            "type": "object"
+        },
+        "14155.string.0xc0004155a0": {
+            "title": "0xc0004155a0",
+            "type": "object"
+        },
         "models.Alert": {
             "title": "Alert",
             "type": "object"
@@ -447,6 +613,29 @@
         "models.Fuentefinanciamiento": {
             "title": "Fuentefinanciamiento",
             "type": "object"
+        },
+        "models.MetaRubroNecesidad": {
+            "title": "MetaRubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Actividades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/12964.string.0xc000414c80"
+                    }
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MetaId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroNecesidadId": {
+                    "$ref": "#/definitions/12905.0xc0003fd560.false"
+                }
+            }
         },
         "models.Movimiento": {
             "title": "Movimiento",
@@ -522,6 +711,96 @@
                 }
             }
         },
+        "models.RubroNecesidad": {
+            "title": "RubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Fuentes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13293.string.0xc000414f80"
+                    }
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "InfoRubro": {
+                    "$ref": "#/definitions/13173.string.0xc000414e40"
+                },
+                "Metas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MetaRubroNecesidad"
+                    }
+                },
+                "NecesidadId": {
+                    "$ref": "#/definitions/13241.0xc0003fd710.false"
+                },
+                "Productos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13349.string.0xc000415020"
+                    }
+                },
+                "RubroId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SolicitudCDP": {
+            "title": "SolicitudCDP",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "centroGestor": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "entidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "fechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaRegistro": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "infoCdp": {
+                    "$ref": "#/definitions/models.infoCdp"
+                },
+                "justificacionRechazo": {
+                    "type": "string"
+                },
+                "necesidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "vigencia": {
+                    "type": "string"
+                }
+            }
+        },
         "models.TipoMovimiento": {
             "title": "TipoMovimiento",
             "type": "object",
@@ -538,6 +817,69 @@
                 },
                 "Nombre": {
                     "type": "string"
+                }
+            }
+        },
+        "models.TrNecesidad": {
+            "title": "TrNecesidad",
+            "type": "object",
+            "properties": {
+                "ActividadEconomicaNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/14155.string.0xc0004155a0"
+                    }
+                },
+                "ActividadEspecificaNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/14055.string.0xc000415500"
+                    }
+                },
+                "DetallePrestacionServicioNecesidad": {
+                    "$ref": "#/definitions/13758.string.0xc000415300"
+                },
+                "DetalleServicioNecesidad": {
+                    "$ref": "#/definitions/13662.string.0xc000415260"
+                },
+                "MarcoLegalNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13964.string.0xc000415460"
+                    }
+                },
+                "Necesidad": {
+                    "$ref": "#/definitions/13564.string.0xc0004151c0"
+                },
+                "ProductosCatalogoNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/13866.string.0xc0004153c0"
+                    }
+                },
+                "Rubros": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.RubroNecesidad"
+                    }
+                }
+            }
+        },
+        "models.infoCdp": {
+            "title": "infoCdp",
+            "type": "object",
+            "properties": {
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "fechaExpedicion": {
+                    "type": "string",
+                    "format": "datetime"
                 }
             }
         }
@@ -562,6 +904,14 @@
         {
             "name": "movimiento",
             "description": "MovimientoController operations for Movimiento\n"
+        },
+        {
+            "name": "necesidad",
+            "description": "NecesidadController operations for Necesidad\n"
+        },
+        {
+            "name": "cdp",
+            "description": "CdpController operations for Cdp\n"
         }
     ]
 }
