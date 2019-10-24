@@ -29,16 +29,16 @@ func ExpedirCdp(id string) (cdp map[string]interface{}, outErr map[string]interf
 // SolicitarCDP init necesidad
 func SolicitarCDP(necesidad map[string]interface{}) (solicitud map[string]interface{}, outErr map[string]interface{}) {
 	var (
-		okEntidad  bool
-		okId       bool
-		okVigencia bool
-		mongoData  map[string]interface{}
+		okAreaFuncional bool
+		okId            bool
+		okVigencia      bool
+		mongoData       map[string]interface{}
 	)
 
 	solicitud = make(map[string]interface{})
 	solicitud["consecutivo"] = GetConsecutivoSolicitudCDP()
 	solicitud["entidad"] = 1
-	solicitud["centroGestor"], okEntidad = necesidad["UnidadEjecutora"]
+	solicitud["centroGestor"], okAreaFuncional = necesidad["AreaFuncional"]
 	solicitud["necesidad"], okId = necesidad["Id"]
 	solicitud["vigencia"], okVigencia = necesidad["Vigencia"]
 	solicitud["fechaRegistro"] = time.Now().Format(time.RFC3339)
@@ -49,7 +49,7 @@ func SolicitarCDP(necesidad map[string]interface{}) (solicitud map[string]interf
 	solicitud["fechaCreacion"] = time.Now().Format(time.RFC3339)
 	solicitud["fechaModificacion"] = time.Now().Format(time.RFC3339)
 	beego.Info(solicitud)
-	if okEntidad && okId && okVigencia {
+	if okAreaFuncional && okId && okVigencia {
 		urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCDP/"
 		if err := request.SendJson(urlmongo, "POST", &mongoData, &solicitud); err == nil {
 			return solicitud, nil
