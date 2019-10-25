@@ -70,6 +70,24 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
+        beego.ControllerComments{
+            Method: "ExpedirCdp",
+            Router: `/expedirCDP/:id`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
+        beego.ControllerComments{
+            Method: "SolicitarCdp",
+            Router: `/solicitarCDP`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
         beego.ControllerComments{
             Method: "RegistrarFuenteConApropiacion",
@@ -101,6 +119,24 @@ func init() {
         beego.ControllerComments{
             Method: "Post",
             Router: `/`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"],
+        beego.ControllerComments{
+            Method: "GetFullNecesidad",
+            Router: `/getfullnecesidad/:id`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"],
+        beego.ControllerComments{
+            Method: "PostFullNecesidad",
+            Router: `/postfullnecesidad`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,

@@ -41,6 +41,16 @@ func init() {
 				&controllers.MovimientoController{},
 			),
 		),
+		beego.NSNamespace("/necesidad",
+			beego.NSInclude(
+				&controllers.NecesidadController{},
+			),
+		),
+		beego.NSNamespace("/cdp",
+			beego.NSInclude(
+				&controllers.CdpController{},
+	),
+		),
 		beego.NSNamespace("/modificacion_apropiacion",
 			beego.NSInclude(
 				&controllers.ModificacionPresupuestalController{},
