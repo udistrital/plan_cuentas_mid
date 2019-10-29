@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
+	"strconv"
 
 	"github.com/astaxie/beego"
 	necesidadhelper "github.com/udistrital/plan_cuentas_mid/helpers/necesidadHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
+	"github.com/udistrital/utils_oas/request"
 	"github.com/udistrital/utils_oas/responseformat"
 )
 
@@ -17,6 +19,7 @@ type NecesidadController struct {
 // URLMapping ...
 func (c *NecesidadController) URLMapping() {
 	c.Mapping("GetFullNecesidad", c.GetFullNecesidad)
+	c.Mapping("PostFullNecesidad", c.PostFullNecesidad)
 }
 
 // GetFullNecesidad ...
@@ -47,10 +50,11 @@ func (c *NecesidadController) GetFullNecesidad() {
 // @Param	body		body 	models.TrNecesidad	true "body for TrNecesidad content"
 // @Success 201 {object} models.TrNecesidad
 // @Failure 403 body is empty
-// @router /postfullnecesidad [post]
+// @router /post_full_necesidad [post]
 func (c *NecesidadController) PostFullNecesidad() {
 	var (
-		v models.TrNecesidad
+		v         models.TrNecesidad
+		necesidad map[string]interface{}
 	)
 	defer func() {
 		if r := recover(); r != nil {
@@ -59,12 +63,32 @@ func (c *NecesidadController) PostFullNecesidad() {
 		}
 	}()
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
-		beego.Info("bien")
-	} else {
-		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
-	}
-	if response, err := necesidadhelper.PostTrNecesidad(v); err == nil {
-		responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+		idNecesidad := strconv.FormatFloat((*v.Necesidad)["Id"].(float64), 'f', 0, 64)
+		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "/necesidad/" + idNecesidad
+
+		if err := request.GetJson(urlcrud, &necesidad); err == nil {
+
+			if necesidad["Id"] == nil { // La necesidad NO EXISTE
+
+				if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
+					responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+				} else {
+					responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+				}
+
+			} else { // La necesidad EXISTE
+
+				if err := request.SendJson(urlcrud, "DELETE", nil, nil); err == nil {
+
+					if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
+						responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+					} else {
+						responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+					}
+				}
+			}
+
+		}
 	} else {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
