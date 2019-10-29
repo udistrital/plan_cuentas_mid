@@ -25,6 +25,9 @@ func GetTrNecesidad(id string) (trnecesidad models.TrNecesidad, outErr map[strin
 		return trnecesidad, err
 	} else {
 		nec := trnecesidad.Necesidad
+		if len(*nec) == 0 {
+			return trnecesidad, err
+		}
 		vig := (*nec)["Vigencia"].(string)
 		af := fmt.Sprintf("%.0f", (*nec)["AreaFuncional"].(float64))
 		if trnecesidad.DetalleServicioNecesidad, err = getDetalleServicio(id); err != nil {
@@ -242,18 +245,15 @@ func getRubrosNecesidad(id string, vigencia string, areafuncional string) (rubro
 // get fuentes rubro
 func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_rubro_necesidad/?query=RubroNecesidadId:" + id
-	fmt.Println("urlcrud:", urlcrud)
 	var res []map[string]interface{}
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getFuentesRubro", "Error": err.Error()}
-		fmt.Println("this error...")
 		return nil, outErr
 	} else {
 		for k, value := range res {
 			if len(value) > 0 {
 				var resMongo map[string]interface{}
 				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + res[k]["FuenteId"].(string) + "/" + vigencia + "/" + unidadEjecutora
-				fmt.Println("urlmongo:", urlmongo)
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
 					res[k]["InfoFuente"] = resMongo["Body"]
 				}
