@@ -658,6 +658,7 @@ func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interfa
 			return nil, map[string]interface{}{"Function": "postActividadesMeta", "Error": err.Error()}
 		}
 		actOut["MetaRubroNecesidadId"] = nil
+		postFuentesActividad((*value)["Fuentes"].([]interface{}), &actOut)
 		out = append(out, &actOut)
 	}
 	return out, nil
@@ -666,12 +667,12 @@ func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interfa
 
 // post fuentes actividades
 
-func postFuentesActividad(fuentes []*map[string]interface{}, act *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
+func postFuentesActividad(fuentes []interface{}, act *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
 	if fuentes == nil || len(fuentes) == 0 {
 		return nil, nil
 	}
 	for _, value := range fuentes {
-		(*value)["ActividadMetaNecesidadId"] = act
+		value.(map[string]interface{})["ActividadMetaNecesidadId"] = act
 		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_actividad/"
 		var fOut map[string]interface{}
 		if err := request.SendJson(urlcrud, "POST", &fOut, value); err == nil {
