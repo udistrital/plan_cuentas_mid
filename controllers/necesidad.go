@@ -56,15 +56,8 @@ func (c *NecesidadController) PostFullNecesidad() {
 		v         models.TrNecesidad
 		necesidad map[string]interface{}
 	)
-	defer func() {
-		if r := recover(); r != nil {
-			beego.Error(r)
-			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
-		}
-	}()
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
-		_, ok := (*v.Necesidad)["Id"].(float64)
-		if ok {
+		if _, ok := (*v.Necesidad)["Id"].(float64); ok {
 			idNecesidad := strconv.FormatFloat((*v.Necesidad)["Id"].(float64), 'f', 0, 64)
 			urlcrud := beego.AppConfig.String("necesidadesCrudService") + "/necesidad/" + idNecesidad
 
@@ -73,9 +66,9 @@ func (c *NecesidadController) PostFullNecesidad() {
 				if necesidad["Id"] == nil { // La necesidad NO EXISTE
 
 					if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
-						responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+						c.Abort("400")
 					} else {
-						responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+						c.Data["json"] = response
 					}
 
 				} else { // La necesidad EXISTE
@@ -83,9 +76,9 @@ func (c *NecesidadController) PostFullNecesidad() {
 					if err := request.SendJson(urlcrud, "DELETE", nil, nil); err == nil {
 
 						if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
-							responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+							c.Abort("400")
 						} else {
-							responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+							c.Data["json"] = response
 						}
 					}
 				}
@@ -93,12 +86,14 @@ func (c *NecesidadController) PostFullNecesidad() {
 
 		} else {
 			if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
-				responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+				c.Abort("400")
 			} else {
-				responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+				c.Data["json"] = response
 			}
 		}
 	} else {
-		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+		c.Abort("400")
 	}
+
+	c.ServeJSON()
 }
