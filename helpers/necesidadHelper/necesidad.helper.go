@@ -9,6 +9,12 @@ import (
 	"github.com/udistrital/utils_oas/request"
 )
 
+// Variables para obtener la información de una fuente desde mongo
+var (
+	vigencia        string
+	unidadEjecutora string
+)
+
 //funciones relacionadas a get de necesidad
 
 // GetTrNecesidad obtiene necesidad de crud apí con sus objetos relacionados
@@ -39,6 +45,8 @@ func GetTrNecesidad(id string) (trnecesidad models.TrNecesidad, outErr map[strin
 		if trnecesidad.ActividadEspecificaNecesidad, err = getActividadEspecifica(id); err != nil {
 			return trnecesidad, err
 		}
+		vigencia = vig
+		unidadEjecutora = af
 		if trnecesidad.Rubros, err = getRubrosNecesidad(id, vig, af); err != nil {
 			return trnecesidad, err
 		}
@@ -244,7 +252,7 @@ func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[s
 		for k, value := range res {
 			if len(value) > 0 {
 				var resMongo map[string]interface{}
-				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + res[k]["FuenteId"].(string)
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + res[k]["FuenteId"].(string) + "/" + vigencia + "/" + unidadEjecutora
 				fmt.Println("urlmongo:", urlmongo)
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
 					res[k]["InfoFuente"] = resMongo["Body"]
@@ -345,7 +353,7 @@ func getFuentesActividad(id string) (fuentes []*map[string]interface{}, outErr m
 		for k, value := range res {
 			if len(value) > 0 {
 				var resMongo map[string]interface{}
-				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + value["FuenteId"].(string)
+				urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + value["FuenteId"].(string) + "/" + vigencia + "/" + unidadEjecutora
 				if err = request.GetJson(urlmongo, &resMongo); err == nil && len(resMongo) > 0 {
 					res[k]["InfoFuente"] = resMongo["Body"]
 				}
