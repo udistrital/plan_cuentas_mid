@@ -136,7 +136,7 @@ func init() {
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"],
         beego.ControllerComments{
             Method: "PostFullNecesidad",
-            Router: `/postfullnecesidad`,
+            Router: `/post_full_necesidad`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
