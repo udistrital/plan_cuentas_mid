@@ -63,31 +63,40 @@ func (c *NecesidadController) PostFullNecesidad() {
 		}
 	}()
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
-		idNecesidad := strconv.FormatFloat((*v.Necesidad)["Id"].(float64), 'f', 0, 64)
-		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "/necesidad/" + idNecesidad
+		_, ok := (*v.Necesidad)["Id"].(float64)
+		if ok {
+			idNecesidad := strconv.FormatFloat((*v.Necesidad)["Id"].(float64), 'f', 0, 64)
+			urlcrud := beego.AppConfig.String("necesidadesCrudService") + "/necesidad/" + idNecesidad
 
-		if err := request.GetJson(urlcrud, &necesidad); err == nil {
+			if err := request.GetJson(urlcrud, &necesidad); err == nil {
 
-			if necesidad["Id"] == nil { // La necesidad NO EXISTE
-
-				if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
-					responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
-				} else {
-					responseformat.SetResponseFormat(&c.Controller, response, "", 201)
-				}
-
-			} else { // La necesidad EXISTE
-
-				if err := request.SendJson(urlcrud, "DELETE", nil, nil); err == nil {
+				if necesidad["Id"] == nil { // La necesidad NO EXISTE
 
 					if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
 						responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 					} else {
 						responseformat.SetResponseFormat(&c.Controller, response, "", 201)
 					}
+
+				} else { // La necesidad EXISTE
+
+					if err := request.SendJson(urlcrud, "DELETE", nil, nil); err == nil {
+
+						if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
+							responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+						} else {
+							responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+						}
+					}
 				}
 			}
 
+		} else {
+			if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
+				responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+			} else {
+				responseformat.SetResponseFormat(&c.Controller, response, "", 201)
+			}
 		}
 	} else {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
