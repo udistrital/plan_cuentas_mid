@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/udistrital/plan_cuentas_mid/routers"
-	"github.com/udistrital/utils_oas/customerror"
+	//"github.com/udistrital/utils_oas/customerror"
 	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
@@ -31,7 +31,7 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
-	beego.ErrorController(&customerror.CustomErrorController{})
+	//beego.ErrorController(&customerror.CustomErrorController{})
 	apistatus.Init()
 
 	//mongoProcess.PresupuestoMongoJobInit()
