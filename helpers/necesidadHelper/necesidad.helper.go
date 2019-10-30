@@ -443,17 +443,18 @@ func postProductosCatalogo(productos []*map[string]interface{}, necesidad *map[s
 	if productos == nil || len(productos) == 0 {
 		return nil, nil
 	}
-	for _, value := range productos {
-		(*value)["NecesidadId"] = necesidad
+	for k, value := range productos {
+		(*productos[k])["NecesidadId"] = necesidad
 		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "producto_catalogo_necesidad/"
 		var prOut map[string]interface{}
-		if err := request.SendJson(urlcrud, "POST", &prOut, value); err == nil {
-			reqmin := (*value)["RequisitosMinimos"].([]interface{})
+		if err := request.SendJson(urlcrud, "POST", &prOut, productos[k]); err == nil {
+			reqmin := (*productos[k])["RequisitosMinimos"].([]interface{})
 			urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo/"
-			for _, requisito := range reqmin {
-				requisito.(map[string]interface{})["ProductoCatalogoNecesidadId"] = prOut
-				if err = request.SendJson(urlcrud, "POST", nil, requisito); err == nil {
-
+			for i, _ := range reqmin {
+				reqmin[i].(map[string]interface{})["ProductoCatalogoNecesidadId"] = prOut
+				var reqOut map[string]interface{}
+				if err = request.SendJson(urlcrud, "POST", &reqOut, reqmin[i]); err == nil {
+					(*productos[k])["RequisitosMinimos"] = append((*productos[k])["RequisitosMinimos"].([]interface{}), reqOut)
 				} else {
 					return nil, map[string]interface{}{"Function": "postProductosCatalogo", "Error": err.Error()}
 				}
@@ -463,7 +464,7 @@ func postProductosCatalogo(productos []*map[string]interface{}, necesidad *map[s
 			return nil, map[string]interface{}{"Function": "postProductosCatalogo", "Error": err.Error()}
 		}
 		(*value)["NecesidadId"] = nil
-		out = append(out, value)
+		out = append(out, &prOut)
 	}
 	return out, nil
 
