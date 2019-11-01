@@ -390,7 +390,7 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 			}
 			if out.ActividadEconomicaNecesidad, errOut = postActividadesEconomicas(trnecesidad.ActividadEconomicaNecesidad, out.Necesidad); errOut == nil {
 			}
-			if out.ActividadEspecificaNecesidad, errOut = postActividadesEspecificas(trnecesidad.ActividadEconomicaNecesidad, out.Necesidad); errOut == nil {
+			if out.ActividadEspecificaNecesidad, errOut = postActividadesEspecificas(trnecesidad.ActividadEspecificaNecesidad, out.Necesidad); errOut == nil {
 
 			}
 			if out.Rubros, errOut = postRubros(trnecesidad.Rubros, out.Necesidad); errOut == nil {
@@ -443,19 +443,18 @@ func postProductosCatalogo(productos []*map[string]interface{}, necesidad *map[s
 	if productos == nil || len(productos) == 0 {
 		return nil, nil
 	}
-	for _, value := range productos {
-		(*value)["NecesidadId"] = necesidad
+	for k, value := range productos {
+		(*productos[k])["NecesidadId"] = necesidad
 		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "producto_catalogo_necesidad/"
 		var prOut map[string]interface{}
-		if err := request.SendJson(urlcrud, "POST", &prOut, value); err == nil {
-			id := prOut["Id"]
-			reqmin := (*value)["RequisitosMinimos"].([]map[string]interface{})
+		if err := request.SendJson(urlcrud, "POST", &prOut, productos[k]); err == nil {
+			reqmin := (*productos[k])["RequisitosMinimos"].([]interface{})
 			urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo/"
-			for _, requisito := range reqmin {
-				(*value)["Id"] = id
-				requisito["ProductoCatalogoNecesidadId"] = value
-				if err = request.SendJson(urlcrud, "POST", nil, requisito); err == nil {
-
+			for i, _ := range reqmin {
+				reqmin[i].(map[string]interface{})["ProductoCatalogoNecesidadId"] = prOut
+				var reqOut map[string]interface{}
+				if err = request.SendJson(urlcrud, "POST", &reqOut, reqmin[i]); err == nil {
+					(*productos[k])["RequisitosMinimos"] = append((*productos[k])["RequisitosMinimos"].([]interface{}), reqOut)
 				} else {
 					return nil, map[string]interface{}{"Function": "postProductosCatalogo", "Error": err.Error()}
 				}
@@ -465,7 +464,7 @@ func postProductosCatalogo(productos []*map[string]interface{}, necesidad *map[s
 			return nil, map[string]interface{}{"Function": "postProductosCatalogo", "Error": err.Error()}
 		}
 		(*value)["NecesidadId"] = nil
-		out = append(out, value)
+		out = append(out, &prOut)
 	}
 	return out, nil
 
@@ -495,6 +494,7 @@ func postMarcoLegal(marcolegal []*map[string]interface{}, necesidad *map[string]
 // post actividad especifica
 func postActividadesEspecificas(ae []*map[string]interface{}, necesidad *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
 	if ae == nil || len(ae) == 0 {
+		fmt.Print("ae:", ae)
 		return nil, nil
 	}
 	for _, value := range ae {
@@ -658,7 +658,7 @@ func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interfa
 			return nil, map[string]interface{}{"Function": "postActividadesMeta", "Error": err.Error()}
 		}
 		actOut["MetaRubroNecesidadId"] = nil
-		postFuentesActividad((*value)["Fuentes"].([]interface{}), &actOut)
+		postFuentesActividad((*value)["FuentesActividad"].([]interface{}), &actOut)
 		out = append(out, &actOut)
 	}
 	return out, nil
