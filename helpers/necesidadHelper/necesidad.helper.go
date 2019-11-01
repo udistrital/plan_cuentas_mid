@@ -658,7 +658,7 @@ func postActividadesMeta(act []*map[string]interface{}, meta *map[string]interfa
 			return nil, map[string]interface{}{"Function": "postActividadesMeta", "Error": err.Error()}
 		}
 		actOut["MetaRubroNecesidadId"] = nil
-		postFuentesActividad((*value)["Fuentes"].([]interface{}), &actOut)
+		postFuentesActividad((*value)["FuentesActividad"].([]interface{}), &actOut)
 		out = append(out, &actOut)
 	}
 	return out, nil
