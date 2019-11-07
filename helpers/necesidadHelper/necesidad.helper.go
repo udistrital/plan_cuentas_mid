@@ -379,6 +379,14 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 	if err := request.SendJson(urlcrud, "POST", &resDependencia, (*trnecesidad.Necesidad)["DependenciaNecesidadId"]); err == nil {
 		(*trnecesidad.Necesidad)["DependenciaNecesidadId"].(map[string]interface{})["Id"] = resDependencia["Id"]
 		urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/"
+
+		switch (*trnecesidad.Necesidad)["EstadoNecesidadId"].(map[string]interface{})["CodigoAbreviacionn"] {
+		case "G": // Necesidad guardada
+			(*trnecesidad.Necesidad)["ConsecutivoSolicitud"] = agregarConsecutivoSolicitiud()
+		case "A": // Necesidad aprobada
+			(*trnecesidad.Necesidad)["ConsecutivoNecesidad"] = agregarConsecutivoNecesidad()
+		}
+
 		if err = request.SendJson(urlcrud, "POST", &out.Necesidad, trnecesidad.Necesidad); err == nil {
 			if out.DetalleServicioNecesidad, errOut = postDetalleServicio(trnecesidad.DetalleServicioNecesidad, out.Necesidad); errOut == nil {
 			}
@@ -408,6 +416,34 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 	}
 	return out, nil
 
+}
+
+// agregarConsecutivoSolicitiud calcula el consecutivo sumando todas las necesitades existentes hasta el momento
+func agregarConsecutivoSolicitiud() int {
+	var necesidades []interface{}
+	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1"
+	if err := request.GetJson(urlcrud, &necesidades); err != nil {
+		return 0
+	}
+	return len(necesidades)
+}
+
+// agregarConsecutivoNecesidad calcula el consecutivo sumando todas las necesidades existenes hasta el momento que estén
+// en estado: aprobada, rechazada, anulada, modificada, enviada y cdp solicitado
+func agregarConsecutivoNecesidad() int {
+	var necesidades []interface{}
+	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1&query="+
+	"EstadoNecesidadId.CodigoAbreviacionn:A,"+ // Aprobada
+	"EstadoNecesidadId.CodigoAbreviacionn:R,"+ // Rechazada
+	"EstadoNecesidadId.CodigoAbreviacionn:AN,"+ // Anulada
+	"EstadoNecesidadId.CodigoAbreviacionn:M,"+ // Modificada
+	"EstadoNecesidadId.CodigoAbreviacionn:E,"+ // Enviada
+	"EstadoNecesidadId.CodigoAbreviacionn:CS" // CDP Solicitado
+	if err := request.GetJson(urlcrud, &necesidades); err != nil {
+		return 0
+	}
+	
+	return len(necesidades)
 }
 
 // post detalle servicio necesidad
