@@ -72,7 +72,7 @@ func DeleteMovimientoAPICrud(id ...int) (response responseformat.Response, err e
 	return response, err
 }
 
-func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMongo) (response responseformat.Response, err error) {
+func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMongo) (response map[string]interface{}, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			logs.Error("catch", r)
@@ -81,12 +81,13 @@ func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMo
 		}
 	}()
 	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"arbol_rubro_apropiacion/comprobar_balance/"+cg+"/"+vigencia, "POST", &response, data); err == nil {
-		if responseformat.CheckResponseError(response) {
+		//code, _ := strconv.Atoi(response.Code)
+		if response["Code"]==404 {
 			var errMessage = "Mongo API Error"
-			if messageStr, e := response.Body.(string); e {
+			if messageStr, e := response["Body"].(string); e {
 				errMessage = errMessage + ": " + messageStr
 			} else {
-				errMessage = errMessage + ": " + fmt.Sprintf("%s", response.Body)
+				errMessage = errMessage + ": " + fmt.Sprintf("%s", response["Body"])
 			}
 			err = errors.New(errMessage)
 			logs.Error(err.Error())

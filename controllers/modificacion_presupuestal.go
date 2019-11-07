@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"encoding/json"
 
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
@@ -72,6 +73,7 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	var afectation []models.MovimientoMongo
 	defer func() {
 		c.Data["json"] = finalData
+		c.ServeJSON()
 	}()
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &modificacionPresupuestalData); err != nil {
@@ -84,9 +86,12 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
 	}
 	response, err := movimientomanager.SimualteAfectationAPIMongo(cgStr, vigenciaStr, afectation...)
+	fmt.Println("response:",response," error:", err)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println("remalparido")
+		panic(err)
 	}
-	finalData = response.Body
+	finalData = response["Body"]
+	//c.ServeJS
 
 }
