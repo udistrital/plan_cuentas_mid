@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"fmt"
 	"encoding/json"
 
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
+	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -38,7 +38,11 @@ func (c *ModificacionPresupuestalController) Post() {
 	)
 
 	defer func() {
+		if r := recover(); r != nil {
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
 		c.Data["json"] = finalData
+		c.ServeJSON()
 	}()
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &modificacionPresupuestalData); err != nil {
@@ -49,6 +53,7 @@ func (c *ModificacionPresupuestalController) Post() {
 	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 
 	finalData, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
+
 	if err != nil {
 		logs.Debug("error", err)
 		panic(err.Error())
@@ -86,12 +91,9 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
 	}
 	response, err := movimientomanager.SimualteAfectationAPIMongo(cgStr, vigenciaStr, afectation...)
-	fmt.Println("response:",response," error:", err)
 	if err != nil {
-		fmt.Println("remalparido")
 		panic(err)
 	}
 	finalData = response["Body"]
-	//c.ServeJS
 
 }
