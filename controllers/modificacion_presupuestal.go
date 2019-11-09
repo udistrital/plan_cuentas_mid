@@ -77,10 +77,11 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	vigenciaStr := c.GetString(":vigencia")
 	var afectation []models.MovimientoMongo
 	defer func() {
-		c.Data["json"] = finalData
+		if r := recover(); r != nil {
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
 		c.ServeJSON()
 	}()
-
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &modificacionPresupuestalData); err != nil {
 		logs.Error(err.Error())
 		panic(err.Error())
@@ -94,6 +95,11 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	if err != nil {
 		panic(err)
 	}
+	if responseType, e := response["Type"].(string); e {
+		if responseType == "error" {
+			panic(response["Body"])
+		}
+	}
 	finalData = response["Body"]
-
+	c.Data["json"] = finalData
 }
