@@ -572,6 +572,7 @@
         }
     },
     "definitions": {
+
         "10071.string.0xc0003de8c0": {
             "title": "0xc0003de8c0",
             "type": "object"
@@ -683,7 +684,9 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/9373.string.0xc0003de2c0"
+
                     }
                 },
                 "Id": {
@@ -694,7 +697,11 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
-                    "$ref": "#/definitions/9314.0xc0003dc420.false"
+
+                    "$ref": "#/definitions/10682.0xc0004c2210.false"
+
+                
+
                 }
             }
         },
@@ -797,7 +804,9 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/9702.string.0xc0003de5c0"
+
+                        "$ref": "#/definitions/11070.string.0xc0004c85e0"
+
                     }
                 },
                 "Id": {
@@ -805,7 +814,9 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
+
                     "$ref": "#/definitions/9582.string.0xc0003de480"
+
                 },
                 "Metas": {
                     "type": "array",
@@ -814,12 +825,16 @@
                     }
                 },
                 "NecesidadId": {
+
                     "$ref": "#/definitions/9650.0xc0003dc5d0.false"
+
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/9758.string.0xc0003de660"
+
                     }
                 },
                 "RubroId": {
@@ -909,12 +924,15 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/10564.string.0xc0003dec00"
+
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/10464.string.0xc0003deb60"
                     }
                 },
@@ -922,21 +940,25 @@
                     "$ref": "#/definitions/10167.string.0xc0003de960"
                 },
                 "DetalleServicioNecesidad": {
-                    "$ref": "#/definitions/10071.string.0xc0003de8c0"
+
                 },
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/10373.string.0xc0003deac0"
+
+                        "$ref": "#/definitions/11741.string.0xc0004c8ae0"
                     }
                 },
                 "Necesidad": {
-                    "$ref": "#/definitions/9973.string.0xc0003de820"
+                    "$ref": "#/definitions/11341.string.0xc0004c8840"
+
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/10275.string.0xc0003dea20"
+
                     }
                 },
                 "Rubros": {
