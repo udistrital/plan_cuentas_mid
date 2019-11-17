@@ -8,7 +8,7 @@ type ModificacionPresupuestalReceiver struct {
 }
 
 type ModificacionPresupuestalReceiverDetail struct {
-	DocumentNumber int          `json:"NumeroDocumento" bson:"numero_documento"`
+	DocumentNumber string          `json:"NumeroDocumento" bson:"numero_documento"`
 	DocumentDate   time.Time    `json:"FechaDocumento" bson:"fecha_documento"`
 	DocumentType   *TipoGeneral `json:"TipoDocumento" bson:"tipo_documento"`
 	Descripcion    string       `json:"Descripcion" bson:"descripcion_documento"`
