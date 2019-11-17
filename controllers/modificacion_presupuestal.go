@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"strconv"
 
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/utils_oas/responseformat"
@@ -34,14 +35,32 @@ func (c *ModificacionPresupuestalController) URLMapping() {
 func (c *ModificacionPresupuestalController) Post() {
 	var (
 		modificacionPresupuestalData models.ModificacionPresupuestalReceiver
-		finalData                    interface{}
+		// finalData                    interface{}
 	)
 
 	defer func() {
 		if r := recover(); r != nil {
 			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
 		}
-		c.Data["json"] = finalData
+		cdpNumber := 0
+		cdpMessage := ""
+		var cdpArr []int
+		for _, data := range modificacionPresupuestalData.Afectation {
+			if data.TypeMod.Acronimo == "traslado" || data.TypeMod.Acronimo == "reduccion" {
+				cdpNumber++
+				cdpArr = append(cdpArr, cdpNumber)
+			}
+		}
+		if len(cdpArr) > 0 {
+			cdpMessage += "CDP Generados: "
+			for _, n := range cdpArr {
+				cdpMessage += strconv.Itoa(n)
+				if n < len(cdpArr) {
+					cdpMessage += ","
+				}
+			}
+		}
+		responseformat.SetResponseFormat(&c.Controller, "Modificación Registrada Correctamente. "+cdpMessage, "", 200)
 		c.ServeJSON()
 	}()
 
@@ -52,7 +71,7 @@ func (c *ModificacionPresupuestalController) Post() {
 
 	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 
-	finalData, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
+	_, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
 		logs.Debug("error", err)
