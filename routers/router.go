@@ -49,7 +49,12 @@ func init() {
 		beego.NSNamespace("/cdp",
 			beego.NSInclude(
 				&controllers.CdpController{},
-	),
+			),
+		),
+		beego.NSNamespace("/crp",
+			beego.NSInclude(
+				&controllers.CrpController{},
+			),
 		),
 		beego.NSNamespace("/modificacion_apropiacion",
 			beego.NSInclude(
