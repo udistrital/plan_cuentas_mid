@@ -48,9 +48,6 @@ func SolicitarCRP(solCrp map[string]interface{}) (solicitud map[string]interface
 	solicitud["beneficiario"], okBeneficiario = solCrp["beneficiario"]
 	solicitud["vigencia"], okVigencia = solCrp["vigencia"]
 	solicitud["valor"], okValor = solCrp["monto"]
-	// compromiso = make(map[string]interface{})
-	// compromiso["numeroCompromiso"], okNumCompromiso = solCrp["numCompromiso"]
-	// compromiso["tipoCompromiso"], okTipoCompromiso = solCrp["compromiso"]
 	solicitud["compromiso"], okCompromiso = solCrp["compromiso"]
 	solicitud["infoCrp"] = nil
 	solicitud["activo"] = true

@@ -242,6 +242,60 @@
                 }
             }
         },
+        "/cdp/expedirCDP/{id}": {
+            "get": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "operationId": "CdpController.ExpedirCdp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcdp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/cdp/solicitarCDP": {
+            "post": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "create SolicitudCDP",
+                "operationId": "CdpController.SolicitarCDP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCDP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/crp/expedirCRP/{id}": {
             "get": {
                 "tags": [
