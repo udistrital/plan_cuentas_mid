@@ -72,14 +72,15 @@ func (c *NecesidadController) PostFullNecesidad() {
 					}
 
 				} else { // La necesidad EXISTE
-
-					if err := request.SendJson(urlcrud, "DELETE", nil, nil); err == nil {
-
+					var resM map[string]interface{}
+					if err := request.SendJson(urlcrud, "DELETE", &resM, nil); err == nil {
 						if response, err := necesidadhelper.PostTrNecesidad(v); err != nil {
 							c.Abort("400")
 						} else {
 							c.Data["json"] = response
 						}
+					} else {
+						c.Abort("400")
 					}
 				}
 			}
