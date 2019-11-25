@@ -27,5 +27,6 @@ type TrNecesidad struct {
 	MarcoLegalNecesidad                []*map[string]interface{} `json:"MarcoLegalNecesidad"`
 	ActividadEspecificaNecesidad       []*map[string]interface{} `json:"ActividadEspecificaNecesidad"`
 	ActividadEconomicaNecesidad        []*map[string]interface{} `json:"ActividadEconomicaNecesidad"`
+	RequisitosMinimos                  []*map[string]interface{} `json:"RequisitoMinimoNecesidad"`
 	Rubros                             []*RubroNecesidad         `json:"Rubros"`
 }

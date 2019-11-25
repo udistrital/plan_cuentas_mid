@@ -48,6 +48,9 @@ func GetTrNecesidad(id string) (trnecesidad models.TrNecesidad, outErr map[strin
 		if trnecesidad.ActividadEspecificaNecesidad, err = getActividadEspecifica(id); err != nil {
 			return trnecesidad, err
 		}
+		if trnecesidad.RequisitosMinimos, err = getRequisitosNecesidad(id); err != nil {
+			return trnecesidad, err
+		}
 		vigencia = vig
 		unidadEjecutora = af
 		if trnecesidad.Rubros, err = getRubrosNecesidad(id, vig, af); err != nil {
@@ -180,6 +183,25 @@ func getActividadEspecifica(id string) (ae []*map[string]interface{}, outErr map
 
 		}
 		return ae, nil
+	}
+}
+
+// get requisitos minimos de la necesidad
+func getRequisitosNecesidad(id string) (rm []*map[string]interface{}, outErr map[string]interface{}) {
+	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo_necesidad/?query=NecesidadId:" + id
+	var res []map[string]interface{}
+	if err := request.GetJson(urlcrud, &res); err != nil {
+		outErr = map[string]interface{}{"Function": "getRequisitosNecesidad", "Error": err.Error()}
+		return nil, outErr
+	} else {
+		for k, value := range res {
+			if len(value) > 0 {
+				res[k]["NecesidadId"] = nil
+				rm = append(rm, &res[k])
+			}
+
+		}
+		return rm, nil
 	}
 }
 
@@ -401,6 +423,8 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 			if out.ActividadEspecificaNecesidad, errOut = postActividadesEspecificas(trnecesidad.ActividadEspecificaNecesidad, out.Necesidad); errOut == nil {
 
 			}
+			if out.RequisitosMinimos, errOut = postRequisitosNecesidad(trnecesidad.RequisitosMinimos, out.Necesidad); errOut == nil {
+			}
 			if out.Rubros, errOut = postRubros(trnecesidad.Rubros, out.Necesidad); errOut == nil {
 
 			} else {
@@ -420,30 +444,34 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 
 // agregarConsecutivoSolicitiud calcula el consecutivo sumando todas las necesitades existentes hasta el momento
 func agregarConsecutivoSolicitiud() int {
-	var necesidades []interface{}
+	var necesidades []map[string]interface{}
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1"
 	if err := request.GetJson(urlcrud, &necesidades); err != nil {
 		return 0
 	}
-	return len(necesidades)
+	if len(necesidades[0]) == 0 {
+		return 1
+	}
+	//fmt.Println(necesidades[0].(map[string]interface{}), necesidades[0].(map[string]interface{}) == nil)
+	return len(necesidades) + 1
 }
 
 // agregarConsecutivoNecesidad calcula el consecutivo sumando todas las necesidades existenes hasta el momento que estén
 // en estado: aprobada, rechazada, anulada, modificada, enviada y cdp solicitado
 func agregarConsecutivoNecesidad() int {
 	var necesidades []interface{}
-	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1&query="+
-	"EstadoNecesidadId.CodigoAbreviacionn:A,"+ // Aprobada
-	"EstadoNecesidadId.CodigoAbreviacionn:R,"+ // Rechazada
-	"EstadoNecesidadId.CodigoAbreviacionn:AN,"+ // Anulada
-	"EstadoNecesidadId.CodigoAbreviacionn:M,"+ // Modificada
-	"EstadoNecesidadId.CodigoAbreviacionn:E,"+ // Enviada
-	"EstadoNecesidadId.CodigoAbreviacionn:CS" // CDP Solicitado
+	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1&query=" +
+		"EstadoNecesidadId.CodigoAbreviacionn:A," + // Aprobada
+		"EstadoNecesidadId.CodigoAbreviacionn:R," + // Rechazada
+		"EstadoNecesidadId.CodigoAbreviacionn:AN," + // Anulada
+		"EstadoNecesidadId.CodigoAbreviacionn:M," + // Modificada
+		"EstadoNecesidadId.CodigoAbreviacionn:E," + // Enviada
+		"EstadoNecesidadId.CodigoAbreviacionn:CS" // CDP Solicitado
 	if err := request.GetJson(urlcrud, &necesidades); err != nil {
 		return 0
 	}
-	
-	return len(necesidades)
+
+	return len(necesidades) + 1
 }
 
 // post detalle servicio necesidad
@@ -530,7 +558,6 @@ func postMarcoLegal(marcolegal []*map[string]interface{}, necesidad *map[string]
 // post actividad especifica
 func postActividadesEspecificas(ae []*map[string]interface{}, necesidad *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
 	if ae == nil || len(ae) == 0 {
-		fmt.Print("ae:", ae)
 		return nil, nil
 	}
 	for _, value := range ae {
@@ -544,6 +571,27 @@ func postActividadesEspecificas(ae []*map[string]interface{}, necesidad *map[str
 		}
 		aeOut["NecesidadId"] = nil
 		out = append(out, &aeOut)
+	}
+	return out, nil
+
+}
+
+// post requisitos minimos necesidad
+func postRequisitosNecesidad(rm []*map[string]interface{}, necesidad *map[string]interface{}) (out []*map[string]interface{}, outErr map[string]interface{}) {
+	if rm == nil || len(rm) == 0 {
+		return nil, nil
+	}
+	for _, value := range rm {
+		(*value)["NecesidadId"] = necesidad
+		urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo_necesidad/"
+		var rmOut map[string]interface{}
+		if err := request.SendJson(urlcrud, "POST", &rmOut, value); err == nil {
+
+		} else {
+			return nil, map[string]interface{}{"Function": "postpostRequisitosNecesidad", "Error": err.Error()}
+		}
+		rmOut["NecesidadId"] = nil
+		out = append(out, &rmOut)
 	}
 	return out, nil
 
