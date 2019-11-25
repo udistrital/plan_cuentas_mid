@@ -444,12 +444,16 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 
 // agregarConsecutivoSolicitiud calcula el consecutivo sumando todas las necesitades existentes hasta el momento
 func agregarConsecutivoSolicitiud() int {
-	var necesidades []interface{}
+	var necesidades []map[string]interface{}
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1"
 	if err := request.GetJson(urlcrud, &necesidades); err != nil {
 		return 0
 	}
-	return len(necesidades)
+	if len(necesidades[0]) == 0 {
+		return 1
+	}
+	//fmt.Println(necesidades[0].(map[string]interface{}), necesidades[0].(map[string]interface{}) == nil)
+	return len(necesidades) + 1
 }
 
 // agregarConsecutivoNecesidad calcula el consecutivo sumando todas las necesidades existenes hasta el momento que estén
@@ -467,7 +471,7 @@ func agregarConsecutivoNecesidad() int {
 		return 0
 	}
 
-	return len(necesidades)
+	return len(necesidades) + 1
 }
 
 // post detalle servicio necesidad
