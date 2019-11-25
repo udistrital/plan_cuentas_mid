@@ -8,11 +8,12 @@ type ModificacionPresupuestalReceiver struct {
 }
 
 type ModificacionPresupuestalReceiverDetail struct {
-	DocumentNumber string          `json:"NumeroDocumento" bson:"numero_documento"`
-	DocumentDate   time.Time    `json:"FechaDocumento" bson:"fecha_documento"`
-	DocumentType   *TipoGeneral `json:"TipoDocumento" bson:"tipo_documento"`
-	Descripcion    string       `json:"Descripcion" bson:"descripcion_documento"`
-	CentroGestor   string       `json:"CentroGestor" bson:"-"`
+	DocumentNumber  string       `json:"NumeroDocumento" bson:"numero_documento"`
+	DocumentDate    time.Time    `json:"FechaDocumento" bson:"fecha_documento"`
+	DocumentType    *TipoGeneral `json:"TipoDocumento" bson:"tipo_documento"`
+	Descripcion     string       `json:"Descripcion" bson:"descripcion_documento"`
+	CentroGestor    string       `json:"CentroGestor" bson:"-"`
+	OrganismoEmisor string       `json:"OrganismoEmisor" bson:"organismo_emisor"`
 }
 
 type ModificacionPresupuestalReceiverAfectation struct {
