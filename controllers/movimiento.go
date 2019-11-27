@@ -36,7 +36,10 @@ func (c *MovimientoController) Post() {
 	)
 
 	defer func() {
-		c.Data["json"] = finalData
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
 	}()
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &documentoPresupuestalData); err != nil {
@@ -62,5 +65,7 @@ func (c *MovimientoController) Post() {
 		logs.Debug("error", err)
 		panic(err.Error())
 	}
+
+	responseformat.SetResponseFormat(&c.Controller, finalData, "", 200)
 
 }
