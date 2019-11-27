@@ -111,6 +111,7 @@ func getDetallePrestacionServicio(id string) (dps *map[string]interface{}, outEr
 func getProductosCatalogo(id string) (productos []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "producto_catalogo_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	productos = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getProductosCatalogo", "Error": err.Error()}
 		return nil, outErr
@@ -134,6 +135,7 @@ func getProductosCatalogo(id string) (productos []*map[string]interface{}, outEr
 func getRequisitosProducto(id string) (requisitos []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo/?query=ProductoCatalogoNecesidadId:" + id
 	var res []map[string]interface{}
+	requisitos = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getRequisitosProducto", "Error": err.Error()}
 		return nil, outErr
@@ -152,6 +154,7 @@ func getRequisitosProducto(id string) (requisitos []*map[string]interface{}, out
 func getMarcoLegal(id string) (ml []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "marco_legal_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	ml = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getMarcoLegal", "Error": err.Error()}
 		return nil, outErr
@@ -171,6 +174,7 @@ func getMarcoLegal(id string) (ml []*map[string]interface{}, outErr map[string]i
 func getActividadEspecifica(id string) (ae []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "actividad_especifica_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	ae = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getActividadEspecifica", "Error": err.Error()}
 		return nil, outErr
@@ -190,6 +194,7 @@ func getActividadEspecifica(id string) (ae []*map[string]interface{}, outErr map
 func getRequisitosNecesidad(id string) (rm []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "requisito_minimo_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	rm = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getRequisitosNecesidad", "Error": err.Error()}
 		return nil, outErr
@@ -209,6 +214,7 @@ func getRequisitosNecesidad(id string) (rm []*map[string]interface{}, outErr map
 func getActividadEconomica(id string) (aec []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "actividad_economica_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	aec = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getActividadEconomica", "Error": err.Error()}
 		return nil, outErr
@@ -228,6 +234,7 @@ func getActividadEconomica(id string) (aec []*map[string]interface{}, outErr map
 func getRubrosNecesidad(id string, vigencia string, areafuncional string) (rubros []*models.RubroNecesidad, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "rubro_necesidad/?query=NecesidadId:" + id
 	var res []map[string]interface{}
+	rubros = make([]*models.RubroNecesidad, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getRubrosNecesidad", "Error": err.Error()}
 		return nil, outErr
@@ -268,6 +275,7 @@ func getRubrosNecesidad(id string, vigencia string, areafuncional string) (rubro
 func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_rubro_necesidad/?query=RubroNecesidadId:" + id
 	var res []map[string]interface{}
+	fuentes = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getFuentesRubro", "Error": err.Error()}
 		return nil, outErr
@@ -291,6 +299,7 @@ func getFuentesRubro(id string) (fuentes []*map[string]interface{}, outErr map[s
 func getProductosRubro(id string) (productos []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "producto_rubro_necesidad/?query=RubroNecesidadId:" + id
 	var res []map[string]interface{}
+	productos = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getProductosRubro", "Error": err.Error()}
 		return nil, outErr
@@ -314,6 +323,7 @@ func getProductosRubro(id string) (productos []*map[string]interface{}, outErr m
 func getMetasRubro(id string) (metas []*models.MetaRubroNecesidad, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "meta_rubro_necesidad/?query=RubroNecesidadId:" + id
 	var res []map[string]interface{}
+	metas = make([]*models.MetaRubroNecesidad, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getMetasRubro", "Error": err.Error()}
 		return nil, outErr
@@ -342,6 +352,7 @@ func getMetasRubro(id string) (metas []*models.MetaRubroNecesidad, outErr map[st
 func getActividadesMeta(id string) (actividades []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "actividad_meta/?query=MetaRubroNecesidadId:" + id
 	var res []map[string]interface{}
+	actividades = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getActividadesMeta", "Error": err.Error()}
 		return nil, outErr
@@ -368,6 +379,7 @@ func getActividadesMeta(id string) (actividades []*map[string]interface{}, outEr
 func getFuentesActividad(id string) (fuentes []*map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "fuente_actividad/?query=ActividadMetaNecesidadId:" + id
 	var res []map[string]interface{}
+	fuentes = make([]*map[string]interface{}, 0)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getRequisitosProducto", "Error": err.Error()}
 		return nil, outErr
@@ -404,7 +416,11 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 
 		switch (*trnecesidad.Necesidad)["EstadoNecesidadId"].(map[string]interface{})["CodigoAbreviacionn"] {
 		case "G": // Necesidad guardada
-			(*trnecesidad.Necesidad)["ConsecutivoSolicitud"] = agregarConsecutivoSolicitiud()
+			_, existe := (*trnecesidad.Necesidad)["ConsecutivoSolicitud"]
+			if !existe {
+				(*trnecesidad.Necesidad)["ConsecutivoSolicitud"] = agregarConsecutivoSolicitiud()
+			}
+
 		case "A": // Necesidad aprobada
 			(*trnecesidad.Necesidad)["ConsecutivoNecesidad"] = agregarConsecutivoNecesidad()
 		}
