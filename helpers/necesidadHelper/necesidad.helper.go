@@ -416,7 +416,11 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 
 		switch (*trnecesidad.Necesidad)["EstadoNecesidadId"].(map[string]interface{})["CodigoAbreviacionn"] {
 		case "G": // Necesidad guardada
-			(*trnecesidad.Necesidad)["ConsecutivoSolicitud"] = agregarConsecutivoSolicitiud()
+			_, existe := (*trnecesidad.Necesidad)["ConsecutivoSolicitud"]
+			if !existe {
+				(*trnecesidad.Necesidad)["ConsecutivoSolicitud"] = agregarConsecutivoSolicitiud()
+			}
+
 		case "A": // Necesidad aprobada
 			(*trnecesidad.Necesidad)["ConsecutivoNecesidad"] = agregarConsecutivoNecesidad()
 		}
