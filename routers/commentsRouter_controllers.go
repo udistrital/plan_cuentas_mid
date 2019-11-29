@@ -99,6 +99,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CrpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CrpController"],
         beego.ControllerComments{
+            Method: "GetInfoCrp",
+            Router: `/getFullCrp`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CrpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CrpController"],
+        beego.ControllerComments{
             Method: "SolicitarCrp",
             Router: `/solicitarCRP`,
             AllowHTTPMethods: []string{"post"},
