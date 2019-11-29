@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	crphelper "github.com/udistrital/plan_cuentas_mid/helpers/crpHelper"
 	"github.com/udistrital/utils_oas/responseformat"
 )
@@ -61,4 +62,22 @@ func (c *CrpController) SolicitarCrp() {
 	} else {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
+}
+
+// GetInfoCrp ...
+// @Title Get Info CRPs
+// @Description get all the information about CRPs
+// @Success 200 {object} models.ConsultaEntrada
+// @Failure 404 not found resource
+// @router /getFullCrp [get]
+func (c *CrpController) GetInfoCrp() {
+	v, err := crphelper.GetFullCrp()
+	if err != nil {
+		logs.Error(err)
+		c.Data["system"] = err
+		c.Abort("404")
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJSON()
 }

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/udistrital/utils_oas/request"
 )
 
@@ -99,4 +100,118 @@ func GetConsecutivoCRP() (consecutivo int) {
 	}
 	consecutivo = total
 	return consecutivo
+}
+
+// GetFullCRP...
+func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string]interface{}) {
+	var (
+		urlcrud           string
+		resSolicitudesCrp map[string]interface{}
+		resNecesidad      map[string]interface{}
+		//solCrps           []map[string]interface{}
+		objNecesidad map[string]interface{}
+		auxObjCdp    map[string]interface{}
+		objTmpCrp    map[string]interface{}
+	)
+
+	// Solicita información de solicitudes de CRP
+	urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP"
+	if response, err := request.GetJsonTest(urlcrud, &resSolicitudesCrp); err == nil { // (2) error servicio caido
+		aux := resSolicitudesCrp["Body"]
+		objTmpCrp = make(map[string]interface{})
+		if val, ok := aux.([]interface{}); ok {
+			for _, sol := range val {
+
+				solct := sol.(map[string]interface{})
+				aux := solct["consecutivoCdp"]
+				vig := solct["vigencia"]
+
+				strAux := fmt.Sprintf("%v", aux)
+				strVig := fmt.Sprintf("%v", vig)
+
+				// consulta los CDP expedidos a los que van ligados esas solicitudes dea CRP
+				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=data.consecutivo_cdp:" + strAux + ",tipo:cdp,estado:expedido"
+
+				if response2, err := request.GetJsonTest(urlcrud, &auxObjCdp); err == nil {
+
+					auxCdpInterface := auxObjCdp["Body"]
+
+					if auxCdpInterface != nil {
+						auxCdp := auxCdpInterface.([]interface{})
+
+						for _, solCdp := range auxCdp {
+							solctCdp := solCdp.(map[string]interface{})
+
+							// Consulta ID necesidad
+
+							idCDP := solctCdp["Data"].(map[string]interface{})
+							idCDPAux := idCDP["solicitud_cdp"]
+
+							strCDP := fmt.Sprintf("%v", idCDPAux)
+
+							urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCDP/" + strCDP
+
+							if response3, err := request.GetJsonTest(urlcrud, &resNecesidad); err == nil {
+
+								// Consulta necesidad
+								bodyNecesidad := resNecesidad["Body"].(map[string]interface{})
+								necesidadId := bodyNecesidad["necesidad"]
+
+								strnecesidadId := fmt.Sprintf("%v", necesidadId)
+								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadId
+								logs.Info(urlcrud, "URL")
+								if response4, err := request.GetJsonTest(urlcrud, &objNecesidad); err == nil {
+									logs.Info(response4)
+									tipoFinanciacion := objNecesidad["TipoFinanciacionNecesidadId"].(map[string]interface{})
+									logs.Debug(objNecesidad["TipoFinanciacionNecesidadId"])
+									logs.Debug(tipoFinanciacion["Nombre"])
+
+									objTmpCrp["consecutivoCdp"] = aux
+									objTmpCrp["vigencia"] = vig
+
+									objTmpCrp["centroGestor"] = solctCdp["CentroGestor"] // objeto de objetos
+									objTmpCrp["estado"] = solctCdp["Estado"]
+									objTmpCrp["necesidad"] = tipoFinanciacion["Id"] // REEMPLAZAR POR NOMBRE CUANDO EXISTA
+									logs.Info(objTmpCrp, "banderita")
+									consultaCrps = append(consultaCrps, objTmpCrp)
+
+								} else {
+									logs.Info("Error (6) Necesidad")
+									outputError = map[string]interface{}{"Function": "GetFullCrp:getFullCrp at documento pres", "Error": response4.Status}
+									return nil, outputError
+								}
+
+							} else {
+								logs.Info("Error (5) Necesidad")
+								outputError = map[string]interface{}{"Function": "GetFullCrp:getFullCrp at documento pres", "Error": response3.Status}
+								return nil, outputError
+							}
+
+						}
+
+					}
+
+				} else {
+					logs.Info("Error (4) Documento Presupuestal")
+					outputError = map[string]interface{}{"Function": "GetFullCrp:getFullCrp at documento pres", "Error": response2.Status}
+					return nil, outputError
+				}
+			}
+			return consultaCrps, nil
+
+		} else {
+			logs.Info("Error (2) servicio caido")
+			logs.Debug(err)
+			outputError = map[string]interface{}{"Function": "GetEntrada, Es aca?ya", "Error": err}
+			return nil, outputError
+		}
+
+	} else {
+		logs.Info("Error (1) servicio caido")
+		logs.Debug(err)
+		logs.Info(response)
+		outputError = map[string]interface{}{"Function": "GetSolicitudesCRP, Es aca?ya", "Error": err}
+		return nil, outputError
+	}
+
 }
