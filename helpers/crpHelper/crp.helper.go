@@ -159,7 +159,6 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 
 								strnecesidadId := fmt.Sprintf("%v", necesidadId)
 								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadId
-								logs.Info(urlcrud, "URL")
 								if response4, err := request.GetJsonTest(urlcrud, &objNecesidad); err == nil {
 									logs.Info(response4)
 									tipoFinanciacion := objNecesidad["TipoFinanciacionNecesidadId"].(map[string]interface{})
