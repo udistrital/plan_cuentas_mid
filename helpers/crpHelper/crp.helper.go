@@ -133,7 +133,7 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=data.consecutivo_cdp:" + strAux + ",tipo:cdp,estado:expedido"
 
 				if response2, err := request.GetJsonTest(urlcrud, &auxObjCdp); err == nil {
-
+					objTmpCrp["solicitudCrp"] = solct["consecutivo"]
 					auxCdpInterface := auxObjCdp["Body"]
 
 					if auxCdpInterface != nil {
@@ -160,7 +160,6 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 								strnecesidadId := fmt.Sprintf("%v", necesidadId)
 								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadId
 								if response4, err := request.GetJsonTest(urlcrud, &objNecesidad); err == nil {
-									logs.Info(response4)
 									tipoFinanciacion := objNecesidad["TipoFinanciacionNecesidadId"].(map[string]interface{})
 									logs.Debug(objNecesidad["TipoFinanciacionNecesidadId"])
 									logs.Debug(tipoFinanciacion["Nombre"])
@@ -170,10 +169,8 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 
 									objTmpCrp["centroGestor"] = solctCdp["CentroGestor"] // objeto de objetos
 									objTmpCrp["estado"] = solctCdp["Estado"]
-									objTmpCrp["necesidad"] = tipoFinanciacion["Id"] // REEMPLAZAR POR NOMBRE CUANDO EXISTA
-									logs.Info(objTmpCrp, "banderita")
+									objTmpCrp["necesidadFinanciacion"] = tipoFinanciacion["Id"] // REEMPLAZAR POR NOMBRE CUANDO EXISTA
 									consultaCrps = append(consultaCrps, objTmpCrp)
-
 								} else {
 									logs.Info("Error (6) Necesidad")
 									outputError = map[string]interface{}{"Function": "GetFullCrp:getFullCrp at documento pres", "Error": response4.Status}
@@ -195,22 +192,22 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 					outputError = map[string]interface{}{"Function": "GetFullCrp:getFullCrp at documento pres", "Error": response2.Status}
 					return nil, outputError
 				}
+				objTmpCrp = make(map[string]interface{})
 			}
-			return consultaCrps, nil
 
 		} else {
 			logs.Info("Error (2) servicio caido")
 			logs.Debug(err)
-			outputError = map[string]interface{}{"Function": "GetEntrada, Es aca?ya", "Error": err}
+			outputError = map[string]interface{}{"Function": "GetCDP, ", "Error": err}
 			return nil, outputError
 		}
 
 	} else {
 		logs.Info("Error (1) servicio caido")
-		logs.Debug(err)
-		logs.Info(response)
-		outputError = map[string]interface{}{"Function": "GetSolicitudesCRP, Es aca?ya", "Error": err}
+		logs.Debug(err, response)
+		outputError = map[string]interface{}{"Function": "GetSolicitudesCRP", "Error": err}
 		return nil, outputError
 	}
+	return consultaCrps, nil
 
 }
