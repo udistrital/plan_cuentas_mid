@@ -4,6 +4,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/astaxie/beego/logs"
+
 	"github.com/astaxie/beego"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/formatdata"
@@ -13,8 +15,27 @@ import (
 // URLCRUD Path de plan_cuentas_crud
 var URLCRUD = beego.AppConfig.String("planCuentasApiService")
 
+// URLPLANADQUISICION Path de bodega jbpm para el plan de adquisiciones
+var URLPLANADQUISICION = beego.AppConfig.String("bodegaService")
+
 // URLMOVIMIENTOSCRUD Path de movimientos_crud
 var URLMOVIMIENTOSCRUD = beego.AppConfig.String("movimientosCrudService")
+
+// GetPlanAdquisicionbyFuente obtiene información de la fuente y totaliza los valores acordes a a cada una de ellas
+func GetPlanAdquisicionbyFuente(vigencia string, id string) (fuente []map[string]interface{}, outErr map[string]interface{}) {
+	requestPath := URLPLANADQUISICION + "plan_adquisiciones_rubros_fuente/" + vigencia + "/" + id
+	logs.Info(requestPath)
+	var res []map[string]interface{}
+	//request.SetHeader("application/json")
+	if err := request.GetJsonWSO2(requestPath, &res); err != nil {
+		outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": err.Error()}
+		return nil, outErr
+	} else {
+		formatdata.JsonPrint(res)
+		fuente := res
+		return fuente, nil
+	}
+}
 
 // RegistrarMultipleFuenteApropiacion utiliza la transacción de fuente_financiamiento_apropiacion/registrar_multiple
 // para registrar multiples datos en fuente_financiamiento_apropiacion
