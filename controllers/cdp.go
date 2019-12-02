@@ -51,11 +51,10 @@ func (c *CdpController) SolicitarCdp() {
 			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
 		}
 	}()
-	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
-		beego.Info("bien")
-	} else {
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err != nil {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
+
 	if response, err := cdphelper.SolicitarCDP(v); err == nil {
 		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
 	} else {
