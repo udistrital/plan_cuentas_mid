@@ -20,6 +20,30 @@ type FuenteFinanciamientoApropiacionController struct {
 // URLMapping ...
 func (c *FuenteFinanciamientoApropiacionController) URLMapping() {
 	c.Mapping("RegistrarFuenteConApropiacion", c.RegistrarFuenteConApropiacion)
+	c.Mapping("GetRubrosbyFuente", c.GetRubrosbyFuente)
+}
+
+// GetRubrosbyFuente ...
+// @Title GetRubrosbyFuente
+// @Description retorna rubros de la fuente desde el plan de adquisición
+// @Success 201 {object} models.Fuentefinanciamiento
+// @Failure 403 :vigencia is empty
+// @Failure 403 :id is empty
+// @router /plan_adquisiciones_rubros_fuente/:vigencia/:id [get]
+func (c *FuenteFinanciamientoApropiacionController) GetRubrosbyFuente() {
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
+	}()
+	vigencia := c.GetString(":vigencia")
+	objectID := c.GetString(":id")
+	if response, err := fuenteApropiacionHelper.GetPlanAdquisicionbyFuente(vigencia, objectID); err == nil {
+		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	} else {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
 }
 
 // RegistrarFuenteConApropiacion ...

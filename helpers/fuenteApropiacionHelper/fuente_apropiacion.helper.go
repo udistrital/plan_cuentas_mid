@@ -2,6 +2,7 @@ package fuenteapropiacionhelper
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -13,8 +14,40 @@ import (
 // URLCRUD Path de plan_cuentas_crud
 var URLCRUD = beego.AppConfig.String("planCuentasApiService")
 
+// URLPLANADQUISICION Path de bodega jbpm para el plan de adquisiciones
+var URLPLANADQUISICION = beego.AppConfig.String("bodegaService")
+
 // URLMOVIMIENTOSCRUD Path de movimientos_crud
 var URLMOVIMIENTOSCRUD = beego.AppConfig.String("movimientosCrudService")
+
+// GetPlanAdquisicionbyFuente obtiene información de la fuente y totaliza los valores acordes a a cada una de ellas
+func GetPlanAdquisicionbyFuente(vigencia string, id string) (fuente map[string]map[string]interface{}, outErr map[string]interface{}) {
+	requestPath := URLPLANADQUISICION + "plan_adquisiciones_rubros_fuente/" + vigencia + "/" + id
+	var res map[string]map[string]interface{}
+	//request.SetHeader("application/json")
+	if err := request.GetJsonWSO2(requestPath, &res); err != nil {
+		outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": err.Error()}
+		return nil, outErr
+	} else {
+		fuente := AddTotal(res)
+		return fuente, nil
+	}
+}
+
+// AddTotal suma los totales de las fuentes de financiamiento
+func AddTotal(res map[string]map[string]interface{}) (newres map[string]map[string]interface{}) {
+
+	var totalValue float64
+	formatdata.JsonPrint(len(res["fuente_financiamiento"]["rubros"].([]interface{})))
+	for _, item := range res["fuente_financiamiento"]["rubros"].([]interface{}) {
+		floatValue, _ := strconv.ParseFloat(item.(map[string]interface{})["valor_fuente_financiamiento"].(string), 64)
+		item.(map[string]interface{})["valor_fuente_financiamiento"] = strconv.FormatFloat(floatValue, 'f', 0, 64)
+		totalValue = totalValue + floatValue
+	}
+	res["fuente_financiamiento"]["total_saldo_fuente"] = strconv.FormatFloat(totalValue, 'f', 0, 64)
+	newres = res
+	return newres
+}
 
 // RegistrarMultipleFuenteApropiacion utiliza la transacción de fuente_financiamiento_apropiacion/registrar_multiple
 // para registrar multiples datos en fuente_financiamiento_apropiacion

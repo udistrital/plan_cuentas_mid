@@ -117,6 +117,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
         beego.ControllerComments{
+            Method: "GetRubrosbyFuente",
+            Router: `/plan_adquisiciones_rubros_fuente/:vigencia/:id`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
+        beego.ControllerComments{
             Method: "RegistrarFuenteConApropiacion",
             Router: `registrar_fuentes_con_apropiacion`,
             AllowHTTPMethods: []string{"post"},
