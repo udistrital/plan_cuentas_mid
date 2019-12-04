@@ -35,22 +35,24 @@ func (c *ModificacionPresupuestalController) URLMapping() {
 func (c *ModificacionPresupuestalController) Post() {
 	var (
 		modificacionPresupuestalData models.ModificacionPresupuestalReceiver
-		// finalData                    interface{}
+		finalData                    map[string]interface{}
 	)
 
 	defer func() {
 		if r := recover(); r != nil {
 			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
 		}
-		cdpNumber := 0
 		cdpMessage := ""
 		var cdpArr []int
-		for _, data := range modificacionPresupuestalData.Afectation {
-			if data.TypeMod.Acronimo == "traslado" || data.TypeMod.Acronimo == "reduccion" {
-				cdpNumber++
-				cdpArr = append(cdpArr, cdpNumber)
+
+		if finalData["Sequences"] != nil {
+			for _, cdpNumber := range finalData["Sequences"].([]interface{}) {
+
+				cdpArr = append(cdpArr, int(cdpNumber.(float64)))
+
 			}
 		}
+
 		if len(cdpArr) > 0 {
 			cdpMessage += "CDP Generados: "
 			for _, n := range cdpArr {
@@ -60,7 +62,7 @@ func (c *ModificacionPresupuestalController) Post() {
 				}
 			}
 		}
-		responseformat.SetResponseFormat(&c.Controller, "Modificación Registrada Correctamente. "+cdpMessage, "", 200)
+		responseformat.SetResponseFormat(&c.Controller, "Modificación registrada correctamente. "+cdpMessage, "", 200)
 		c.ServeJSON()
 	}()
 
@@ -71,12 +73,14 @@ func (c *ModificacionPresupuestalController) Post() {
 
 	documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 
-	_, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
+	finalDataIntf, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
 		logs.Debug("error", err)
 		panic(err.Error())
 	}
+
+	finalData = finalDataIntf.(map[string]interface{})
 
 }
 
