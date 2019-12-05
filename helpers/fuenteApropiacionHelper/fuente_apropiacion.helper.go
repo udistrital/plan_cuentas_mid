@@ -1,6 +1,7 @@
 package fuenteapropiacionhelper
 
 import (
+	"encoding/json"
 	"log"
 	"strconv"
 	"time"
@@ -47,6 +48,46 @@ func AddTotal(res map[string]map[string]interface{}) (newres map[string]map[stri
 	res["fuente_financiamiento"]["total_saldo_fuente"] = strconv.FormatFloat(totalValue, 'f', 0, 64)
 	newres = res
 	return newres
+}
+
+// ConvertModificacionToDocumentoPresupuestal Convierte Modificación Fuente a Documento Presupuestal
+func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionFuenteReceiver) (dataFormated models.DocumentoPresupuestal) {
+	var movimientos []models.Movimiento
+	currDate := time.Now()
+	dataFormated.Tipo = "modificacion_fuente"
+	dataFormated.Vigencia = currDate.Year()
+	dataFormated.CentroGestor = modData.Data.CentroGestor
+	for _, afectation := range modData.Afectation {
+		movimiento := models.Movimiento{}
+		movimiento.Descripcion = modData.Data.Descripcion
+		movimiento.DocumentoPadre = afectation.OriginAcc.Codigo
+		movimiento.Valor = afectation.Amount
+		movimiento.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
+			TipoMovimientoId: afectation.TypeMod,
+		}
+		if afectation.TypeMod.Parametros != "" && afectation.TargetAcc.Codigo != "" {
+			parametersMap := make(map[string]interface{})
+			if err := json.Unmarshal([]byte(afectation.TypeMod.Parametros), &parametersMap); err != nil {
+				panic(err.Error())
+			}
+			if targetAccType, e := parametersMap["TipoMovimientoOrigen"].(string); e {
+				movimientoTargetAcc := models.Movimiento{}
+				movimientoTargetAcc.Descripcion = modData.Data.Descripcion
+				movimientoTargetAcc.DocumentoPadre = afectation.TargetAcc.Codigo
+				movimientoTargetAcc.Valor = afectation.Amount
+				movimientoTargetAcc.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
+					TipoMovimientoId: &models.TipoGeneral{
+						Id:       afectation.TypeMod.Id,
+						Acronimo: targetAccType,
+					},
+				}
+				movimientos = append(movimientos, movimientoTargetAcc)
+			}
+		}
+		movimientos = append(movimientos, movimiento)
+	}
+	dataFormated.AfectacionMovimiento = movimientos
+	return
 }
 
 // RegistrarMultipleFuenteApropiacion utiliza la transacción de fuente_financiamiento_apropiacion/registrar_multiple

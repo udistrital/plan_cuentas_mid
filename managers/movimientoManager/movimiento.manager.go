@@ -82,7 +82,7 @@ func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMo
 	}()
 	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"arbol_rubro_apropiacion/comprobar_balance/"+cg+"/"+vigencia, "POST", &response, data); err == nil {
 		//code, _ := strconv.Atoi(response.Code)
-		if response["Code"]==404 {
+		if response["Code"] == 404 {
 			var errMessage = "Mongo API Error"
 			if messageStr, e := response["Body"].(string); e {
 				errMessage = errMessage + ": " + messageStr

@@ -117,9 +117,27 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
         beego.ControllerComments{
+            Method: "RegistrarModificacion",
+            Router: `/modificacion`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
+        beego.ControllerComments{
             Method: "GetRubrosbyFuente",
             Router: `/plan_adquisiciones_rubros_fuente/:vigencia/:id`,
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
+        beego.ControllerComments{
+            Method: "SimulacionAfectacion",
+            Router: `/simulacion_afectacion_modificacion/:centroGestor/:vigencia`,
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
