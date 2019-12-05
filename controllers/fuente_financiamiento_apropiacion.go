@@ -5,8 +5,12 @@ import (
 	"log"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"github.com/udistrital/plan_cuentas_mid/compositor"
 	fuenteApropiacionHelper "github.com/udistrital/plan_cuentas_mid/helpers/fuenteApropiacionHelper"
 	fuenteHelper "github.com/udistrital/plan_cuentas_mid/helpers/fuenteFinanciamientoHelper"
+	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
+	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/formatdata"
 	"github.com/udistrital/utils_oas/responseformat"
@@ -21,6 +25,8 @@ type FuenteFinanciamientoApropiacionController struct {
 func (c *FuenteFinanciamientoApropiacionController) URLMapping() {
 	c.Mapping("RegistrarFuenteConApropiacion", c.RegistrarFuenteConApropiacion)
 	c.Mapping("GetRubrosbyFuente", c.GetRubrosbyFuente)
+	c.Mapping("RegistrarModificacion", c.RegistrarModificacion)
+	c.Mapping("SimulacionAfectacion", c.SimulacionAfectacion)
 }
 
 // GetRubrosbyFuente ...
@@ -44,6 +50,88 @@ func (c *FuenteFinanciamientoApropiacionController) GetRubrosbyFuente() {
 	} else {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
+}
+
+// RegistrarModificacion ...
+// @Title RegistrarModificacion
+// @Description create Modificacion Presupuestal Fuente
+// @Param	body		body 	models.Movimiento	true		"body for Movimiento content"
+// @Success 201 {object} models.Movimiento
+// @Failure 403 body is empty
+// @router /modificacion [post]
+func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
+	var (
+		modificacionPresupuestalData models.ModificacionFuenteReceiver
+		finalData                    map[string]interface{}
+	)
+	defer func() {
+		if r := recover(); r != nil {
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
+		responseformat.SetResponseFormat(&c.Controller, finalData, "", 200)
+		c.ServeJSON()
+	}()
+
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &modificacionPresupuestalData); err != nil {
+		logs.Error(err.Error())
+		panic(err.Error())
+	}
+	documentoPresupuestalDataFormated := fuenteApropiacionHelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
+	// formatdata.JsonPrint(documentoPresupuestalDataFormated)
+	finalDataIntf, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
+
+	if err != nil {
+		logs.Debug("error", err)
+		panic(err.Error())
+	}
+
+	//finalData = documentoPresupuestalDataFormated
+	finalData = finalDataIntf.(map[string]interface{})
+	//fmt.Println(finalData)
+
+}
+
+// SimulacionAfectacion ...
+// @Title Create
+// @Description create Modificacion Presupuestal
+// @Param	body		body 	models.ModificacionFuenteReceiver	true		"body for simulacion_afectacion_modificacion content"
+// @Success 201 {object} models.Movimiento
+// @Failure 403 body is empty
+// @router /simulacion_afectacion_modificacion/:centroGestor/:vigencia [post]
+func (c *FuenteFinanciamientoApropiacionController) SimulacionAfectacion() {
+	var (
+		modificacionPresupuestalData models.ModificacionFuenteReceiver
+		finalData                    interface{}
+	)
+	cgStr := c.Ctx.Input.Param(":centroGestor")
+	vigenciaStr := c.GetString(":vigencia")
+	var afectation []models.MovimientoMongo
+	defer func() {
+		if r := recover(); r != nil {
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
+		c.ServeJSON()
+	}()
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &modificacionPresupuestalData); err != nil {
+		logs.Error(err.Error())
+		panic(err.Error())
+	}
+	if modificacionPresupuestalData.Afectation != nil {
+		modificacionPresupuestalData.Data = &models.ModificacionPresupuestalReceiverDetail{}
+		documentoPresupuestalDataFormated := fuenteApropiacionHelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
+		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
+	}
+	response, err := movimientomanager.SimualteAfectationAPIMongo(cgStr, vigenciaStr, afectation...)
+	if err != nil {
+		panic(err)
+	}
+	if responseType, e := response["Type"].(string); e {
+		if responseType == "error" {
+			panic(response["Body"])
+		}
+	}
+	finalData = response["Body"]
+	c.Data["json"] = finalData
 }
 
 // RegistrarFuenteConApropiacion ...
