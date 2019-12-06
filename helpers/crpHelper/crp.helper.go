@@ -54,31 +54,31 @@ func SolicitarCRP(solCrp map[string]interface{}) (solicitud map[string]interface
 	solicitud["activo"] = true
 	solicitud["fechaCreacion"] = time.Now().Format(time.RFC3339)
 	solicitud["fechaModificacion"] = time.Now().Format(time.RFC3339)
-	beego.Info(solicitud)
-	beego.Info(okBeneficiario, "la", okVigencia, "le", okCompromiso, "li", okValor, "lad", okCdp)
-	if okBeneficiario && okCdp && okVigencia && okCompromiso {
+	solicitud["fechaFinalVigencia"] = solCrp["fechaFinalVigencia"]
+
+	if okBeneficiario && okCdp && okVigencia && okCompromiso && okValor {
+
 		urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP/"
-		if err := request.SendJson(urlmongo, "POST", &mongoData, &solicitud); err == nil {
-			return solicitud, nil
-		} else {
+		if err := request.SendJson(urlmongo, "POST", &mongoData, &solicitud); err != nil {
 			outErr = map[string]interface{}{"Function": "SolicitarCRP", "Error": err.Error()}
-			return nil, outErr
 		}
 	} else {
 		outErr = map[string]interface{}{"Function": "SolicitarCRP", "Error": "Datos incompletos del CDP"}
-		return nil, outErr
 	}
 
+	return
 }
 
 // GetCosecutivoSolicitudCRP Get Cosecutivo Solicitud crp
 func GetConsecutivoSolicitudCRP() (consecutivo int) {
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP/"
+	fmt.Println(urlmongo)
 	var resMongo = make(map[string]interface{})
 	var solicitudes []interface{}
 	if err := request.GetJson(urlmongo, &resMongo); err == nil {
-		solicitudes = resMongo["Body"].([]interface{})
-		fmt.Println("solicitudes", solicitudes)
+		if _, ok := resMongo["Body"].([]interface{}); ok {
+			solicitudes = resMongo["Body"].([]interface{})
+		}
 	}
 	consecutivo = len(solicitudes) + 1
 	return consecutivo
@@ -130,7 +130,7 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 				strVig := fmt.Sprintf("%v", vig)
 
 				// consulta los CDP expedidos a los que van ligados esas solicitudes dea CRP
-				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=data.consecutivo_cdp:" + strAux + ",tipo:cdp,estado:expedido"
+				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=consecutivo:" + strAux + ",tipo:cdp,estado:expedido"
 
 				if response2, err := request.GetJsonTest(urlcrud, &auxObjCdp); err == nil {
 					objTmpCrp["solicitudCrp"] = solct["consecutivo"]
@@ -167,6 +167,7 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 									objTmpCrp["consecutivoCdp"] = aux
 									objTmpCrp["vigencia"] = vig
 
+									objTmpCrp["movimiento_cdp"] = solctCdp["AfectacionIds"]
 									objTmpCrp["centroGestor"] = solctCdp["CentroGestor"] // objeto de objetos
 									objTmpCrp["estado"] = solctCdp["Estado"]
 									objTmpCrp["necesidadFinanciacion"] = tipoFinanciacion["Id"] // REEMPLAZAR POR NOMBRE CUANDO EXISTA
