@@ -30,8 +30,14 @@ func GetPlanAdquisicionbyFuente(vigencia string, id string) (fuente map[string]m
 		outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": err.Error()}
 		return nil, outErr
 	} else {
-		fuente := AddTotal(res)
-		return fuente, nil
+		if res["Fault"] != nil {
+			outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": res}
+			return nil, outErr
+		} else {
+			fuente := AddTotal(res)
+			return fuente, nil
+
+		}
 	}
 }
 
