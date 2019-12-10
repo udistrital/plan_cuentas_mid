@@ -171,6 +171,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"],
         beego.ControllerComments{
+            Method: "GetAllModificacionPresupuestalByVigenciaAndCG",
+            Router: `/:vigencia/:CG`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"],
+        beego.ControllerComments{
             Method: "SimulacionAfectacion",
             Router: `/simulacion_afectacion_modificacion/:centroGestor/:vigencia`,
             AllowHTTPMethods: []string{"post"},
