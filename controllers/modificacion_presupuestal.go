@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"strconv"
 
+	documentopresupuestalmanager "github.com/udistrital/plan_cuentas_mid/managers/documentoPresupuestalManager"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/udistrital/plan_cuentas_mid/compositor"
+	commonhelper "github.com/udistrital/plan_cuentas_mid/helpers/commonHelper"
 	modificacionpresupuestalhelper "github.com/udistrital/plan_cuentas_mid/helpers/modificacionPresupuestalHelper"
 	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
@@ -125,4 +127,23 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	}
 	finalData = response["Body"]
 	c.Data["json"] = finalData
+}
+
+// GetAllModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
+// @Title GetAllModificacionPresupuestalByVigenciaAndCG
+// @Description get all objects
+// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Failure 403 :objectId is empty
+// @router /:vigencia/:CG [get]
+func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVigenciaAndCG() {
+	vigencia := c.GetString(":vigencia")
+	centroGestor := c.GetString(":CG")
+	var response []models.ModificacionPresupuestalResponseDetail
+	rows, err := documentopresupuestalmanager.GetAllPresupuestalDocumentFromCRUDByType(vigencia, centroGestor, "modificacion_presupuestal")
+	if err == nil {
+		response = modificacionpresupuestalhelper.FormatDocumentoPresupuestalResponseToModificacionDetail(rows)
+	}
+	c.Data["json"] = commonhelper.DefaultResponse(200, err, response)
+
+	c.ServeJSON()
 }

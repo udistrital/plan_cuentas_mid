@@ -117,6 +117,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
         beego.ControllerComments{
+            Method: "Delete",
+            Router: `/:id/:vigencia/:unidadEjecutora`,
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:FuenteFinanciamientoApropiacionController"],
+        beego.ControllerComments{
             Method: "RegistrarModificacion",
             Router: `/modificacion`,
             AllowHTTPMethods: []string{"post"},
@@ -156,6 +165,15 @@ func init() {
             Method: "Post",
             Router: `/`,
             AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"],
+        beego.ControllerComments{
+            Method: "GetAllModificacionPresupuestalByVigenciaAndCG",
+            Router: `/:vigencia/:CG`,
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

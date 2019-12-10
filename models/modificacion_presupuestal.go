@@ -22,3 +22,14 @@ type ModificacionPresupuestalReceiverAfectation struct {
 	TypeMod   *TipoGeneral `json:"Tipo"`
 	Amount    float64      `json:"Valor"`
 }
+
+type ModificacionPresupuestalResponseDetail struct {
+	ID               string `json:"_id" bson:"_id"`
+	DocumentNumber   string `json:"NumeroDocumento" bson:"numero_documento"`
+	DocumentDate     string `json:"FechaDocumento" bson:"fecha_documento"`
+	DocumentType     string `json:"TipoDocumento" bson:"tipo_documento"`
+	Descripcion      string `json:"Descripcion" bson:"descripcion_documento"`
+	CentroGestor     string `json:"CentroGestor" bson:"-"`
+	OrganismoEmisor  string `json:"OrganismoEmisor" bson:"organismo_emisor"`
+	RegistrationDate string `json:"FechaRegistro" bson:"fecha_regitro"`
+}

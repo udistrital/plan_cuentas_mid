@@ -10,6 +10,7 @@ import (
 	fuenteApropiacionHelper "github.com/udistrital/plan_cuentas_mid/helpers/fuenteApropiacionHelper"
 	fuenteHelper "github.com/udistrital/plan_cuentas_mid/helpers/fuenteFinanciamientoHelper"
 	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
+	fuentemanager "github.com/udistrital/plan_cuentas_mid/managers/fuenteManager"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/formatdata"
@@ -27,6 +28,7 @@ func (c *FuenteFinanciamientoApropiacionController) URLMapping() {
 	c.Mapping("GetRubrosbyFuente", c.GetRubrosbyFuente)
 	c.Mapping("RegistrarModificacion", c.RegistrarModificacion)
 	c.Mapping("SimulacionAfectacion", c.SimulacionAfectacion)
+	c.Mapping("Delete", c.Delete)
 }
 
 // GetRubrosbyFuente ...
@@ -62,13 +64,13 @@ func (c *FuenteFinanciamientoApropiacionController) GetRubrosbyFuente() {
 func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 	var (
 		modificacionPresupuestalData models.ModificacionFuenteReceiver
-		finalData                    map[string]interface{}
+		// finalData                    map[string]interface{}
 	)
 	defer func() {
 		if r := recover(); r != nil {
 			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
 		}
-		responseformat.SetResponseFormat(&c.Controller, finalData, "", 200)
+		responseformat.SetResponseFormat(&c.Controller, "Modificación en la fuente registrada correctamente", "", 200)
 		c.ServeJSON()
 	}()
 
@@ -78,7 +80,7 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 	}
 	documentoPresupuestalDataFormated := fuenteApropiacionHelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 	// formatdata.JsonPrint(documentoPresupuestalDataFormated)
-	finalDataIntf, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
+	_, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
 		logs.Debug("error", err)
@@ -86,8 +88,39 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 	}
 
 	//finalData = documentoPresupuestalDataFormated
-	finalData = finalDataIntf.(map[string]interface{})
+	// finalData = finalDataIntf.(map[string]interface{})
 	//fmt.Println(finalData)
+
+}
+
+// Delete ...
+// @Title Borrar FuenteFinanciamiento
+// @Description Borrar FuenteFinanciamiento
+// @Param	id		path 	string	true		"El ObjectId del objeto que se quiere borrar"
+// @Success 200 {string} ok
+// @Failure 403 objectId is empty
+// @router /:id/:vigencia/:unidadEjecutora [delete]
+func (c *FuenteFinanciamientoApropiacionController) Delete() {
+	objectID := c.Ctx.Input.Param(":id")
+	vigencia := c.Ctx.Input.Param(":vigencia")
+	unidadEjecutora := c.Ctx.Input.Param(":unidadEjecutora")
+	defer func() {
+		if r := recover(); r != nil {
+			responseformat.SetResponseFormat(&c.Controller, r, "", 500)
+		}
+		responseformat.SetResponseFormat(&c.Controller, "delete success!", "", 200)
+		c.ServeJSON()
+	}()
+
+	response, _ := fuenteApropiacionHelper.GetPlanAdquisicionbyFuente(vigencia, objectID)
+	if response != nil {
+		responseformat.SetResponseFormat(&c.Controller, "La fuente esta distribuida", "", 403)
+	} else {
+		_, err := fuentemanager.DeleteFuenteFinanciamiento(objectID, unidadEjecutora, vigencia)
+		if err == nil {
+			responseformat.SetResponseFormat(&c.Controller, "delete success!", "", 200)
+		}
+	}
 
 }
 

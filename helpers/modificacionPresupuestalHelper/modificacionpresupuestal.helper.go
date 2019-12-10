@@ -2,9 +2,11 @@ package modificacionpresupuestalhelper
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/udistrital/plan_cuentas_mid/models"
+	"github.com/udistrital/utils_oas/formatdata"
 )
 
 func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresupuestalReceiver) (dataFormated models.DocumentoPresupuestal) {
@@ -44,4 +46,32 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresu
 	}
 	dataFormated.AfectacionMovimiento = movimientos
 	return
+}
+
+func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.DocumentoPresupuestal) []models.ModificacionPresupuestalResponseDetail {
+	var finalData []models.ModificacionPresupuestalResponseDetail
+	for _, row := range rows {
+		var modificacion models.ModificacionPresupuestalResponseDetail
+		var dataMap map[string]interface{}
+
+		defer func() {
+			if r := recover(); r != nil {
+				// do nothing ...
+				fmt.Sprintf("%s", r)
+			}
+		}()
+		formatdata.FillStruct(row.Data, &dataMap)
+
+		modificacion.DocumentNumber = dataMap["numero_documento"].(string)
+		modificacion.DocumentDate = dataMap["fecha_documento"].(string)
+		modificacion.DocumentType = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
+		modificacion.CentroGestor = row.CentroGestor
+		modificacion.Descripcion = dataMap["descripcion_documento"].(string)
+		modificacion.OrganismoEmisor = dataMap["organismo_emisor"].(string)
+		modificacion.RegistrationDate = row.FechaRegistro
+		modificacion.ID = row.ID
+
+		finalData = append(finalData, modificacion)
+	}
+	return finalData
 }
