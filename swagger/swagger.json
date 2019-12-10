@@ -452,6 +452,32 @@
                 }
             }
         },
+        "/fuente_financiamiento_apropiacion/{id}/{vigencia}/{unidadEjecutora}": {
+            "delete": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "Borrar FuenteFinanciamiento",
+                "operationId": "FuenteFinanciamientoApropiacionController.Borrar FuenteFinanciamiento",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "El ObjectId del objeto que se quiere borrar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} ok"
+                    },
+                    "403": {
+                        "description": "objectId is empty"
+                    }
+                }
+            }
+        },
         "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
             "post": {
                 "tags": [
