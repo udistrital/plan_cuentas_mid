@@ -57,17 +57,17 @@ func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.Docum
 		defer func() {
 			if r := recover(); r != nil {
 				// do nothing ...
-				fmt.Sprintf("%s", r)
+				fmt.Println("error", r)
 			}
 		}()
 		formatdata.FillStruct(row.Data, &dataMap)
 
-		modificacion.DocumentNumber = dataMap["numero_documento"].(string)
-		modificacion.DocumentDate = dataMap["fecha_documento"].(string)
-		modificacion.DocumentType = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
+		modificacion.DocumentNumber, _ = dataMap["numero_documento"].(string)
+		modificacion.DocumentDate, _ = dataMap["fecha_documento"].(string)
+		modificacion.DocumentType, _ = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
 		modificacion.CentroGestor = row.CentroGestor
-		modificacion.Descripcion = dataMap["descripcion_documento"].(string)
-		modificacion.OrganismoEmisor = dataMap["organismo_emisor"].(string)
+		modificacion.Descripcion, _ = dataMap["descripcion_documento"].(string)
+		modificacion.OrganismoEmisor, _ = dataMap["organismo_emisor"].(string)
 		modificacion.RegistrationDate = row.FechaRegistro
 		modificacion.ID = row.ID
 
