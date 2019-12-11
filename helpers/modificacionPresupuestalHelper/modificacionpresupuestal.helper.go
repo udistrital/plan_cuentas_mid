@@ -75,3 +75,35 @@ func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.Docum
 	}
 	return finalData
 }
+
+func FormatDocumentoPresupuestalResponseToAnulationDetail(rows []models.DocumentoPresupuestal) []models.AnulationDetail {
+	var finalData []models.AnulationDetail
+	for _, row := range rows {
+		anulacion := models.AnulationDetail{}
+		var dataMap map[string]interface{}
+
+		defer func() {
+			if r := recover(); r != nil {
+				// do nothing ...
+				fmt.Println("error", r)
+			}
+		}()
+		formatdata.FillStruct(row.Data, &dataMap)
+		anulacion.Consecutivo = row.Consecutivo
+		anulacion.Tipo, _ = dataMap["tipo_anulacion"].(string)
+		anulacion.FechaCreacion = row.FechaRegistro
+		anulacion.Descripcion, _ = dataMap["descripcion"].(string)
+		anulacion.Valor = row.ValorActual
+		// modificacion.DocumentNumber, _ = dataMap["numero_documento"].(string)
+		// modificacion.DocumentDate, _ = dataMap["fecha_documento"].(string)
+		// modificacion.DocumentType, _ = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
+		// modificacion.CentroGestor = row.CentroGestor
+		// modificacion.Descripcion, _ = dataMap["descripcion_documento"].(string)
+		// modificacion.OrganismoEmisor, _ = dataMap["organismo_emisor"].(string)
+		// modificacion.RegistrationDate = row.FechaRegistro
+		// modificacion.ID = row.ID
+
+		finalData = append(finalData, anulacion)
+	}
+	return finalData
+}

@@ -9,6 +9,10 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/udistrital/plan_cuentas_mid/compositor"
+	documentopresupuestalmanager "github.com/udistrital/plan_cuentas_mid/managers/documentoPresupuestalManager"
+
+	commonhelper "github.com/udistrital/plan_cuentas_mid/helpers/commonHelper"
+	modificacionpresupuestalhelper "github.com/udistrital/plan_cuentas_mid/helpers/modificacionPresupuestalHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
@@ -68,4 +72,24 @@ func (c *MovimientoController) Post() {
 
 	responseformat.SetResponseFormat(&c.Controller, finalData, "", 200)
 
+}
+
+// GetAllAnulacionesByVigenciaCGAndUUID función para obtener todos los objetos
+// @Title GetAllAnulacionesByVigenciaCGAndUUID
+// @Description get all objects
+// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Failure 403 :objectId is empty
+// @router /get_doc_by_mov_parentUUID/:vigencia/:CG/:UUID [get]
+func (c *MovimientoController) GetAllAnulacionesByVigenciaCGAndUUID() {
+	vigencia := c.GetString(":vigencia")
+	centroGestor := c.GetString(":CG")
+	documentUUID := c.GetString(":UUID")
+	var response []models.AnulationDetail
+	rows, err := documentopresupuestalmanager.GetAllPresupuestalDocumentFromCRUDByMovParentUUID(vigencia, centroGestor, documentUUID)
+	if err == nil {
+		response = modificacionpresupuestalhelper.FormatDocumentoPresupuestalResponseToAnulationDetail(rows)
+	}
+	c.Data["json"] = commonhelper.DefaultResponse(200, err, response)
+
+	c.ServeJSON()
 }
