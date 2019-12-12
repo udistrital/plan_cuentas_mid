@@ -2,7 +2,6 @@ package cdphelper
 
 import (
 	"time"
-
 	"github.com/astaxie/beego"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/request"
@@ -64,6 +63,27 @@ func SolicitarCDP(necesidad map[string]interface{}) (solicitud map[string]interf
 		return nil, outErr
 	}
 
+}
+
+// AprobarCdp
+func AprobarCdp(id, vigencia, areaFuncional string) (docPresupuestal map[string]interface{}, outErr map[string]interface{}) {
+	var response map[string]interface{}
+
+	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/"
+
+	if err := request.GetJson(urlmongo+"documento/" + vigencia + "/"+ areaFuncional + "/" + id, &response); err != nil {
+		outErr = map[string]interface{}{"Function": "AprobarCdp", "Error": "No se pudo obtener el documento"}
+
+	} else {
+		docPresupuestal = response["Body"].(map[string]interface{})
+		docPresupuestal["Estado"] = "aprobado"
+
+		if err = request.SendJson(urlmongo + vigencia + "/" + areaFuncional + "/" + id, "PUT", &response, &docPresupuestal); err != nil {
+			outErr = map[string]interface{}{"Function": "AprobarCdp", "Error": "No se actualizar el documento"}
+		} 
+	}
+	
+	return
 }
 
 // GetConsecutivoSolicitudCDP Get Cosecutivo Solicitud CDP

@@ -72,6 +72,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
         beego.ControllerComments{
+            Method: "AprobarCdp",
+            Router: `/aprobar_cdp`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
+        beego.ControllerComments{
             Method: "ExpedirCdp",
             Router: `/expedirCDP/:id`,
             AllowHTTPMethods: []string{"get"},
