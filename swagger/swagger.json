@@ -799,6 +799,7 @@
         }
     },
     "definitions": {
+<<<<<<< HEAD
         "10025.string.0xc00038e240": {
             "title": "0xc00038e240",
             "type": "object"
@@ -853,6 +854,62 @@
         },
         "9924.string.0xc00038e1a0": {
             "title": "0xc00038e1a0",
+=======
+        "10025.string.0xc00038c420": {
+            "title": "0xc00038c420",
+            "type": "object"
+        },
+        "10125.string.0xc00038c4c0": {
+            "title": "0xc00038c4c0",
+            "type": "object"
+        },
+        "8752.0xc00037e8d0.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "8812.string.0xc000383ae0": {
+            "title": "0xc000383ae0",
+            "type": "object"
+        },
+        "9028.string.0xc000383ca0": {
+            "title": "0xc000383ca0",
+            "type": "object"
+        },
+        "9097.0xc00037ea80.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "9150.string.0xc000383de0": {
+            "title": "0xc000383de0",
+            "type": "object"
+        },
+        "9207.string.0xc000383e80": {
+            "title": "0xc000383e80",
+            "type": "object"
+        },
+        "9428.string.0xc00038c040": {
+            "title": "0xc00038c040",
+            "type": "object"
+        },
+        "9527.string.0xc00038c0e0": {
+            "title": "0xc00038c0e0",
+            "type": "object"
+        },
+        "9624.string.0xc00038c180": {
+            "title": "0xc00038c180",
+            "type": "object"
+        },
+        "9733.string.0xc00038c240": {
+            "title": "0xc00038c240",
+            "type": "object"
+        },
+        "9832.string.0xc00038c2e0": {
+            "title": "0xc00038c2e0",
+            "type": "object"
+        },
+        "9924.string.0xc00038c380": {
+            "title": "0xc00038c380",
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
             "type": "object"
         },
         "models.Alert": {
@@ -940,7 +997,11 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/8812.string.0xc000383900"
+=======
+                        "$ref": "#/definitions/8812.string.0xc000383ae0"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "Id": {
@@ -951,7 +1012,11 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
+<<<<<<< HEAD
                     "$ref": "#/definitions/8752.0xc000384480.false"
+=======
+                    "$ref": "#/definitions/8752.0xc00037e8d0.false"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                 }
             }
         },
@@ -1113,7 +1178,11 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/9150.string.0xc000383c00"
+=======
+                        "$ref": "#/definitions/9150.string.0xc000383de0"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "Id": {
@@ -1121,7 +1190,11 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
+<<<<<<< HEAD
                     "$ref": "#/definitions/9028.string.0xc000383ac0"
+=======
+                    "$ref": "#/definitions/9028.string.0xc000383ca0"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                 },
                 "Metas": {
                     "type": "array",
@@ -1130,12 +1203,20 @@
                     }
                 },
                 "NecesidadId": {
+<<<<<<< HEAD
                     "$ref": "#/definitions/9097.0xc000384630.false"
+=======
+                    "$ref": "#/definitions/9097.0xc00037ea80.false"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/9207.string.0xc000383ca0"
+=======
+                        "$ref": "#/definitions/9207.string.0xc000383e80"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "RubroId": {
@@ -1241,12 +1322,17 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/10025.string.0xc00038e240"
+=======
+                        "$ref": "#/definitions/10025.string.0xc00038c420"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/9924.string.0xc00038e1a0"
                     }
                 },
@@ -1255,26 +1341,52 @@
                 },
                 "DetalleServicioNecesidad": {
                     "$ref": "#/definitions/9527.string.0xc000383f00"
+=======
+                        "$ref": "#/definitions/9924.string.0xc00038c380"
+                    }
+                },
+                "DetallePrestacionServicioNecesidad": {
+                    "$ref": "#/definitions/9624.string.0xc00038c180"
+                },
+                "DetalleServicioNecesidad": {
+                    "$ref": "#/definitions/9527.string.0xc00038c0e0"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                 },
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/9832.string.0xc00038e100"
                     }
                 },
                 "Necesidad": {
                     "$ref": "#/definitions/9428.string.0xc000383e60"
+=======
+                        "$ref": "#/definitions/9832.string.0xc00038c2e0"
+                    }
+                },
+                "Necesidad": {
+                    "$ref": "#/definitions/9428.string.0xc00038c040"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/9733.string.0xc00038e060"
+=======
+                        "$ref": "#/definitions/9733.string.0xc00038c240"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "RequisitoMinimoNecesidad": {
                     "type": "array",
                     "items": {
+<<<<<<< HEAD
                         "$ref": "#/definitions/10125.string.0xc00038e2e0"
+=======
+                        "$ref": "#/definitions/10125.string.0xc00038c4c0"
+>>>>>>> 2d05a78141f5740ab97dc83750489e975ba71a73
                     }
                 },
                 "Rubros": {
