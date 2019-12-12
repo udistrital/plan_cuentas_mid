@@ -114,7 +114,7 @@ func (c *FuenteFinanciamientoApropiacionController) Delete() {
 
 	response, _ := fuenteApropiacionHelper.GetPlanAdquisicionbyFuente(vigencia, objectID)
 	if response != nil {
-		responseformat.SetResponseFormat(&c.Controller, "La fuente esta distribuida", "", 403)
+		responseformat.SetResponseFormat(&c.Controller, "La fuente está distribuida", "", 403)
 	} else {
 		_, err := fuentemanager.DeleteFuenteFinanciamiento(objectID, unidadEjecutora, vigencia)
 		if err == nil {
