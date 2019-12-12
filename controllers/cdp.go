@@ -42,9 +42,8 @@ func (c *CdpController) ExpedirCdp() {
 // @Failure 403 body is empty
 // @router /solicitarCDP [post]
 func (c *CdpController) SolicitarCdp() {
-	var (
-		v map[string]interface{}
-	)
+	var v map[string]interface{}
+	
 	defer func() {
 		if r := recover(); r != nil {
 			beego.Error(r)
@@ -61,3 +60,32 @@ func (c *CdpController) SolicitarCdp() {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
 }
+
+// AprobarCdp ...
+// @Title AprobarCdp
+// @Description create SolicitudCDP
+// @Param	body		body 	models.SolicitudCDP true "body for Solicitud content"
+// @Success 201 {int} models.SolicitudCDP
+// @Failure 403 body is empty
+// @router /aprobar_cdp [post]
+func (c *CdpController) AprobarCdp() {
+	var v map[string]string
+
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
+		}
+	}()
+
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err != nil {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
+
+	if response, err := cdphelper.AprobarCdp(v["_id"], v["vigencia"], v["area_funcional"]); err == nil {
+		responseformat.SetResponseFormat(&c.Controller, response, "", 200)
+	} else {
+		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
+	}
+}
+
