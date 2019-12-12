@@ -241,4 +241,13 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:VigenciaController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:VigenciaController"],
+        beego.ControllerComments{
+            Method: "GetCierreVigencia",
+            Router: `/get_cierre/:vigencia/:area`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
 }
