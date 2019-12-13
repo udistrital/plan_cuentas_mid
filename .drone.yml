@@ -3,8 +3,9 @@ workspace:
   path: src/github.com/udistrital/${DRONE_REPO##udistrital/}
   when:
       branch:
-      - master
+      - dev
       - test
+      - master
 kind: pipeline
 name: API_deploy
 
@@ -16,8 +17,30 @@ steps:
      - GOOS=linux GOARCH=amd64 go build -o main
     when:
       branch:
-      - master
+      - dev
       - test
+      - master
+      event:
+      - push
+
+  - name: go_test
+    image: golang:1.9
+    commands:
+     - go get -t
+     - go get github.com/smartystreets/goconvey/convey
+     - go get -u gopkg.in/alecthomas/gometalinter.v1
+     - gometalinter.v1 --install
+     - go get github.com/axw/gocov/...
+     - go get github.com/AlekSi/gocov-xml
+     - go get -u github.com/jstemmer/go-junit-report
+     - gometalinter.v1 ./... --checkstyle | tee report.xml
+     - gocov test ./... | gocov-xml > coverage.xml
+     - go test -v ./... | go-junit-report > test.xml
+    when:
+      branch:
+      - dev
+      - test
+      - master
       event:
       - push
 
