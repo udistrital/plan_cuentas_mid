@@ -3,8 +3,9 @@ workspace:
   path: src/github.com/udistrital/${DRONE_REPO##udistrital/}
   when:
       branch:
-      - master
+      - dev
       - test
+      - master
 kind: pipeline
 name: API_deploy
 
@@ -16,8 +17,9 @@ steps:
      - GOOS=linux GOARCH=amd64 go build -o main
     when:
       branch:
-      - master
+      - dev
       - test
+      - master
       event:
       - push
 
