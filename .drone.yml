@@ -23,7 +23,7 @@ steps:
       event:
       - push
 
-  - name: go_test
+  - name: go_test_jj
     image: golang:1.9
     commands:
      - go get -t
