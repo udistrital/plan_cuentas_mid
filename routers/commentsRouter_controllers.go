@@ -172,7 +172,7 @@ func init() {
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"],
         beego.ControllerComments{
             Method: "GetAllModificacionPresupuestalByVigenciaAndCG",
-            Router: `/:vigencia/:CG`,
+            Router: `/:vigencia/:CG/:tipo`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
