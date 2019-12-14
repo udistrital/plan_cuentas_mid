@@ -91,7 +91,7 @@ func FormatDocumentoPresupuestalResponseToAnulationDetail(rows []models.Document
 		formatdata.FillStruct(row.Data, &dataMap)
 		anulacion.Consecutivo = row.Consecutivo
 		anulacion.Tipo, _ = dataMap["tipo_anulacion"].(string)
-		anulacion.FechaCreacion = row.FechaRegistro
+		anulacion.FechaRegistro = row.FechaRegistro
 		anulacion.Descripcion, _ = dataMap["descripcion"].(string)
 		anulacion.Valor = row.ValorActual
 
