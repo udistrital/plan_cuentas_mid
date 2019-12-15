@@ -70,6 +70,9 @@ func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.Docum
 		modificacion.OrganismoEmisor, _ = dataMap["organismo_emisor"].(string)
 		modificacion.RegistrationDate = row.FechaRegistro
 		modificacion.ID = row.ID
+		modificacion.Vigencia = row.Vigencia
+		modificacion.ValorActual = row.ValorActual
+		modificacion.ValorInicial = row.ValorInicial
 
 		finalData = append(finalData, modificacion)
 	}
