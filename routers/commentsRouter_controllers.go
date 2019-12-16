@@ -205,6 +205,15 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:MovimientoController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:MovimientoController"],
+        beego.ControllerComments{
+            Method: "GetAllAnulacionesByVigenciaCGAndUUID",
+            Router: `/get_doc_by_mov_parentUUID/:vigencia/:CG/:UUID`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:NecesidadController"],
         beego.ControllerComments{
             Method: "GetFullNecesidad",
