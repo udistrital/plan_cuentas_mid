@@ -11,4 +11,7 @@ type DocumentoPresupuestal struct {
 	AfectacionMovimiento []Movimiento      `json:"AfectacionMovimiento" validate:"required"`
 	Afectacion           []MovimientoMongo `json:"Afectacion"`
 	FechaRegistro        string
+	Consecutivo          int     `json:"Consecutivo" bson:"consecutivo"`
+	ValorActual          float64 `json:"ValorActual" bson:"valor_actual"`
+	ValorInicial         float64 `json:"ValorInicial" bson:"valor_inicial"`
 }

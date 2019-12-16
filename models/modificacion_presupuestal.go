@@ -24,12 +24,15 @@ type ModificacionPresupuestalReceiverAfectation struct {
 }
 
 type ModificacionPresupuestalResponseDetail struct {
-	ID               string `json:"_id" bson:"_id"`
-	DocumentNumber   string `json:"NumeroDocumento" bson:"numero_documento"`
-	DocumentDate     string `json:"FechaDocumento" bson:"fecha_documento"`
-	DocumentType     string `json:"TipoDocumento" bson:"tipo_documento"`
-	Descripcion      string `json:"Descripcion" bson:"descripcion_documento"`
-	CentroGestor     string `json:"CentroGestor" bson:"-"`
-	OrganismoEmisor  string `json:"OrganismoEmisor" bson:"organismo_emisor"`
-	RegistrationDate string `json:"FechaRegistro" bson:"fecha_regitro"`
+	ID               string  `json:"_id" bson:"_id"`
+	DocumentNumber   string  `json:"NumeroDocumento" bson:"numero_documento"`
+	DocumentDate     string  `json:"FechaDocumento" bson:"fecha_documento"`
+	DocumentType     string  `json:"TipoDocumento" bson:"tipo_documento"`
+	Descripcion      string  `json:"Descripcion" bson:"descripcion_documento"`
+	CentroGestor     string  `json:"CentroGestor" bson:"-"`
+	OrganismoEmisor  string  `json:"OrganismoEmisor" bson:"organismo_emisor"`
+	RegistrationDate string  `json:"FechaRegistro" bson:"fecha_regitro"`
+	Vigencia         int     `json:"Vigencia" bson:"vigencia"`
+	ValorActual      float64 `json:"ValorActual" bson:"valor_actual"`
+	ValorInicial     float64 `json:"ValorInicial" bson:"valor_inicial"`
 }
