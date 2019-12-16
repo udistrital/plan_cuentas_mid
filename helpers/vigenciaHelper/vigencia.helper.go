@@ -1,6 +1,8 @@
 package vigenciahelper
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego"
 	"github.com/udistrital/utils_oas/request"
 )
@@ -9,7 +11,9 @@ import (
 func GetCierre(vigencia string, areaf string) (cierre map[string]interface{}, outErr map[string]interface{}) {
 	var err map[string]interface{}
 	cierre = make(map[string]interface{})
-	if cierre["Reservas"], cierre["Pasivos"], err = GetReservas(vigencia, areaf); err != nil {
+	cierre["Reservas"], cierre["Pasivos"], err = GetReservas(vigencia, areaf)
+	cierre["Fuentes"], err = GetFuentesCierre(vigencia, areaf)
+	if err != nil {
 		return cierre, map[string]interface{}{"Function": "getreservas", "Error": err}
 	}
 	return cierre, nil
@@ -38,5 +42,28 @@ func GetReservas(vigencia string, areaf string) (reservas []map[string]interface
 			}
 		}
 		return reservas, pasivos, nil
+	}
+}
+
+// GetFuentesCierre trae las fuentes que aun tienen saldo disponible
+func GetFuentesCierre(vigencia string, areaf string) (fuentes []map[string]interface{}, outErr map[string]interface{}) {
+	urlcrud := beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento/" + vigencia + "/" + areaf
+	var res map[string]interface{}
+	fuentes = make([]map[string]interface{}, 0)
+	fmt.Println(urlcrud)
+	if err := request.GetJson(urlcrud, &res); err != nil {
+		outErr = map[string]interface{}{"Function": "GetFuentesCierre", "Error": err.Error()}
+		return nil, outErr
+	} else {
+		if res["Body"] == nil {
+			return fuentes, nil
+		}
+		for k, value := range res["Body"].([]interface{}) {
+			valor := res["Body"].([]interface{})[k].(map[string]interface{})["ValorActual"]
+			if value != nil && (valor.(float64) > 0) {
+				fuentes = append(fuentes, res["Body"].([]interface{})[k].(map[string]interface{}))
+			}
+		}
+		return fuentes, nil
 	}
 }
