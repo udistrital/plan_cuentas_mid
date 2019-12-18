@@ -64,33 +64,35 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionFuent
 	dataFormated.Vigencia = currDate.Year()
 	dataFormated.CentroGestor = modData.Data.CentroGestor
 	for _, afectation := range modData.Afectation {
-		movimiento := models.Movimiento{}
-		movimiento.Descripcion = modData.Data.Descripcion
-		movimiento.DocumentoPadre = afectation.OriginAcc.Codigo
-		movimiento.Valor = afectation.Amount
-		movimiento.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
-			TipoMovimientoId: afectation.TypeMod,
+		if afectation.OriginAcc != nil {
+			movimiento := models.Movimiento{}
+			movimiento.Descripcion = modData.Data.Descripcion
+			movimiento.DocumentoPadre = afectation.OriginAcc.Codigo
+			movimiento.Valor = afectation.Amount
+			movimiento.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
+				TipoMovimientoId: afectation.TypeMod,
+			}
+			movimientos = append(movimientos, movimiento)
 		}
-		if afectation.TypeMod.Parametros != "" && afectation.TargetAcc.Codigo != "" {
+		if afectation.TypeMod.Parametros != "" && afectation.OriginRubro != nil {
 			parametersMap := make(map[string]interface{})
 			if err := json.Unmarshal([]byte(afectation.TypeMod.Parametros), &parametersMap); err != nil {
 				panic(err.Error())
 			}
-			if targetAccType, e := parametersMap["TipoMovimientoOrigen"].(string); e {
-				movimientoTargetAcc := models.Movimiento{}
-				movimientoTargetAcc.Descripcion = modData.Data.Descripcion
-				movimientoTargetAcc.DocumentoPadre = afectation.TargetAcc.Codigo
-				movimientoTargetAcc.Valor = afectation.Amount
-				movimientoTargetAcc.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
+			if originRubroType, e := parametersMap["MovOriginRubro"].(string); e {
+				movimientoOriginRubro := models.Movimiento{}
+				movimientoOriginRubro.Descripcion = modData.Data.Descripcion
+				movimientoOriginRubro.DocumentoPadre = afectation.OriginRubro.Codigo
+				movimientoOriginRubro.Valor = afectation.Amount
+				movimientoOriginRubro.MovimientoProcesoExternoId = &models.MovimientoProcesoExterno{
 					TipoMovimientoId: &models.TipoGeneral{
 						Id:       afectation.TypeMod.Id,
-						Acronimo: targetAccType,
+						Acronimo: originRubroType,
 					},
 				}
-				movimientos = append(movimientos, movimientoTargetAcc)
+				movimientos = append(movimientos, movimientoOriginRubro)
 			}
 		}
-		movimientos = append(movimientos, movimiento)
 	}
 	dataFormated.AfectacionMovimiento = movimientos
 	return
