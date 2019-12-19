@@ -72,6 +72,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
         beego.ControllerComments{
+            Method: "AprobarCdp",
+            Router: `/aprobar_cdp`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:CdpController"],
+        beego.ControllerComments{
             Method: "ExpedirCdp",
             Router: `/expedirCDP/:id`,
             AllowHTTPMethods: []string{"get"},
@@ -172,7 +181,7 @@ func init() {
     beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:ModificacionPresupuestalController"],
         beego.ControllerComments{
             Method: "GetAllModificacionPresupuestalByVigenciaAndCG",
-            Router: `/:vigencia/:CG`,
+            Router: `/:vigencia/:CG/:tipo`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
@@ -192,6 +201,15 @@ func init() {
             Method: "Post",
             Router: `/`,
             AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:MovimientoController"] = append(beego.GlobalControllerRouter["github.com/udistrital/plan_cuentas_mid/controllers:MovimientoController"],
+        beego.ControllerComments{
+            Method: "GetAllAnulacionesByVigenciaCGAndUUID",
+            Router: `/get_doc_by_mov_parentUUID/:vigencia/:CG/:UUID`,
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

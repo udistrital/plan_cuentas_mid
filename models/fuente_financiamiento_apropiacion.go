@@ -12,8 +12,8 @@ type ModificacionFuenteReceiver struct {
 }
 
 type ModificacionFuenteReceiverAfectation struct {
-	OriginAcc *FuenteFinanciamiento `json:"MovimientoOrigen"`
-	TargetAcc *FuenteFinanciamiento `json:"MovimientoDestino"`
-	TypeMod   *TipoGeneral          `json:"Tipo"`
-	Amount    float64               `json:"Valor"`
+	OriginAcc   *FuenteFinanciamiento `json:"MovimientoOrigen"`
+	OriginRubro *Rubro                `json:"CuentaCredito"`
+	TypeMod     *TipoGeneral          `json:"Tipo"`
+	Amount      float64               `json:"Valor"`
 }

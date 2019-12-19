@@ -6,11 +6,13 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
+	"github.com/udistrital/auditoria"
 	apistatus "github.com/udistrital/utils_oas/apiStatusLib"
 )
 
 func init() {
 }
+
 
 func main() {
 	// beego.BConfig.RecoverFunc = responseformat.GlobalResponseHandler
@@ -30,6 +32,10 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+
+	//Prueba de auditoria
+  auditoria.InitMiddleware()
+
 	//beego.ErrorController(&customerror.CustomErrorController{})
 	apistatus.Init()
 

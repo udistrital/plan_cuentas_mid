@@ -134,12 +134,13 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 // @Description get all objects
 // @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
 // @Failure 403 :objectId is empty
-// @router /:vigencia/:CG [get]
+// @router /:vigencia/:CG/:tipo [get]
 func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVigenciaAndCG() {
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
+	tipoModificacion := c.GetString(":tipo")
 	var response []models.ModificacionPresupuestalResponseDetail
-	rows, err := documentopresupuestalmanager.GetAllPresupuestalDocumentFromCRUDByType(vigencia, centroGestor, "modificacion_presupuestal")
+	rows, err := documentopresupuestalmanager.GetAllPresupuestalDocumentFromCRUDByType(vigencia, centroGestor, tipoModificacion)
 	if err == nil {
 		response = modificacionpresupuestalhelper.FormatDocumentoPresupuestalResponseToModificacionDetail(rows)
 	}
