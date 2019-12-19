@@ -31,3 +31,24 @@ func (c *VigenciaController) GetCierreVigencia() {
 	}
 	c.ServeJSON()
 }
+
+// ...
+// @Title CerrarVigencia
+// @Description realiza los procesos del cierre para una vigencia y un area funcional
+// @Param	vigencia		path 	string	true		"vigencia del cierre"
+// @Param	area			path 	string	true		"area funcional del cierre"
+// @Success 201 {object} models.SolicitudCDP
+// @router /cerrar_vigencia/:vigencia/:area [get]
+func (c *VigenciaController) CerrarVigencia() {
+	vigencia := c.Ctx.Input.Param(":vigencia")
+	areaf := c.Ctx.Input.Param(":area")
+	v, err := vigenciahelper.CerrarVigencia(vigencia, areaf)
+	if err != nil {
+		logs.Error(err)
+		c.Data["system"] = err
+		c.Abort("404")
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJSON()
+}

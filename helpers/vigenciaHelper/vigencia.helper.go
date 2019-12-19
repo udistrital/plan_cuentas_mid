@@ -37,7 +37,7 @@ func GetReservas(vigencia string, areaf string) (reservas []map[string]interface
 			if value != nil && (estado == "expedido" || estado == "parcialmente_comprometido") {
 				reservas = append(reservas, res["Body"].([]interface{})[k].(map[string]interface{}))
 			}
-			if value != nil && estado == "pasivo" {
+			if value != nil && estado == "reserva" {
 				pasivos = append(pasivos, res["Body"].([]interface{})[k].(map[string]interface{}))
 			}
 		}
@@ -66,4 +66,45 @@ func GetFuentesCierre(vigencia string, areaf string) (fuentes []map[string]inter
 		}
 		return fuentes, nil
 	}
+}
+
+// CerrarVigencia realiza los procesos de cierre de vigencia
+func CerrarVigencia(vigencia string, areaf string) (cierre map[string]interface{}, outErr map[string]interface{}) {
+	cierre = make(map[string]interface{})
+	reservas, pasivos, err := GetReservas(vigencia, areaf)
+	if err == nil {
+		for _, reserva := range reservas {
+			cambiarEstadoRP(vigencia, areaf, reserva["_id"].(string), "reserva")
+		}
+		for _, pasivo := range pasivos {
+			cambiarEstadoRP(vigencia, areaf, pasivo["_id"].(string), "pasivo")
+		}
+
+		return cierre, nil
+	} else {
+		return cierre, map[string]interface{}{"Function": "CerrarVigencia", "Error": err}
+	}
+
+}
+
+// cambiar estado rp
+
+func cambiarEstadoRP(vigencia string, areaf string, id string, estado string) (res map[string]interface{}, outErr map[string]interface{}) {
+	var response map[string]interface{}
+	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/"
+	if err := request.GetJson(urlmongo+"documento/"+vigencia+"/"+areaf+"/"+id, &response); err != nil {
+		outErr = map[string]interface{}{"Function": "CerrarVigencia", "Error": "No se pudo obtener el documento"}
+		return nil, outErr
+	} else {
+		docPresupuestal := response["Body"].(map[string]interface{})
+		docPresupuestal["Estado"] = estado
+
+		if err = request.SendJson(urlmongo+vigencia+"/"+areaf+"/"+id, "PUT", &response, &docPresupuestal); err != nil {
+			return nil, map[string]interface{}{"Function": "cambiarEstadoRP", "Error": "No se actualizar el documento"}
+		} else {
+			res = response
+			return res, nil
+		}
+	}
+
 }
