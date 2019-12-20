@@ -4,13 +4,11 @@ import (
 	"time"
 )
 
-// infoCrp asociado a una solicitud de CRP
-type infoCrp struct {
-	Consecutivo     int       `json:"consecutivo" bson:"consecutivo"`
-	FechaExpedicion time.Time `json:"fechaExpedicion" bson:"fechaExpedicion"`
-	Estado          int       `json:"estado" bson:"estado"`
+type estadoCrp struct {
+	ID       string `json:"id"`
+	Acronimo string `json:"acronimo"`
+	Nombre   string `json:"nombre"`
 }
-
 // Compromiso ...
 type Compromiso struct {
 	NumeroCompromiso int `orm:"column(numeroCompromiso);pk"`
@@ -26,8 +24,41 @@ type SolicitudCrp struct {
 	Beneficiario      string      `json:"beneficiario" bson:"beneficiario"`
 	Valor             float64     `json:"valor" bson:"valor"`
 	Compromiso        *Compromiso `json:"compromiso" bson:"compromiso"`
-	InfoCRP           *infoCrp    `json:"infoCrp" bson:"infoCrp"`
+	Estado			  estadoCrp 	  `json:"estado"`
 	Activo            bool        `json:"activo" bson:"activo"`
 	FechaCreacion     time.Time   `json:"fechaCreacion" bson:"fechaCreacion"`
+	FechaInicioVigencia time.Time     `json:"fechaInicioVigencia"`
+	FechaFinalVigencia time.Time     `json:"fechaFinalVigencia"`
 	FechaModificacion time.Time   `json:"fechaModificacion" bson:"fechaModificacion"`
+}
+
+
+// GetEstadoSolicitudCrp devuelve el estado solicitud de una solicitud de crp
+func GetEstadoSolicitudCrp() interface{} {
+	estado := estadoCdp{
+		ID:       "1",
+		Acronimo: "sol",
+		Nombre:   "solicitud",
+	}
+	return estado
+}
+
+// GetEstadoRechazadoCrp devuelve el estado rechazado de una solicitud de crp
+func GetEstadoRechazadoCrp() interface{} {
+	estado := estadoCdp{
+		ID:       "2",
+		Acronimo: "rec",
+		Nombre:   "rechazado",
+	}
+	return estado
+}
+
+// GetEstadoExpedidoCrp devuelve el estado aprobado de una solicitud de crp
+func GetEstadoExpedidoCrp() interface{} {
+	estado := estadoCdp{
+		ID:       "3",
+		Acronimo: "exp",
+		Nombre:   "expedido",
+	}
+	return estado
 }

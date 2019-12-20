@@ -17,8 +17,8 @@ func ExpedirCrp(id string) (crp map[string]interface{}, outErr map[string]interf
 	if err := request.GetJson(urlmongo, &resMongo); err == nil {
 		solicitud = resMongo["Body"].(map[string]interface{})
 		crp = make(map[string]interface{})
-		solicitud["infoCrp"] = make(map[string]interface{})
-		solicitud["infoCrp"] = map[string]interface{}{"consecutivo": GetConsecutivoCRP(), "fechaExpedicion": time.Now().Format(time.RFC3339), "estado": 1}
+		solicitud["estado"] = models.GetEstadoExpedidoCrp()
+		
 		if err := request.SendJson(urlmongo, "PUT", &crp, &solicitud); err == nil {
 			crp = solicitud
 			return crp, nil
@@ -50,10 +50,11 @@ func SolicitarCRP(solCrp map[string]interface{}) (solicitud map[string]interface
 	solicitud["vigencia"], okVigencia = solCrp["vigencia"]
 	solicitud["valor"], okValor = solCrp["monto"]
 	solicitud["compromiso"], okCompromiso = solCrp["compromiso"]
-	solicitud["infoCrp"] = nil
+	solicitud["estado"] = models.GetEstadoSolicitudCrp()
 	solicitud["activo"] = true
 	solicitud["fechaCreacion"] = time.Now().Format(time.RFC3339)
 	solicitud["fechaModificacion"] = time.Now().Format(time.RFC3339)
+	solicitud["fechaInicioVigencia"] = solCrp["fechaInicioVigencia"]
 	solicitud["fechaFinalVigencia"] = solCrp["fechaFinalVigencia"]
 
 	if okBeneficiario && okCdp && okVigencia && okCompromiso && okValor {
@@ -130,7 +131,7 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 				strVig := fmt.Sprintf("%v", vig)
 
 				// consulta los CDP expedidos a los que van ligados esas solicitudes dea CRP
-				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=consecutivo:" + strAux + ",tipo:cdp,estado:expedido"
+				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=consecutivo:" + strAux + ",tipo:cdp"
 
 				if response2, err := request.GetJsonTest(urlcrud, &auxObjCdp); err == nil {
 					objTmpCrp["solicitudCrp"] = solct["consecutivo"]
