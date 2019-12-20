@@ -813,9 +813,76 @@
                     }
                 }
             }
+        },
+        "/vigencia/cerrar_vigencia/{vigencia}/{area}": {
+            "get": {
+                "tags": [
+                    "vigencia"
+                ],
+                "description": "realiza los procesos del cierre para una vigencia y un area funcional",
+                "operationId": "VigenciaController.CerrarVigencia",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia del cierre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "area",
+                        "description": "area funcional del cierre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/vigencia/get_cierre/{vigencia}/{area}": {
+            "get": {
+                "tags": [
+                    "vigencia"
+                ],
+                "description": "devuelve los objetos del cierre para una vigencia y un area funcional",
+                "operationId": "VigenciaController.GetCierreVigencia",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia del cierre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "area",
+                        "description": "area funcional del cierre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+
         "1042.string.0xc0006a3860": {
             "title": "0xc0006a3860",
             "type": "object"
@@ -870,6 +937,7 @@
         },
         "946.string.0xc0006a37c0": {
             "title": "0xc0006a37c0",
+
             "type": "object"
         },
         "models.Alert": {
@@ -957,6 +1025,7 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/248.string.0xc0006a31c0"
                     }
                 },
@@ -968,7 +1037,9 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
+
                     "$ref": "#/definitions/189.0xc00069f470.false"
+
                 }
             }
         },
@@ -1130,7 +1201,9 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/577.string.0xc0006a34c0"
+
                     }
                 },
                 "Id": {
@@ -1138,7 +1211,9 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
+
                     "$ref": "#/definitions/457.string.0xc0006a3380"
+
                 },
                 "Metas": {
                     "type": "array",
@@ -1147,12 +1222,16 @@
                     }
                 },
                 "NecesidadId": {
+
                     "$ref": "#/definitions/525.0xc00069f620.false"
+
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/633.string.0xc0006a3560"
+
                     }
                 },
                 "RubroId": {
@@ -1258,12 +1337,15 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/1439.string.0xc0006a3b00"
+
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/1339.string.0xc0006a3a60"
                     }
                 },
@@ -1276,22 +1358,28 @@
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/1248.string.0xc0006a39c0"
                     }
                 },
                 "Necesidad": {
                     "$ref": "#/definitions/848.string.0xc0006a3720"
+
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/1150.string.0xc0006a3920"
+
                     }
                 },
                 "RequisitoMinimoNecesidad": {
                     "type": "array",
                     "items": {
+
                         "$ref": "#/definitions/1538.string.0xc0006a3ba0"
+
                     }
                 },
                 "Rubros": {
@@ -1354,6 +1442,10 @@
         {
             "name": "modificacion_apropiacion",
             "description": "ModificacionPresupuestalController operations for ModificacionPresupuestal\n"
+        },
+        {
+            "name": "vigencia",
+            "description": "VigenciaController operations for vigencia\n"
         }
     ]
 }
