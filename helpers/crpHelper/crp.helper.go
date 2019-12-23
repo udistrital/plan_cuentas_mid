@@ -6,6 +6,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/request"
 )
 
@@ -18,7 +19,6 @@ func ExpedirCrp(id string) (crp map[string]interface{}, outErr map[string]interf
 		solicitud = resMongo["Body"].(map[string]interface{})
 		crp = make(map[string]interface{})
 		solicitud["estado"] = models.GetEstadoExpedidoCrp()
-		
 		if err := request.SendJson(urlmongo, "PUT", &crp, &solicitud); err == nil {
 			crp = solicitud
 			return crp, nil
