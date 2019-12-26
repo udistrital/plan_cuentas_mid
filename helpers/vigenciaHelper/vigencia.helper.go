@@ -8,10 +8,10 @@ import (
 )
 
 // GetCierre obtiene las reservas y pasivos de una vigencia
-func GetCierre(vigencia string, areaf string) (cierre map[string]interface{}, outErr map[string]interface{}) {
+func GetCierre(vigencia string, areaf string, cerrada bool) (cierre map[string]interface{}, outErr map[string]interface{}) {
 	var err map[string]interface{}
 	cierre = make(map[string]interface{})
-	cierre["Reservas"], cierre["Pasivos"], err = GetReservas(vigencia, areaf)
+	cierre["Reservas"], cierre["Pasivos"], err = GetReservas(vigencia, areaf, cerrada)
 	cierre["Fuentes"], err = GetFuentesCierre(vigencia, areaf)
 	if err != nil {
 		return cierre, map[string]interface{}{"Function": "getreservas", "Error": err}
@@ -20,7 +20,7 @@ func GetCierre(vigencia string, areaf string) (cierre map[string]interface{}, ou
 }
 
 // GetReservas traer las reservas
-func GetReservas(vigencia string, areaf string) (reservas []map[string]interface{}, pasivos []map[string]interface{}, outErr map[string]interface{}) {
+func GetReservas(vigencia string, areaf string, cerrada bool) (reservas []map[string]interface{}, pasivos []map[string]interface{}, outErr map[string]interface{}) {
 	urlcrud := beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + vigencia + "/" + areaf + "?query=tipo:rp"
 	var res map[string]interface{}
 	reservas = make([]map[string]interface{}, 0)
@@ -33,11 +33,20 @@ func GetReservas(vigencia string, areaf string) (reservas []map[string]interface
 			return reservas, pasivos, nil
 		}
 		for k, value := range res["Body"].([]interface{}) {
+			var condicionR bool
+			var condicionP bool
 			estado := res["Body"].([]interface{})[k].(map[string]interface{})["Estado"]
-			if value != nil && (estado == "expedido" || estado == "parcialmente_comprometido") {
+			if cerrada {
+				condicionR = (estado == "reserva")
+				condicionP = (estado == "pasivo")
+			} else {
+				condicionR = (estado == "expedido" || estado == "parcialmente_comprometido")
+				condicionP = (estado == "reserva")
+			}
+			if value != nil && condicionR {
 				reservas = append(reservas, res["Body"].([]interface{})[k].(map[string]interface{}))
 			}
-			if value != nil && estado == "reserva" {
+			if value != nil && condicionP {
 				pasivos = append(pasivos, res["Body"].([]interface{})[k].(map[string]interface{}))
 			}
 		}
@@ -71,7 +80,7 @@ func GetFuentesCierre(vigencia string, areaf string) (fuentes []map[string]inter
 // CerrarVigencia realiza los procesos de cierre de vigencia
 func CerrarVigencia(vigencia string, areaf string) (cierre map[string]interface{}, outErr map[string]interface{}) {
 	cierre = make(map[string]interface{})
-	reservas, pasivos, err := GetReservas(vigencia, areaf)
+	reservas, pasivos, err := GetReservas(vigencia, areaf, false)
 	if err == nil {
 		for _, reserva := range reservas {
 			cambiarEstadoRP(vigencia, areaf, reserva["_id"].(string), "reserva")
@@ -79,8 +88,12 @@ func CerrarVigencia(vigencia string, areaf string) (cierre map[string]interface{
 		for _, pasivo := range pasivos {
 			cambiarEstadoRP(vigencia, areaf, pasivo["_id"].(string), "pasivo")
 		}
-
-		return cierre, nil
+		var response map[string]interface{}
+		if errorCrud := request.GetJson(beego.AppConfig.String("financieraMongoCurdApiService")+"/vigencia/cerrar_vigencia_actual/"+areaf, &response); errorCrud == nil {
+			return cierre, nil
+		} else {
+			return cierre, map[string]interface{}{"Function": "CerrarVigencia", "Error": err}
+		}
 	} else {
 		return cierre, map[string]interface{}{"Function": "CerrarVigencia", "Error": err}
 	}
@@ -88,7 +101,6 @@ func CerrarVigencia(vigencia string, areaf string) (cierre map[string]interface{
 }
 
 // cambiar estado rp
-
 func cambiarEstadoRP(vigencia string, areaf string, id string, estado string) (res map[string]interface{}, outErr map[string]interface{}) {
 	var response map[string]interface{}
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/"
