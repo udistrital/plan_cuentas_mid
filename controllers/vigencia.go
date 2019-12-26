@@ -17,11 +17,12 @@ type VigenciaController struct {
 // @Param	vigencia		path 	string	true		"vigencia del cierre"
 // @Param	area			path 	string	true		"area funcional del cierre"
 // @Success 201 {object} models.SolicitudCDP
-// @router /get_cierre/:vigencia/:area [get]
+// @router /get_cierre/:vigencia/:area/:cerrada [get]
 func (c *VigenciaController) GetCierreVigencia() {
 	vigencia := c.Ctx.Input.Param(":vigencia")
 	areaf := c.Ctx.Input.Param(":area")
-	v, err := vigenciahelper.GetCierre(vigencia, areaf)
+	cerrada := c.Ctx.Input.Param(":cerrada") != "1"
+	v, err := vigenciahelper.GetCierre(vigencia, areaf, cerrada)
 	if err != nil {
 		logs.Error(err)
 		c.Data["system"] = err
