@@ -148,3 +148,23 @@ func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVig
 
 	c.ServeJSON()
 }
+
+// GetOneModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
+// @Title GetOneModificacionPresupuestalByVigenciaAndCG
+// @Description get all objects
+// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Failure 403 :objectId is empty
+// @router get_one/:vigencia/:CG/:UUID [get]
+func (c *ModificacionPresupuestalController) GetOneModificacionPresupuestalByVigenciaAndCG() {
+	vigencia := c.GetString(":vigencia")
+	centroGestor := c.GetString(":CG")
+	UUID := c.GetString(":UUID")
+	var response models.ModificacionPresupuestalResponseDetail
+	row, err := documentopresupuestalmanager.GetOnePresupuestalDocumentFromCRUDByID(vigencia, centroGestor, UUID)
+	if err == nil {
+		response = modificacionpresupuestalhelper.FormatDocumentoPresupuestalToModificacion(row)
+	}
+	c.Data["json"] = commonhelper.DefaultResponse(200, err, response)
+
+	c.ServeJSON()
+}
