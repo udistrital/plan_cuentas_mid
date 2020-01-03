@@ -113,6 +113,8 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 	}
 	if modificacionPresupuestalData.Afectation != nil {
 		modificacionPresupuestalData.Data = &models.ModificacionPresupuestalReceiverDetail{}
+		modificacionPresupuestalData.Data.CentroGestor = cgStr
+
 		documentoPresupuestalDataFormated := modificacionpresupuestalhelper.ConvertModificacionToDocumentoPresupuestal(modificacionPresupuestalData)
 		afectation = movimientohelper.FormatDataForMovimientosMongoAPI(documentoPresupuestalDataFormated.AfectacionMovimiento...)
 	}
