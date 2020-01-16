@@ -3,17 +3,22 @@ package modificacionpresupuestalhelper
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
+	"github.com/udistrital/plan_cuentas_mid/managers"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/formatdata"
 )
 
 func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresupuestalReceiver) (dataFormated models.DocumentoPresupuestal) {
 	var movimientos []models.Movimiento
-	currDate := time.Now()
+	vigenciaManager := managers.VigenciaManager{}
+	// currDate := time.Now()
 	dataFormated.Tipo = "modificacion_presupuestal"
-	dataFormated.Vigencia = currDate.Year()
+	currVigencia, err := vigenciaManager.GetCurrentActiveVigencia(modData.Data.CentroGestor)
+	if err != nil {
+		panic(err.Error())
+	}
+	dataFormated.Vigencia = currVigencia
 	dataFormated.CentroGestor = modData.Data.CentroGestor
 	for _, afectation := range modData.Afectation {
 		movimiento := models.Movimiento{}
