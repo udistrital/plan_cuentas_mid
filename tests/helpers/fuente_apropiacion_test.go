@@ -3,6 +3,8 @@ package test
 import (
 	fuenteapropiacionhelper "github.com/udistrital/plan_cuentas_mid/helpers/fuenteApropiacionHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
+	"github.com/udistrital/utils_oas/formatdata"
+
 	"reflect"
 	"testing"
 	"time"
@@ -84,6 +86,31 @@ func TestConvertModificacionToDocumentoPresupuestal(t *testing.T) {
 		&testModificacionReciever)
 
 	testOutput := fuenteapropiacionhelper.ConvertModificacionToDocumentoPresupuestal(testData)
-	t.Log(reflect.TypeOf(testOutput))
-	//if reflect.TypeOf(testData) == ""
+	response := reflect.TypeOf(testOutput)
+	var testPrueba models.DocumentoPresupuestal
+	err := formatdata.StructValidation(testOutput)
+	if response == reflect.TypeOf(testPrueba) && len(err) == 1 {
+		t.Logf("ConvertModificacionToDocumentoPresupuestal test Success, expected models.DocumentoPreupuestal, got %v", response)
+	} else {
+		t.Errorf("ConvertModificacionToDocumentoPresupuestal Fail, expected models.DocumentoPreupuestal, got %v", response)
+		t.Error(err)
+	}
+}
+
+func TestFormatDataMovimientoExterno(t *testing.T) {
+	var testId []int
+
+	testId = append(testId, 1, 2, 3, 4)
+
+	testOutput := fuenteapropiacionhelper.FormatDataMovimientoExterno(testId, map[string]interface{}{"valor": 1},
+		map[string]interface{}{"valor": 2},
+		map[string]interface{}{"valor": 3},
+		map[string]interface{}{"valor": 4})
+	if len(testOutput) > 0 {
+		t.Logf("TestFormatDataMovimientoExterno Success!!")
+	} else {
+
+		t.Errorf("TestFormatDataMovimientoExterno Fail!!")
+	}
+
 }
