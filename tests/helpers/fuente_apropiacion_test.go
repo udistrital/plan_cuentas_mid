@@ -114,3 +114,49 @@ func TestFormatDataMovimientoExterno(t *testing.T) {
 	}
 
 }
+
+func TestConcatenarFuente(t *testing.T) {
+	var testFuenteFinanciamiento models.FuenteFinanciamiento
+	var testTipoFuente models.TipoFuenteFinanciamiento
+	var testApropiacion models.Apropiacion
+	var testRubro models.Rubro
+	var testEstadoApropiacion models.EstadoApropiacion
+
+	testRubro.Id = 1
+	testRubro.Organizacion = 1
+	testRubro.Codigo = "test"
+	testRubro.Descripcion = "test"
+	testRubro.UnidadEjecutora = "test"
+	testRubro.Nombre = "test"
+
+	testEstadoApropiacion.Id = 1
+	testEstadoApropiacion.Nombre = "test"
+	testEstadoApropiacion.Descripcion = "test"
+
+	testApropiacion.Id = 1
+	testApropiacion.Vigencia = 2019
+	testApropiacion.UnidadEjecutora = 1
+	testApropiacion.Valor = 1
+	testApropiacion.RubroId = &testRubro
+	testApropiacion.EstadoApropiacionId = &testEstadoApropiacion
+
+	testTipoFuente.Id = 1
+	testTipoFuente.Nombre = "test"
+	testTipoFuente.Descripcion = "test"
+
+	testFuenteFinanciamiento.Id = 1
+	testFuenteFinanciamiento.Nombre = "test"
+	testFuenteFinanciamiento.Descripcion = "test"
+	testFuenteFinanciamiento.Codigo = "test"
+	testFuenteFinanciamiento.TipoFuenteFinanciamiento = &testTipoFuente
+
+	testOutput := fuenteapropiacionhelper.ConcatenarFuente(&testFuenteFinanciamiento,
+		map[string]interface{}{"Apropiacion": testApropiacion})
+
+	if len(testOutput) > 0 {
+		t.Log("TestConcatenarFuente Success!!")
+	} else {
+		t.Error("TestConcatenarFuente Fail!!")
+		t.Fail()
+	}
+}
