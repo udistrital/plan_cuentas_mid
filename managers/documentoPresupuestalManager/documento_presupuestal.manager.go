@@ -42,3 +42,19 @@ func GetAllPresupuestalDocumentFromCRUDByMovParentUUID(vigencia, cg, docUUID str
 	}
 	return rows, err
 }
+
+func GetOnePresupuestalDocumentFromCRUDByID(vigencia, cg, UUID string) (models.DocumentoPresupuestal, error) {
+	var row models.DocumentoPresupuestal
+	var err error
+	var responseData map[string]interface{}
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("%s", r)
+		}
+	}()
+	err = request.GetJson(documentoPrespuestalURI+"documento/"+vigencia+"/"+cg+"/"+UUID, &responseData)
+	if err == nil {
+		err = formatdata.FillStruct(responseData["Body"], &row)
+	}
+	return row, err
+}

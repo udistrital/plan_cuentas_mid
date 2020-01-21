@@ -613,6 +613,23 @@
                 }
             }
         },
+        "/modificacion_apropiacionget_one/{vigencia}/{CG}/{UUID}": {
+            "get": {
+                "tags": [
+                    "modificacion_apropiacion"
+                ],
+                "description": "get all objects",
+                "operationId": "ModificacionPresupuestalController.GetOneModificacionPresupuestalByVigenciaAndCG",
+                "responses": {
+                    "200": {
+                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
         "/movimiento/": {
             "post": {
                 "tags": [

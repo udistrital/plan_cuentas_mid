@@ -1,5 +1,16 @@
 # PLAN CUENTAS MID
-Middleware para modelo de negocio plan_cuentas, el proyecto está escrito en el lenguaje Go, generado mediante el **[framework beego](https://beego.me/)**
+Middleware para modelo de negocio plan_cuentas, el proyecto está escrito en el lenguaje Go, generado mediante el 
+Middleware escrito en go, generado mediante el **[framework beego](https://beego.me/)**, que conecta distintos clientes con las capas de acceso a datos correspondientes para la gestión de la información del sistemas financiero, la presente api manipula los datos obtenidos de diferentes bases de datos, relacionales y no relacionales, para que sean consumidos por los clientes, de forma que toda la lógica en el tratamiento de los datos solo se haga desde esta api.
+
+Clientes que consumen esta api:
+- [Presupuesto](https://github.com/udistrital/presupuesto_cliente)
+- [Necesidades](https://github.com/udistrital/necesidades_cliente)
+- [Contabilidad](https://github.com/udistrital/contabilidad_cliente)
+
+APIs CRUD consumidas por esta api:
+- [Plan cunetas mongo](https://github.com/udistrital/plan_cuentas_mongo_crud)
+- [Necesidades Crud](https://github.com/udistrital/necesidades_crud)
+
 ***
 ### Arquitectura del proyecto
 ![](arquitectura.png)

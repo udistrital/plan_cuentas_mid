@@ -56,32 +56,42 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresu
 func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.DocumentoPresupuestal) []models.ModificacionPresupuestalResponseDetail {
 	var finalData []models.ModificacionPresupuestalResponseDetail
 	for _, row := range rows {
-		var modificacion models.ModificacionPresupuestalResponseDetail
-		var dataMap map[string]interface{}
 
 		defer func() {
 			if r := recover(); r != nil {
 				// do nothing ...
 				fmt.Println("error", r)
 			}
-		}()
-		formatdata.FillStruct(row.Data, &dataMap)
 
-		modificacion.DocumentNumber, _ = dataMap["numero_documento"].(string)
-		modificacion.DocumentDate, _ = dataMap["fecha_documento"].(string)
-		modificacion.DocumentType, _ = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
-		modificacion.CentroGestor = row.CentroGestor
-		modificacion.Descripcion, _ = dataMap["descripcion_documento"].(string)
-		modificacion.OrganismoEmisor, _ = dataMap["organismo_emisor"].(string)
-		modificacion.RegistrationDate = row.FechaRegistro
-		modificacion.ID = row.ID
-		modificacion.Vigencia = row.Vigencia
-		modificacion.ValorActual = row.ValorActual
-		modificacion.ValorInicial = row.ValorInicial
+		}()
+
+		modificacion := FormatDocumentoPresupuestalToModificacion(row)
 
 		finalData = append(finalData, modificacion)
 	}
 	return finalData
+}
+
+func FormatDocumentoPresupuestalToModificacion(row models.DocumentoPresupuestal) models.ModificacionPresupuestalResponseDetail {
+	var modificacion models.ModificacionPresupuestalResponseDetail
+	var dataMap map[string]interface{}
+
+	formatdata.FillStruct(row.Data, &dataMap)
+
+	modificacion.DocumentNumber, _ = dataMap["numero_documento"].(string)
+	modificacion.DocumentDate, _ = dataMap["fecha_documento"].(string)
+	modificacion.DocumentType, _ = dataMap["tipo_documento"].(map[string]interface{})["Nombre"].(string)
+	modificacion.CentroGestor = row.CentroGestor
+	modificacion.Descripcion, _ = dataMap["descripcion_documento"].(string)
+	modificacion.OrganismoEmisor, _ = dataMap["organismo_emisor"].(string)
+	modificacion.RegistrationDate = row.FechaRegistro
+	modificacion.ID = row.ID
+	modificacion.Vigencia = row.Vigencia
+	modificacion.ValorActual = row.ValorActual
+	modificacion.ValorInicial = row.ValorInicial
+
+	return modificacion
+
 }
 
 func FormatDocumentoPresupuestalResponseToAnulationDetail(rows []models.DocumentoPresupuestal) []models.AnulationDetail {
