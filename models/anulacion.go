@@ -1,5 +1,6 @@
 package models
 
+// AnulationDetail ...
 type AnulationDetail struct {
 	Consecutivo   int
 	Tipo          string

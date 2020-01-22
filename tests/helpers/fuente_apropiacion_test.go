@@ -98,11 +98,11 @@ func TestConvertModificacionToDocumentoPresupuestal(t *testing.T) {
 }
 
 func TestFormatDataMovimientoExterno(t *testing.T) {
-	var testId []int
+	var testID []int
 
-	testId = append(testId, 1, 2, 3, 4)
+	testID = append(testID, 1, 2, 3, 4)
 
-	testOutput := fuenteapropiacionhelper.FormatDataMovimientoExterno(testId, map[string]interface{}{"valor": 1},
+	testOutput := fuenteapropiacionhelper.FormatDataMovimientoExterno(testID, map[string]interface{}{"valor": 1},
 		map[string]interface{}{"valor": 2},
 		map[string]interface{}{"valor": 3},
 		map[string]interface{}{"valor": 4})

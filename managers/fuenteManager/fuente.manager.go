@@ -9,7 +9,7 @@ import (
 	"github.com/udistrital/utils_oas/responseformat"
 )
 
-// DeleteFuente ... Delete fuente data in plan_cuentas_mongo.
+// DeleteFuenteFinanciamiento ... Delete fuente data in plan_cuentas_mongo.
 func DeleteFuenteFinanciamiento(objectID string, cg string, vigencia string) (response responseformat.Response, err error) {
 
 	if err = request.SendJson(beego.AppConfig.String("financieraMongoCurdApiService")+"fuente_financiamiento/"+objectID+"/"+vigencia+"/"+cg, "DELETE", &response, ""); err == nil {

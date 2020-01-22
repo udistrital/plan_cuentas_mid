@@ -72,6 +72,7 @@ func DeleteMovimientoAPICrud(id ...int) (response responseformat.Response, err e
 	return response, err
 }
 
+// SimualteAfectationAPIMongo ...
 func SimualteAfectationAPIMongo(cg, vigencia string, data ...models.MovimientoMongo) (response map[string]interface{}, err error) {
 	defer func() {
 		if r := recover(); r != nil {

@@ -1,5 +1,6 @@
 package models
 
+// MetaRubroNecesidad ...
 type MetaRubroNecesidad struct {
 	Id               int                    `json:"Id"`
 	MetaId           string                 `json:"MetaId"`
