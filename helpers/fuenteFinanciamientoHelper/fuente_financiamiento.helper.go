@@ -36,18 +36,3 @@ func RegistrarFuenteHelper(fuenteFinancimiento *models.FuenteFinanciamiento) (id
 	idFuente = fuenteRegistrada.Id
 	return
 }
-
-// RegistrarFuenteMongo registra una fuente de financiamiento en mongo
-func RegistrarFuenteMongo(fuenteFinancimiento *models.FuenteFinanciamiento) {
-	// if err := request.SendJson(URLMONGO, "POST", &res, &mongoData); err != nil {
-	// 	log.Println("mongoData: ", mongoData["Id"])
-	// 	fuenteFinancimiento.Id = mongoData["Id"].(int)
-	// 	eliminarFuente(*fuenteFinancimiento)
-	// }
-}
-
-func eliminarFuente(fuenteFinanciamiento models.FuenteFinanciamiento) {
-	if err := request.SendJson(URLCRUD, "DELETE", nil, &fuenteFinanciamiento); err == nil {
-		log.Panicln(err.Error())
-	}
-}

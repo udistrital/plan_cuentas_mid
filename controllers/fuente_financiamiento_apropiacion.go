@@ -185,8 +185,8 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarFuenteConApropiacio
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err == nil {
 
-		if err := formatdata.FillStruct(v["FuenteFinanciamiento"], &fuenteFinanciamiento); err != nil {
-			log.Panicln(err.Error())
+		if errFill := formatdata.FillStruct(v["FuenteFinanciamiento"], &fuenteFinanciamiento); errFill != nil {
+			log.Panicln(errFill.Error())
 		}
 
 		// Primero registra la fuente
@@ -194,8 +194,8 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarFuenteConApropiacio
 		// Le asigna el id registrado
 		fuenteFinanciamiento.Id = idFuente
 
-		if err := formatdata.FillStruct(v["FuentesFinanciamientoApropiacion"], &fuentesFinanciamientoApropiacion); err != nil {
-			log.Panicln(err.Error())
+		if errFill2 := formatdata.FillStruct(v["FuentesFinanciamientoApropiacion"], &fuentesFinanciamientoApropiacion); errFill2 != nil {
+			log.Panicln(errFill2.Error())
 		}
 		/*
 		 Apartir del atributo FuentesFinanciamientoApropiacion del json enviado como parámetro de esta petición, concatena todos

@@ -10,26 +10,26 @@ import (
 	"github.com/udistrital/utils_oas/request"
 )
 
-// ExpedirCRP init necesidad
+// ExpedirCrp init necesidad
 func ExpedirCrp(id string) (crp map[string]interface{}, outErr map[string]interface{}) {
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP/" + id
 	var resMongo = make(map[string]interface{})
 	var solicitud = make(map[string]interface{})
-	if err := request.GetJson(urlmongo, &resMongo); err == nil {
+	var err, errPut error
+	if err = request.GetJson(urlmongo, &resMongo); err == nil {
 		solicitud = resMongo["Body"].(map[string]interface{})
 		crp = make(map[string]interface{})
 		solicitud["estado"] = models.GetEstadoExpedidoCrp()
-		if err := request.SendJson(urlmongo, "PUT", &crp, &solicitud); err == nil {
+		if errPut = request.SendJson(urlmongo, "PUT", &crp, &solicitud); errPut == nil {
 			crp = solicitud
 			return crp, nil
-		} else {
-			outErr = map[string]interface{}{"Function": "ExpedirCrp", "Error": err.Error()}
-			return nil, outErr
 		}
-	} else {
-		outErr = map[string]interface{}{"Function": "ExpedirCrp", "Error": err.Error()}
+		outErr = map[string]interface{}{"Function": "ExpedirCrp", "Error": errPut.Error()}
 		return nil, outErr
+
 	}
+	outErr = map[string]interface{}{"Function": "ExpedirCrp", "Error": err.Error()}
+	return nil, outErr
 }
 
 // SolicitarCRP init necesidad
@@ -70,7 +70,7 @@ func SolicitarCRP(solCrp map[string]interface{}) (solicitud map[string]interface
 	return
 }
 
-// GetCosecutivoSolicitudCRP Get Cosecutivo Solicitud crp
+// GetCosecutivoSolicitudCRP ...get Cosecutivo Solicitud crp
 func GetConsecutivoSolicitudCRP() (consecutivo int) {
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP/"
 	fmt.Println(urlmongo)
@@ -85,7 +85,7 @@ func GetConsecutivoSolicitudCRP() (consecutivo int) {
 	return consecutivo
 }
 
-// GetCosecutivoSolicitudCRP Get Cosecutivo Solicitud crp
+// GetConsecutivoCRP Get Cosecutivo Solicitud crp
 func GetConsecutivoCRP() (consecutivo int) {
 	total := GetConsecutivoSolicitudCRP()
 	urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "solicitudesCRP"
@@ -93,7 +93,7 @@ func GetConsecutivoCRP() (consecutivo int) {
 	var solicitudes []interface{}
 	if err := request.GetJson(urlmongo, &resMongo); err == nil {
 		solicitudes = resMongo["Body"].([]interface{})
-		for k, _ := range solicitudes {
+		for k := range solicitudes {
 			if solicitudes[k].(map[string]interface{})["infoCrp"] == nil {
 				total = total - 1
 			}
@@ -103,7 +103,7 @@ func GetConsecutivoCRP() (consecutivo int) {
 	return consecutivo
 }
 
-// GetFullCRP...
+// GetFullCRP ...
 func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string]interface{}) {
 	var (
 		urlcrud           string
@@ -133,7 +133,7 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 				// consulta los CDP expedidos a los que van ligados esas solicitudes dea CRP
 				urlcrud = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal/" + strVig + "/1?query=consecutivo:" + strAux + ",tipo:cdp"
 
-				if response2, err := request.GetJsonTest(urlcrud, &auxObjCdp); err == nil {
+				if response2, errCdp := request.GetJsonTest(urlcrud, &auxObjCdp); errCdp == nil {
 					objTmpCrp["solicitudCrp"] = solct["consecutivo"]
 					auxCdpInterface := auxObjCdp["Body"]
 
@@ -156,10 +156,10 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 
 								// Consulta necesidad
 								bodyNecesidad := resNecesidad["Body"].(map[string]interface{})
-								necesidadId := bodyNecesidad["necesidad"]
+								necesidadID := bodyNecesidad["necesidad"]
 
-								strnecesidadId := fmt.Sprintf("%v", necesidadId)
-								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadId
+								strnecesidadID := fmt.Sprintf("%v", necesidadID)
+								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadID
 								if response4, err := request.GetJsonTest(urlcrud, &objNecesidad); err == nil {
 									tipoFinanciacion := objNecesidad["TipoFinanciacionNecesidadId"].(map[string]interface{})
 									logs.Debug(objNecesidad["TipoFinanciacionNecesidadId"])
