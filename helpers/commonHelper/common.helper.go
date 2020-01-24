@@ -48,6 +48,7 @@ func ToMap(in interface{}, tag string) (map[string]interface{}, error) {
 	return out, err
 }
 
+// FillStructBson ...
 func FillStructBson(in interface{}, out interface{}) {
 	var parcialOut interface{}
 	j, _ := bson.Marshal(in)
@@ -58,6 +59,7 @@ func FillStructBson(in interface{}, out interface{}) {
 	formatdata.FillStructP(parcialOut, out)
 }
 
+// FillArrBson ...
 func FillArrBson(inStructArr, outStructArr interface{}) {
 	inStructArrData, err := bson.Marshal(inStructArr)
 	if err != nil {
@@ -67,6 +69,7 @@ func FillArrBson(inStructArr, outStructArr interface{}) {
 	raw.Unmarshal(outStructArr)
 }
 
+// ArrToMapByKey ...
 func ArrToMapByKey(keyValue string, arrData ...interface{}) map[string]interface{} {
 	mapStruct := make(map[string]interface{})
 	for _, element := range arrData {
@@ -77,6 +80,7 @@ func ArrToMapByKey(keyValue string, arrData ...interface{}) map[string]interface
 	return mapStruct
 }
 
+// ConvertToInterfaceArr ...
 func ConvertToInterfaceArr(data interface{}) []interface{} {
 	var arrData []interface{}
 	formatdata.FillStructP(data, &arrData)
@@ -87,6 +91,7 @@ func ConvertToInterfaceArr(data interface{}) []interface{} {
 	return s
 }
 
+// DefaultResponse ...
 func DefaultResponse(code int, err error, info interface{}) map[string]interface{} {
 	response := make(map[string]interface{})
 

@@ -82,9 +82,10 @@ func (c *RubroController) EliminarRubro() {
 // @router /ArbolRubros/:unidadEjecutora [get]
 func (c *RubroController) ArbolRubros() {
 	var response []map[string]interface{}
+	var urlmongo string
 	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
 	rama := c.GetString("rama")
-	urlmongo := ""
+	urlmongo = ""
 	defer func() {
 		if r := recover(); r != nil {
 			beego.Error(r)

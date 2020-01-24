@@ -94,6 +94,7 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 
 }
 
+// DeleteRubro ...
 func DeleteRubro(id int) map[string]interface{} {
 
 	idStr := strconv.Itoa(id)

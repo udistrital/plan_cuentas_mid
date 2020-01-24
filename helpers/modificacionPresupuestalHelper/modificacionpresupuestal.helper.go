@@ -9,6 +9,7 @@ import (
 	"github.com/udistrital/utils_oas/formatdata"
 )
 
+// ConvertModificacionToDocumentoPresupuestal ...
 func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresupuestalReceiver) (dataFormated models.DocumentoPresupuestal) {
 	var movimientos []models.Movimiento
 	vigenciaManager := managers.VigenciaManager{}
@@ -53,6 +54,7 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionPresu
 	return
 }
 
+// FormatDocumentoPresupuestalResponseToModificacionDetail ...
 func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.DocumentoPresupuestal) []models.ModificacionPresupuestalResponseDetail {
 	var finalData []models.ModificacionPresupuestalResponseDetail
 	for _, row := range rows {
@@ -72,11 +74,14 @@ func FormatDocumentoPresupuestalResponseToModificacionDetail(rows []models.Docum
 	return finalData
 }
 
+// FormatDocumentoPresupuestalToModificacion ...
 func FormatDocumentoPresupuestalToModificacion(row models.DocumentoPresupuestal) models.ModificacionPresupuestalResponseDetail {
 	var modificacion models.ModificacionPresupuestalResponseDetail
 	var dataMap map[string]interface{}
 
-	formatdata.FillStruct(row.Data, &dataMap)
+	if err := formatdata.FillStruct(row.Data, &dataMap); err != nil {
+		panic(err.Error())
+	}
 
 	modificacion.DocumentNumber, _ = dataMap["numero_documento"].(string)
 	modificacion.DocumentDate, _ = dataMap["fecha_documento"].(string)
@@ -94,6 +99,7 @@ func FormatDocumentoPresupuestalToModificacion(row models.DocumentoPresupuestal)
 
 }
 
+// FormatDocumentoPresupuestalResponseToAnulationDetail ...
 func FormatDocumentoPresupuestalResponseToAnulationDetail(rows []models.DocumentoPresupuestal) []models.AnulationDetail {
 	var finalData []models.AnulationDetail
 	for _, row := range rows {
@@ -106,7 +112,9 @@ func FormatDocumentoPresupuestalResponseToAnulationDetail(rows []models.Document
 				fmt.Println("error", r)
 			}
 		}()
-		formatdata.FillStruct(row.Data, &dataMap)
+		if err := formatdata.FillStruct(row.Data, &dataMap); err != nil {
+			panic(err.Error())
+		}
 		anulacion.Consecutivo = row.Consecutivo
 		anulacion.Tipo, _ = dataMap["tipo_anulacion"].(string)
 		anulacion.FechaRegistro = row.FechaRegistro

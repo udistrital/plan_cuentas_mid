@@ -9,12 +9,14 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+// TipoFuenteFinanciamiento ...
 type TipoFuenteFinanciamiento struct {
 	Id          int    `orm:"column(id);pk"`
 	Nombre      string `orm:"column(nombre)"`
 	Descripcion string `orm:"column(descripcion);null"`
 }
 
+// TableName ...
 func (t *TipoFuenteFinanciamiento) TableName() string {
 	return "tipo_fuente_financiamiento"
 }
@@ -120,7 +122,7 @@ func GetAllTipoFuenteFinanciamiento(query map[string]string, fields []string, so
 	return nil, err
 }
 
-// UpdateTipoFuenteFinanciamiento updates TipoFuenteFinanciamiento by Id and returns error if
+// UpdateTipoFuenteFinanciamientoById updates TipoFuenteFinanciamiento by Id and returns error if
 // the record to be updated doesn't exist
 func UpdateTipoFuenteFinanciamientoById(m *TipoFuenteFinanciamiento) (err error) {
 	o := orm.NewOrm()

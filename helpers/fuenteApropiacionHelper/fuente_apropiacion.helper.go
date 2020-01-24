@@ -29,27 +29,29 @@ func GetPlanAdquisicionbyFuente(vigencia string, id string) (fuente map[string]m
 	if err := request.GetJsonWSO2(requestPath, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": err.Error()}
 		return nil, outErr
-	} else {
-		if res["Fault"] != nil {
-			outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": res}
-			return nil, outErr
-		} else {
-			fuente := AddTotal(res)
-			return fuente, nil
-
-		}
 	}
+	if res["Fault"] != nil {
+		outErr = map[string]interface{}{"Function": "GetPlanAdquisicionbyFuente", "Error": res}
+		return nil, outErr
+	}
+	fuente = AddTotal(res)
+	return fuente, nil
 }
 
 // AddTotal suma los totales de las fuentes de financiamiento
 func AddTotal(res map[string]map[string]interface{}) (newres map[string]map[string]interface{}) {
 
 	var totalValue float64
-	formatdata.JsonPrint(len(res["fuente_financiamiento"]["rubros"].([]interface{})))
+	if err := formatdata.JsonPrint(len(res["fuente_financiamiento"]["rubros"].([]interface{}))); err != nil {
+		log.Panicln(err.Error())
+	}
 	for _, item := range res["fuente_financiamiento"]["rubros"].([]interface{}) {
-		floatValue, _ := strconv.ParseFloat(item.(map[string]interface{})["valor_fuente_financiamiento"].(string), 64)
-		item.(map[string]interface{})["valor_fuente_financiamiento"] = strconv.FormatFloat(floatValue, 'f', 0, 64)
-		totalValue = totalValue + floatValue
+		if floatValue, err := strconv.ParseFloat(item.(map[string]interface{})["valor_fuente_financiamiento"].(string), 64); err == nil {
+			item.(map[string]interface{})["valor_fuente_financiamiento"] = strconv.FormatFloat(floatValue, 'f', 0, 64)
+			totalValue = totalValue + floatValue
+		} else {
+			panic(err.Error())
+		}
 	}
 	res["fuente_financiamiento"]["total_saldo_fuente"] = strconv.FormatFloat(totalValue, 'f', 0, 64)
 	newres = res
@@ -144,7 +146,7 @@ func RegistrarMultipleMovimientoExterno(data interface{}) (idRegistrados []int) 
 	return
 }
 
-// formatDataMovimientoExterno Establece el formato para utilizar como parámetros en la transacción movimiento_detalle/registrar_multiple
+// FormatDataMovimientoExterno Establece el formato para utilizar como parámetros en la transacción movimiento_detalle/registrar_multiple
 // @param idsFuentes: id de los registros en fuente_financiamiento_apropiacion
 // @param fuenteApropiaciones: la información del atributo FuentesFinanciamientoApropiacion enviado en la petición
 func FormatDataMovimientoExterno(idsFuentes []int, fuenteApropiaciones ...interface{}) (dataArray []map[string]interface{}) {
