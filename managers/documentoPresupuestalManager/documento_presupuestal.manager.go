@@ -11,6 +11,7 @@ import (
 
 var documentoPrespuestalURI = beego.AppConfig.String("financieraMongoCurdApiService") + "documento_presupuestal" + "/"
 
+// GetAllPresupuestalDocumentFromCRUDByType ...
 func GetAllPresupuestalDocumentFromCRUDByType(vigencia, cg, docType string) ([]models.DocumentoPresupuestal, error) {
 	var rows []models.DocumentoPresupuestal
 	var err error
@@ -27,6 +28,7 @@ func GetAllPresupuestalDocumentFromCRUDByType(vigencia, cg, docType string) ([]m
 	return rows, err
 }
 
+// GetAllPresupuestalDocumentFromCRUDByMovParentUUID ...
 func GetAllPresupuestalDocumentFromCRUDByMovParentUUID(vigencia, cg, docUUID string) ([]models.DocumentoPresupuestal, error) {
 	var rows []models.DocumentoPresupuestal
 	var err error
@@ -43,6 +45,7 @@ func GetAllPresupuestalDocumentFromCRUDByMovParentUUID(vigencia, cg, docUUID str
 	return rows, err
 }
 
+// GetOnePresupuestalDocumentFromCRUDByID ...
 func GetOnePresupuestalDocumentFromCRUDByID(vigencia, cg, UUID string) (models.DocumentoPresupuestal, error) {
 	var row models.DocumentoPresupuestal
 	var err error

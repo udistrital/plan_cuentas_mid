@@ -2,11 +2,13 @@ package models
 
 import "time"
 
+// ModificacionPresupuestalReceiver ...
 type ModificacionPresupuestalReceiver struct {
 	Data       *ModificacionPresupuestalReceiverDetail `json:"detail"`
 	Afectation []*ModificacionPresupuestalReceiverAfectation
 }
 
+// ModificacionPresupuestalReceiverDetail ...
 type ModificacionPresupuestalReceiverDetail struct {
 	DocumentNumber  string       `json:"NumeroDocumento" bson:"numero_documento"`
 	DocumentDate    time.Time    `json:"FechaDocumento" bson:"fecha_documento"`
@@ -16,6 +18,7 @@ type ModificacionPresupuestalReceiverDetail struct {
 	OrganismoEmisor string       `json:"OrganismoEmisor" bson:"organismo_emisor"`
 }
 
+// ModificacionPresupuestalReceiverAfectation ...
 type ModificacionPresupuestalReceiverAfectation struct {
 	OriginAcc *Rubro       `json:"CuentaCredito"`
 	TargetAcc *Rubro       `json:"CuentaContraCredito"`
@@ -23,6 +26,7 @@ type ModificacionPresupuestalReceiverAfectation struct {
 	Amount    float64      `json:"Valor"`
 }
 
+// ModificacionPresupuestalResponseDetail ...
 type ModificacionPresupuestalResponseDetail struct {
 	ID               string  `json:"_id" bson:"_id"`
 	DocumentNumber   string  `json:"NumeroDocumento" bson:"numero_documento"`

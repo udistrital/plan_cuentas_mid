@@ -10,6 +10,7 @@ type Movimiento struct {
 	DocumentoPadre             string
 }
 
+// MovimientoProcesoExterno ...
 type MovimientoProcesoExterno struct {
 	Id                       int
 	TipoMovimientoId         *TipoGeneral `validate:"required"`
@@ -17,6 +18,7 @@ type MovimientoProcesoExterno struct {
 	MovimientoProcesoExterno int
 }
 
+// MovimientoMongo ...
 type MovimientoMongo struct {
 	ID            string  `json:"_id" bson:"_id,omitempty"`
 	IDPsql        int     `json:"IDPsql"`

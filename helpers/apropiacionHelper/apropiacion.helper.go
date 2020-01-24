@@ -11,6 +11,8 @@ import (
 	"github.com/udistrital/utils_oas/request"
 )
 
+const success string = "success"
+
 // AddApropiacion ... Add apropiacion to mongo and postgres tr.
 func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 
@@ -50,7 +52,7 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 	}
 
 	if err := request.SendJson(urlcrud, "POST", &res, &data); err == nil {
-		if res["Type"] != nil && res["Type"].(string) == "success" {
+		if res["Type"] != nil && res["Type"].(string) == success {
 			if err = formatdata.FillStruct(data.RubroId, &mongoData); err != nil {
 				panic(err.Error())
 			}
@@ -60,7 +62,7 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 			urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RegistrarApropiacionInicial/" + strconv.Itoa(int(res["Body"].(map[string]interface{})["Vigencia"].(float64)))
 
 			if err = request.SendJson(urlmongo, "POST", &resM, &mongoData); err == nil {
-				if resM["Type"].(string) == "success" {
+				if resM["Type"].(string) == success {
 					body := res["Body"].(map[string]interface{})
 					body["Rubro"] = mongoData
 					res["Body"] = body
@@ -108,23 +110,26 @@ func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) m
 
 		}
 	}()
-	vig, _ := strconv.Atoi(vigStr)
-	aprobFlag := PresupuestoAprobado(vig, int(data["UnidadEjecutora"].(float64)))
-
-	if aprobFlag {
-		beego.Error("Apropiaciones aprobadas")
-		panic(helpers.ExternalAPIErrorMessage())
+	if vig, err := strconv.Atoi(vigStr); err == nil {
+		aprobFlag := PresupuestoAprobado(vig, int(data["UnidadEjecutora"].(float64)))
+		if aprobFlag {
+			beego.Error("Apropiaciones aprobadas")
+			panic(helpers.ExternalAPIErrorMessage())
+		}
+	} else {
+		panic(helpers.InternalErrorMessage())
 	}
 
 	mongoData = data
 
 	urlcrud = beego.AppConfig.String("planCuentasApiService") + "apropiacion/" + "UpdateApropiacionValue/" + idStr + "/" + valStr
 	if err := request.SendJson(urlcrud, "PUT", &res, nil); err == nil {
-		if res["Type"] != nil && res["Type"].(string) == "success" {
-			mongoData["ApropiacionInicial"], _ = strconv.Atoi(valStr)
+		if res["Type"] != nil && res["Type"].(string) == success {
+			var errStr error
+			mongoData["ApropiacionInicial"], errStr = strconv.Atoi(valStr)
 			urlmongo := beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiaciones/RegistrarApropiacionInicial/" + vigStr
-			if err = request.SendJson(urlmongo, "POST", &resM, &mongoData); err == nil {
-				if resM["Type"].(string) != "success" {
+			if err = request.SendJson(urlmongo, "POST", &resM, &mongoData); err == nil && errStr == nil {
+				if resM["Type"].(string) != success {
 					panic(helpers.ExternalAPIErrorMessage())
 				}
 			} else {
@@ -213,6 +218,7 @@ func CompareApropiationNodes(nodesToCompare *map[string]float64, ue, vigencia in
 
 }
 
+// AprobarPresupuesto retorna res siempre y cuando el tipo sea success
 func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface{}) {
 	asignationInfo := map[string]float64{"2": 0.0, "3": 0.0}
 
@@ -220,25 +226,24 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 	aprobFlag := PresupuestoAprobado(vigencia, unidadejecutora)
 	if compareFlag && !aprobFlag {
 		if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion/AprobacionAsignacionInicial"+"?Vigencia="+strconv.Itoa(vigencia)+"&UnidadEjecutora="+strconv.Itoa(unidadejecutora), &res); err == nil {
-			if res["Type"] != nil && res["Type"].(string) == "success" {
+			if res["Type"] != nil && res["Type"].(string) == success {
 				return
-			} else {
-				panic(helpers.ExternalAPIErrorMessage())
 			}
+			panic(helpers.ExternalAPIErrorMessage())
 		}
 	}
 
 	panic(helpers.InternalErrorMessage())
 }
 
+// PresupuestoAprobado retorna true si la apropiacion esta aprobada, retorna falso en caso contrario
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	var res map[string]interface{}
 	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",RubroId.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",EstadoApropiacionId:2", &res); err == nil {
 		if len(res["Body"].([]interface{})) > 0 {
 			return true
-		} else {
-			return false
 		}
+		return false
 	} else {
 		beego.Error(err.Error())
 		panic(helpers.InternalErrorMessage())

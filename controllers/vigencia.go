@@ -11,7 +11,7 @@ type VigenciaController struct {
 	beego.Controller
 }
 
-// ...
+// GetCierreVigencia s...
 // @Title GetCierreVigencia
 // @Description devuelve los objetos del cierre para una vigencia y un area funcional
 // @Param	vigencia		path 	string	true		"vigencia del cierre"
@@ -33,7 +33,7 @@ func (c *VigenciaController) GetCierreVigencia() {
 	c.ServeJSON()
 }
 
-// ...
+// CerrarVigencia ...
 // @Title CerrarVigencia
 // @Description realiza los procesos del cierre para una vigencia y un area funcional
 // @Param	vigencia		path 	string	true		"vigencia del cierre"

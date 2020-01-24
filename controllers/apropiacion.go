@@ -84,10 +84,10 @@ func (c *ApropiacionController) Put() {
 func (c *ApropiacionController) ArbolApropiaciones() {
 
 	var response []map[string]interface{}
+	var urlmongo string
 	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
 	vigenciaStr := c.Ctx.Input.Param(":vigencia")
 	rama := c.GetString("rama")
-	urlmongo := ""
 	defer func() {
 		if r := recover(); r != nil {
 			beego.Error(r)
@@ -119,6 +119,7 @@ func (c *ApropiacionController) SaldoApropiacion() {
 		unidadEParam  int
 		vigenciaParam int
 		err           error
+		res           map[string]float64
 	)
 
 	defer func() {
@@ -129,7 +130,7 @@ func (c *ApropiacionController) SaldoApropiacion() {
 		}
 
 	}()
-	res := make(map[string]float64)
+	res = make(map[string]float64)
 	rubroParam = c.GetString(":rubro")
 	if unidadEParam, err = c.GetInt(":unidadEjecutora"); err != nil {
 		panic(err.Error())

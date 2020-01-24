@@ -11,8 +11,10 @@ import (
 	"github.com/udistrital/utils_oas/responseformat"
 )
 
+// VigenciaManager ...
 type VigenciaManager struct{}
 
+// GetCurrentActiveVigencia ...
 func (m *VigenciaManager) GetCurrentActiveVigencia(areaFuncional string) (vigencia int, err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -34,9 +36,10 @@ func (m *VigenciaManager) GetCurrentActiveVigencia(areaFuncional string) (vigenc
 			err = errors.New(errMessage)
 			logs.Error(err.Error())
 		} else {
-			formatdata.JsonPrint(response)
-			vigenciaMap := response.Body.([]interface{})[0].(map[string]interface{})
-			vigencia = int(vigenciaMap["valor"].(float64))
+			if err := formatdata.JsonPrint(response); err == nil {
+				vigenciaMap := response.Body.([]interface{})[0].(map[string]interface{})
+				vigencia = int(vigenciaMap["valor"].(float64))
+			}
 		}
 
 	}
