@@ -1,6 +1,5 @@
-# PLAN CUENTAS MID
-Middleware para modelo de negocio plan_cuentas, el proyecto está escrito en el lenguaje Go, generado mediante el 
-Middleware escrito en go, generado mediante el **[framework beego](https://beego.me/)**, que conecta distintos clientes con las capas de acceso a datos correspondientes para la gestión de la información del sistemas financiero, la presente api manipula los datos obtenidos de diferentes bases de datos, relacionales y no relacionales, para que sean consumidos por los clientes, de forma que toda la lógica en el tratamiento de los datos solo se haga desde esta api.
+# plan_cuentas_mid
+Middleware para modelo de negocio plan_cuentas, proporciona a distintos clientes datos  para la gestión de la información del sistemas financiero, la presente api manipula los datos obtenidos de diferentes bases de datos, relacionales y no relacionales.
 
 Clientes que consumen esta api:
 - [Presupuesto](https://github.com/udistrital/presupuesto_cliente)
@@ -11,45 +10,48 @@ APIs CRUD consumidas por esta api:
 - [Plan cunetas mongo](https://github.com/udistrital/plan_cuentas_mongo_crud)
 - [Necesidades Crud](https://github.com/udistrital/necesidades_crud)
 
-***
-### Arquitectura del proyecto
-![](arquitectura.png)
-## Opciones de instalación 
-> ### En Ambiente Dockerizado :whale:
 
-**para usar esta opcion es necesario contar con [DOCKER](https://docs.docker.com/) y [DOCKER-COMPOSE](https://docs.docker.com/compose/) en cualquier SO compatible**
+## Especificaciones Técnicas
 
-- Clonar el proyecto de github y ubicarse en la carpeta del proyecto:
+### Variables de Entorno
+
 ```shell
+# Ejemplo que se debe actualizar acorde al proyecto
+FINANCIERA_MONGO_CRUD_PORT = [descripción]
+FINANCIERA_MONGO_CRUD_DB_URL = [descripción]
+```
+
+### Instalación
+
+***Requisitos:***
+* [DOCKER](https://docs.docker.com/)
+* [DOCKER-COMPOSE](https://docs.docker.com/compose/)
+
+```shell
+# Clonar el proyecto de github y ubicarse en la carpeta del proyecto:
 git clone https://github.com/udistrital/plan_cuentas_mid.git
+
+# Ingresar al directorio
 cd plan_cuentas_mid
-```
 
-- Correr el proyecto por docker compose 
-1. Crear red de contenedores denominada back_end con el comando (si ya esta creada no es necesario crearla):
-
-```sh
+#Crear red de contenedores denominada back_end con el comando (si ya esta creada no es necesario crearla):
 docker network create back_end
-```
 
-2. Para construir y correr los contenedores:
-```sh
+# Construir y correr los contenedores
 docker-compose up --build
-```
-- Bajar los servicios de los contenedores
-```sh
+
+#Bajar los servicios de los contenedores
 docker-compose down
-```
-- Subir los servicios de los contenedores ya construidos previamente
-```sh
+
+# Subir los servicios de los contenedores ya construidos previamente
 docker-compose up
 ```
-# Archivos para variables de entorno: 
 
-- para definir puertos, dns y configuraciones internas dentro del archivo **.env**
-- para definir conexiones externas a otros apis se debe crear el archivo **custom.env** en la raiz del proyecto
+### Arquitectura del proyecto
+![](arquitectura.png)
 
-# Licencia
+
+## Licencia
 [licencia](LICENSE)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
