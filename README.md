@@ -1,32 +1,42 @@
 # plan_cuentas_mid
 Middleware para modelo de negocio plan_cuentas, proporciona a distintos clientes datos  para la gestión de la información del sistemas financiero, la presente api manipula los datos obtenidos de diferentes bases de datos, relacionales y no relacionales.
 
-Clientes que consumen esta api:
-- [Presupuesto](https://github.com/udistrital/presupuesto_cliente)
-- [Necesidades](https://github.com/udistrital/necesidades_cliente)
-- [Contabilidad](https://github.com/udistrital/contabilidad_cliente)
-
-APIs CRUD consumidas por esta api:
-- [Plan cunetas mongo](https://github.com/udistrital/plan_cuentas_mongo_crud)
-- [Necesidades Crud](https://github.com/udistrital/necesidades_crud)
-
 
 ## Especificaciones Técnicas
 
-### Variables de Entorno
+### Tecnologías Implementadas y Versiones
+* [Golang](https://github.com/udistrital/introduccion_oas/blob/master/instalacion_de_herramientas/golang.md)
+* [BeeGo](https://github.com/udistrital/introduccion_oas/blob/master/instalacion_de_herramientas/beego.md)
+* [Docker](https://docs.docker.com/engine/install/ubuntu/)
+* [Docker Compose](https://docs.docker.com/compose/)
 
+### Variables de Entorno
 ```shell
 # Ejemplo que se debe actualizar acorde al proyecto
 FINANCIERA_MONGO_CRUD_PORT = [descripción]
 FINANCIERA_MONGO_CRUD_DB_URL = [descripción]
 ```
 
-### Instalación
+### Ejecución del Proyecto
+```shell
+#1. Obtener el repositorio con Go
+go get github.com/udistrital/plan_cuentas_mid
 
-***Requisitos:***
-* [DOCKER](https://docs.docker.com/)
-* [DOCKER-COMPOSE](https://docs.docker.com/compose/)
+#2. Moverse a la carpeta del repositorio
+cd $GOPATH/src/github.com/udistrital/plan_cuentas_mid
 
+# 3. Moverse a la rama **develop**
+git pull origin develop && git checkout develop
+
+# 4. alimentar todas las variables de entorno que utiliza el proyecto.
+FINANCIERA_MONGO_CRUD_PORT=8080 FINANCIERA_MONGO_CRUD_DB_URL=127.0.0.1:27017 FINANCIERA_MONGO_CRUD_SOME_VARIABLE=some_value bee run
+```
+### Ejecución Dockerfile
+```shell
+# docker build --tag=covid-api . --no-cache
+# docker run -p 80:80 covid-api
+```
+### Ejecución docker-compose
 ```shell
 # Clonar el proyecto de github y ubicarse en la carpeta del proyecto:
 git clone https://github.com/udistrital/plan_cuentas_mid.git
@@ -47,13 +57,32 @@ docker-compose down
 docker-compose up
 ```
 
-### Arquitectura del proyecto
+## Arquitectura
 ![](arquitectura.png)
 
+## Dependencias Utilizadas
+
+**CLIENTES**
+- [presupuesto_cliente](https://github.com/udistrital/presupuesto_cliente)
+- [necesidades_cliente](https://github.com/udistrital/necesidades_cliente)
+- [contabilidad_cliente](https://github.com/udistrital/contabilidad_cliente)
+
+**API CRUD**
+- [plan_cuentas_mongo_crud](https://github.com/udistrital/plan_cuentas_mongo_crud)
+- [necesidades_crud](https://github.com/udistrital/necesidades_crud)
+
+## Estado CI
+
+| Develop | Relese 0.0.1 | Master |
+| -- | -- | -- |
+| 1 | 2 | 3 |
 
 ## Licencia
-[licencia](LICENSE)
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+[This file is part of plan_cuentas_mid.](LICENSE)
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+plan_cuentas_mid is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (atSara Sampaio your option) any later version.
+
+plan_cuentas_mid is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with plan_cuentas_mid. If not, see https://www.gnu.org/licenses/.
