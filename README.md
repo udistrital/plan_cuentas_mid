@@ -75,7 +75,7 @@ docker-compose up
 
 | Develop | Relese 0.0.1 | Master |
 | -- | -- | -- |
-| 1 | 2 | 3 |
+| [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_cuentas_mid/status.svg?ref=refs/heads/develop)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_cuentas_mid) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_cuentas_mid/status.svg?ref=refs/heads/release/0.0.1)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_cuentas_mid) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_cuentas_mid/status.svg)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_cuentas_mid) |
 
 ## Licencia
 
