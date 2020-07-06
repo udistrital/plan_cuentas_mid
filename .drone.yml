@@ -134,7 +134,7 @@ steps:
         AMBIENTE=prod
         CLUSTER=oas
         ;;
-   esac
+    esac
   - AWS_REGION=us-east-1
   - SERVICE=${DRONE_REPO##udistrital/}_$AMBIENTE
   - MYCONTAINER=oas0/${DRONE_REPO##udistrital/}:${DRONE_COMMIT:0:7}
