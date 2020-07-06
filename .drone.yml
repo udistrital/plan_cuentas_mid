@@ -145,6 +145,9 @@ steps:
   - apt-get install unzip
   - wget https://github.com/Autodesk/go-awsecs/releases/download/v1.1/update-aws-ecs-service-linux-amd64.zip
   - unzip update-aws-ecs-service-linux-amd64.zip -d /go/bin
+  - echo "--\n"
+  - echo $SERVICE
+  - echo "--\n"
   - AWS_ACCESS_KEY_ID=$${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=$${AWS_SECRET_ACCESS_KEY} AWS_REGION=$AWS_REGION
     $GOPATH/bin/update-aws-ecs-service -cluster $CLUSTER -service $SERVICE -container-image $container_name=$MYCONTAINER
   when:
