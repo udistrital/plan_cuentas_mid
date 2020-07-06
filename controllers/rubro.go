@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 
 	"github.com/astaxie/beego"
-	"github.com/manucorporat/try"
 	"github.com/udistrital/plan_cuentas_mid/helpers/rubroHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
 	"github.com/udistrital/utils_oas/request"
@@ -83,25 +81,26 @@ func (c *RubroController) EliminarRubro() {
 // @Failure 403
 // @router /ArbolRubros/:unidadEjecutora [get]
 func (c *RubroController) ArbolRubros() {
-
-	try.This(func() {
-		ueStr := c.Ctx.Input.Param(":unidadEjecutora")
-		rama := c.GetString("rama")
-		urlmongo := ""
-		var res []map[string]interface{}
-		if rama == "" {
-			urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/RaicesArbol/" + ueStr
-		} else {
-			urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/ArbolRubro/" + rama + "/" + ueStr
+	var response []map[string]interface{}
+	var urlmongo string
+	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
+	rama := c.GetString("rama")
+	urlmongo = ""
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
 		}
-		beego.Info("Url ", urlmongo)
-		if err := request.GetJson(urlmongo, &res); err != nil {
-			beego.Error(err.Error())
-			panic("Mongo API Service Error")
-		}
-		c.Data["json"] = res
-	}).Catch(func(e try.E) {
-		fmt.Println("expc ", e)
-		c.Data["json"] = map[string]interface{}{"Code": "E_0458", "Body": e, "Type": "error"}
-	})
+	}()
+	if rama == "" {
+		urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/RaicesArbol/" + ueStr
+	} else {
+		urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro/ArbolRubro/" + rama + "/" + ueStr
+	}
+	beego.Info("Url ", urlmongo)
+	if err := request.GetJson(urlmongo, &response); err != nil {
+		beego.Error(err.Error())
+		panic("Mongo API Service Error")
+	}
+	c.Data["json"] = response
 }

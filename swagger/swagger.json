@@ -15,6 +15,729 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/aprobacion_apropiacion/AprobacionAsignacionInicial/": {
+            "post": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.AprobacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/Aprobado": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "aprueba la asignacion inicial de presupuesto",
+                "operationId": "AprobacionController.Aprobado",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/aprobacion_apropiacion/InformacionAsignacionInicial/": {
+            "get": {
+                "tags": [
+                    "aprobacion_apropiacion"
+                ],
+                "description": "Devuelve saldos iniciales antes de aprobar",
+                "operationId": "AprobacionController.InformacionAsignacionInicial",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "Vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "UnidadEjecutora",
+                        "description": "unidad ejecutora de los rubros a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/": {
+            "post": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "create Apropiacion",
+                "operationId": "ApropiacionController.Post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/apropiacion/ArbolApropiaciones/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.ArbolApropiaciones",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/SaldoApropiacion/{rubro}/{unidadEjecutora}/{vigencia}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros By UE",
+                "operationId": "ApropiacionController.SaldoApropiacion",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "rama",
+                        "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/{id}/{valor}/{vigencia}": {
+            "put": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Update Apropiacion",
+                "operationId": "ApropiacionController.Put",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Apropiacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Apropiacion"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/cdp/aprobar_cdp": {
+            "post": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "create SolicitudCDP",
+                "operationId": "CdpController.AprobarCdp",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCDP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/cdp/expedirCDP/{id}": {
+            "get": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "operationId": "CdpController.ExpedirCdp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcdp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/cdp/solicitarCDP": {
+            "post": {
+                "tags": [
+                    "cdp"
+                ],
+                "description": "create SolicitudCDP",
+                "operationId": "CdpController.SolicitarCDP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCDP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/crp/expedirCRP/{id}": {
+            "get": {
+                "tags": [
+                    "crp"
+                ],
+                "description": "expedir crp creando objeto infocrp en la solicitud",
+                "operationId": "CrpController.ExpedirCrp",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for solicitudcrp",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCRP"
+                        }
+                    }
+                }
+            }
+        },
+        "/crp/getFullCrp": {
+            "get": {
+                "tags": [
+                    "crp"
+                ],
+                "description": "get all the information about CRPs",
+                "operationId": "CrpController.Get Info CRPs",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ConsultaEntrada"
+                        }
+                    },
+                    "404": {
+                        "description": "not found resource"
+                    }
+                }
+            }
+        },
+        "/crp/solicitarCRP": {
+            "post": {
+                "tags": [
+                    "crp"
+                ],
+                "description": "create SolicitudCRP",
+                "operationId": "CrpController.SolicitarCRP",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Solicitud content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCRP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.SolicitudCRP"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacion/modificacion": {
+            "post": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "create Modificacion Presupuestal Fuente",
+                "operationId": "FuenteFinanciamientoApropiacionController.RegistrarModificacion",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Movimiento content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacion/plan_adquisiciones_rubros_fuente/{vigencia}/{id}": {
+            "get": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "retorna rubros de la fuente desde el plan de adquisición",
+                "operationId": "FuenteFinanciamientoApropiacionController.GetRubrosbyFuente",
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacion/simulacion_afectacion_modificacion/{centroGestor}/{vigencia}": {
+            "post": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "create Modificacion Presupuestal",
+                "operationId": "FuenteFinanciamientoApropiacionController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for simulacion_afectacion_modificacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ModificacionFuenteReceiver"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacion/{id}/{vigencia}/{unidadEjecutora}": {
+            "delete": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "Borrar FuenteFinanciamiento",
+                "operationId": "FuenteFinanciamientoApropiacionController.Borrar FuenteFinanciamiento",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "El ObjectId del objeto que se quiere borrar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} ok"
+                    },
+                    "403": {
+                        "description": "objectId is empty"
+                    }
+                }
+            }
+        },
+        "/fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion": {
+            "post": {
+                "tags": [
+                    "fuente_financiamiento_apropiacion"
+                ],
+                "description": "Registra la fuente de financiamiento en postgres y mongo",
+                "operationId": "FuenteFinanciamientoApropiacionController.RegistrarFuenteConApropiacion",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "FuenteFinanciamiento",
+                        "description": "models.Fuentefinanciamiento",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} resultado"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/modificacion_apropiacion/": {
+            "post": {
+                "tags": [
+                    "modificacion_apropiacion"
+                ],
+                "description": "create Modificacion Presupuestal",
+                "operationId": "ModificacionPresupuestalController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Movimiento content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/modificacion_apropiacion/simulacion_afectacion_modificacion/{centroGestor}/{vigencia}": {
+            "post": {
+                "tags": [
+                    "modificacion_apropiacion"
+                ],
+                "description": "create Modificacion Presupuestal",
+                "operationId": "ModificacionPresupuestalController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for simulacion_afectacion_modificacion content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ModificacionPresupuestalReceiverAfectation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/modificacion_apropiacion/{vigencia}/{CG}/{tipo}": {
+            "get": {
+                "tags": [
+                    "modificacion_apropiacion"
+                ],
+                "description": "get all objects",
+                "operationId": "ModificacionPresupuestalController.GetAllModificacionPresupuestalByVigenciaAndCG",
+                "responses": {
+                    "200": {
+                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
+        "/modificacion_apropiacionget_one/{vigencia}/{CG}/{UUID}": {
+            "get": {
+                "tags": [
+                    "modificacion_apropiacion"
+                ],
+                "description": "get all objects",
+                "operationId": "ModificacionPresupuestalController.GetOneModificacionPresupuestalByVigenciaAndCG",
+                "responses": {
+                    "200": {
+                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
+        "/movimiento/": {
+            "post": {
+                "tags": [
+                    "movimiento"
+                ],
+                "description": "create Movimiento",
+                "operationId": "MovimientoController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Movimiento content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Movimiento"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/movimiento/get_doc_by_mov_parentUUID/{vigencia}/{CG}/{UUID}": {
+            "get": {
+                "tags": [
+                    "movimiento"
+                ],
+                "description": "get all objects",
+                "operationId": "MovimientoController.GetAllAnulacionesByVigenciaCGAndUUID",
+                "responses": {
+                    "200": {
+                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
+        "/necesidad/getfullnecesidad/{id}": {
+            "get": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "retorna full Necesidad",
+                "operationId": "NecesidadController.GetFullNecesidad",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for necesidad",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/necesidad/post_full_necesidad": {
+            "post": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "create TrNecesidad",
+                "operationId": "NecesidadController.PostFullNecesidad",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for TrNecesidad content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.TrNecesidad"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/rubro/ArbolRubros/{unidadEjecutora}": {
             "get": {
                 "tags": [
@@ -107,12 +830,355 @@
                     }
                 }
             }
+        },
+        "/vigencia/cerrar_vigencia/{vigencia}/{area}": {
+            "get": {
+                "tags": [
+                    "vigencia"
+                ],
+                "description": "realiza los procesos del cierre para una vigencia y un area funcional",
+                "operationId": "VigenciaController.CerrarVigencia",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia del cierre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "area",
+                        "description": "area funcional del cierre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
+        },
+        "/vigencia/get_cierre/{vigencia}/{area}/{cerrada}": {
+            "get": {
+                "tags": [
+                    "vigencia"
+                ],
+                "description": "devuelve los objetos del cierre para una vigencia y un area funcional",
+                "operationId": "VigenciaController.GetCierreVigencia",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia del cierre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "area",
+                        "description": "area funcional del cierre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "1259.0xc0004f5b90.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "1318.string.0xc0005100c0": {
+            "title": "0xc0005100c0",
+            "type": "object"
+        },
+        "1527.string.0xc000510280": {
+            "title": "0xc000510280",
+            "type": "object"
+        },
+        "1595.0xc0004f5d40.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "1647.string.0xc0005103c0": {
+            "title": "0xc0005103c0",
+            "type": "object"
+        },
+        "1703.string.0xc000510460": {
+            "title": "0xc000510460",
+            "type": "object"
+        },
+        "1918.string.0xc000510620": {
+            "title": "0xc000510620",
+            "type": "object"
+        },
+        "2016.string.0xc0005106c0": {
+            "title": "0xc0005106c0",
+            "type": "object"
+        },
+        "2112.string.0xc000510760": {
+            "title": "0xc000510760",
+            "type": "object"
+        },
+        "2220.string.0xc000510820": {
+            "title": "0xc000510820",
+            "type": "object"
+        },
+        "2318.string.0xc0005108c0": {
+            "title": "0xc0005108c0",
+            "type": "object"
+        },
+        "2409.string.0xc000510960": {
+            "title": "0xc000510960",
+            "type": "object"
+        },
+        "2509.string.0xc000510a00": {
+            "title": "0xc000510a00",
+            "type": "object"
+        },
+        "2608.string.0xc000510aa0": {
+            "title": "0xc000510aa0",
+            "type": "object"
+        },
         "models.Alert": {
             "title": "Alert",
             "type": "object"
+        },
+        "models.Apropiacion": {
+            "title": "Apropiacion",
+            "type": "object",
+            "properties": {
+                "EstadoApropiacionId": {
+                    "$ref": "#/definitions/models.EstadoApropiacion"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroId": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "UnidadEjecutora": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.ConsultaEntrada": {
+            "title": "ConsultaEntrada",
+            "type": "object"
+        },
+        "models.EstadoApropiacion": {
+            "title": "EstadoApropiacion",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.FuenteFinanciamiento": {
+            "title": "FuenteFinanciamiento",
+            "type": "object",
+            "properties": {
+                "Codigo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                },
+                "TipoFuenteFinanciamiento": {
+                    "$ref": "#/definitions/models.TipoFuenteFinanciamiento"
+                }
+            }
+        },
+        "models.Fuentefinanciamiento": {
+            "title": "Fuentefinanciamiento",
+            "type": "object"
+        },
+        "models.MetaRubroNecesidad": {
+            "title": "MetaRubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Actividades": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/1318.string.0xc0005100c0"
+                    }
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MetaId": {
+                    "type": "string"
+                },
+                "RubroNecesidadId": {
+                    "$ref": "#/definitions/1259.0xc0004f5b90.false"
+                }
+            }
+        },
+        "models.ModificacionFuenteReceiver": {
+            "title": "ModificacionFuenteReceiver",
+            "type": "object",
+            "properties": {
+                "Afectation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ModificacionFuenteReceiverAfectation"
+                    }
+                },
+                "detail": {
+                    "$ref": "#/definitions/models.ModificacionPresupuestalReceiverDetail"
+                }
+            }
+        },
+        "models.ModificacionFuenteReceiverAfectation": {
+            "title": "ModificacionFuenteReceiverAfectation",
+            "type": "object",
+            "properties": {
+                "CuentaCredito": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "MovimientoOrigen": {
+                    "$ref": "#/definitions/models.FuenteFinanciamiento"
+                },
+                "Tipo": {
+                    "$ref": "#/definitions/models.TipoGeneral"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.ModificacionPresupuestalReceiverAfectation": {
+            "title": "ModificacionPresupuestalReceiverAfectation",
+            "type": "object",
+            "properties": {
+                "CuentaContraCredito": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "CuentaCredito": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "Tipo": {
+                    "$ref": "#/definitions/models.TipoGeneral"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.ModificacionPresupuestalReceiverDetail": {
+            "title": "ModificacionPresupuestalReceiverDetail",
+            "type": "object",
+            "properties": {
+                "CentroGestor": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaDocumento": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "NumeroDocumento": {
+                    "type": "string"
+                },
+                "OrganismoEmisor": {
+                    "type": "string"
+                },
+                "TipoDocumento": {
+                    "$ref": "#/definitions/models.TipoGeneral"
+                }
+            }
+        },
+        "models.Movimiento": {
+            "title": "Movimiento",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "DocumentoPadre": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MovimientoProcesoExternoId": {
+                    "$ref": "#/definitions/models.MovimientoProcesoExterno"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.MovimientoProcesoExterno": {
+            "title": "MovimientoProcesoExterno",
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MovimientoProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ProcesoExterno": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoMovimientoId": {
+                    "$ref": "#/definitions/models.TipoGeneral"
+                }
+            }
         },
         "models.Rubro": {
             "title": "Rubro",
@@ -131,13 +1197,206 @@
                 "Nombre": {
                     "type": "string"
                 },
-                "UnidadEjecutora": {
+                "Organizacion": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "organizacion": {
+                "UnidadEjecutora": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RubroNecesidad": {
+            "title": "RubroNecesidad",
+            "type": "object",
+            "properties": {
+                "Fuentes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/1647.string.0xc0005103c0"
+                    }
+                },
+                "Id": {
                     "type": "integer",
                     "format": "int64"
+                },
+                "InfoRubro": {
+                    "$ref": "#/definitions/1527.string.0xc000510280"
+                },
+                "Metas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MetaRubroNecesidad"
+                    }
+                },
+                "NecesidadId": {
+                    "$ref": "#/definitions/1595.0xc0004f5d40.false"
+                },
+                "Productos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/1703.string.0xc000510460"
+                    }
+                },
+                "RubroId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SolicitudCDP": {
+            "title": "SolicitudCDP",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "centroGestor": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "entidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "$ref": "#/definitions/models.estadoCdp"
+                },
+                "fechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaRegistro": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "justificacionRechazo": {
+                    "type": "string"
+                },
+                "necesidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "vigencia": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SolicitudCRP": {
+            "title": "SolicitudCRP",
+            "type": "object"
+        },
+        "models.TipoFuenteFinanciamiento": {
+            "title": "TipoFuenteFinanciamiento",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TipoGeneral": {
+            "title": "TipoGeneral",
+            "type": "object",
+            "properties": {
+                "Acronimo": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Nombre": {
+                    "type": "string"
+                },
+                "Parametros": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TrNecesidad": {
+            "title": "TrNecesidad",
+            "type": "object",
+            "properties": {
+                "ActividadEconomicaNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/2509.string.0xc000510a00"
+                    }
+                },
+                "ActividadEspecificaNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/2409.string.0xc000510960"
+                    }
+                },
+                "DetallePrestacionServicioNecesidad": {
+                    "$ref": "#/definitions/2112.string.0xc000510760"
+                },
+                "DetalleServicioNecesidad": {
+                    "$ref": "#/definitions/2016.string.0xc0005106c0"
+                },
+                "MarcoLegalNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/2318.string.0xc0005108c0"
+                    }
+                },
+                "Necesidad": {
+                    "$ref": "#/definitions/1918.string.0xc000510620"
+                },
+                "ProductosCatalogoNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/2220.string.0xc000510820"
+                    }
+                },
+                "RequisitoMinimoNecesidad": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/2608.string.0xc000510aa0"
+                    }
+                },
+                "Rubros": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.RubroNecesidad"
+                    }
+                }
+            }
+        },
+        "models.estadoCdp": {
+            "title": "estadoCdp",
+            "type": "object",
+            "properties": {
+                "acronimo": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
                 }
             }
         }
@@ -146,6 +1405,42 @@
         {
             "name": "rubro",
             "description": "RubroController operations for Rubro\n"
+        },
+        {
+            "name": "apropiacion",
+            "description": "ApropiacionController operations for  Apropiacion\n"
+        },
+        {
+            "name": "aprobacion_apropiacion",
+            "description": "AprobacionController operations for AprobacionController\n"
+        },
+        {
+            "name": "fuente_financiamiento_apropiacion",
+            "description": "FuenteFinanciamientoApropiacionController operations for FuenteFinanciamientoApropiacionController\n"
+        },
+        {
+            "name": "movimiento",
+            "description": "MovimientoController operations for Movimiento\n"
+        },
+        {
+            "name": "necesidad",
+            "description": "NecesidadController operations for Necesidad\n"
+        },
+        {
+            "name": "cdp",
+            "description": "CdpController operations for Cdp\n"
+        },
+        {
+            "name": "crp",
+            "description": "CrpController operations for Crp\n"
+        },
+        {
+            "name": "modificacion_apropiacion",
+            "description": "ModificacionPresupuestalController operations for ModificacionPresupuestal\n"
+        },
+        {
+            "name": "vigencia",
+            "description": "VigenciaController operations for vigencia\n"
         }
     ]
 }

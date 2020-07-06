@@ -21,6 +21,51 @@ func init() {
 				&controllers.RubroController{},
 			),
 		),
+		beego.NSNamespace("/apropiacion",
+			beego.NSInclude(
+				&controllers.ApropiacionController{},
+			),
+		),
+		beego.NSNamespace("/aprobacion_apropiacion",
+			beego.NSInclude(
+				&controllers.AprobacionController{},
+			),
+		),
+		beego.NSNamespace("/fuente_financiamiento_apropiacion",
+			beego.NSInclude(
+				&controllers.FuenteFinanciamientoApropiacionController{},
+			),
+		),
+		beego.NSNamespace("/movimiento",
+			beego.NSInclude(
+				&controllers.MovimientoController{},
+			),
+		),
+		beego.NSNamespace("/necesidad",
+			beego.NSInclude(
+				&controllers.NecesidadController{},
+			),
+		),
+		beego.NSNamespace("/cdp",
+			beego.NSInclude(
+				&controllers.CdpController{},
+			),
+		),
+		beego.NSNamespace("/crp",
+			beego.NSInclude(
+				&controllers.CrpController{},
+			),
+		),
+		beego.NSNamespace("/modificacion_apropiacion",
+			beego.NSInclude(
+				&controllers.ModificacionPresupuestalController{},
+			),
+		),
+		beego.NSNamespace("/vigencia",
+			beego.NSInclude(
+				&controllers.VigenciaController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
