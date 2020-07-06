@@ -126,11 +126,13 @@ steps:
       from_secret: AWS_SECRET_ACCESS_KEY
   commands:
   - case ${DRONE_BRANCH} in
-      test)
+      release/*)
+        echo "[release/*] Se Asignan Variables para Ambiente TEST\n"
         AMBIENTE=test
         CLUSTER=test
         ;;
       master)
+        echo "[master] Se Asignan Variables para Ambiente PROD\n"
         AMBIENTE=prod
         CLUSTER=oas
         ;;
