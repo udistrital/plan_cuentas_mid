@@ -105,6 +105,37 @@ func (c *ApropiacionController) ArbolApropiaciones() {
 	c.Data["json"] = response
 }
 
+// ArbolRubroApropiaciones ...
+// @Title ArbolRubroApropiaciones
+// @Description Get Arbol Rubros apropiacion para usar en el cliente presupuesto
+// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
+// @Param	vigencia		path 	int64	true		"vigencia a consultar"
+// @Param	raiz		path 	int64	true		"raiz a consultar"
+// @Param	nivel		query 	string	false		"nivel a consultar"
+// @Success 200 {object} models.Rubro
+// @Failure 403
+// @router /ArbolRubroApropiacion/:unidadEjecutora/:vigencia/:raiz [get]
+func (c *ApropiacionController) ArbolRubroApropiaciones() {
+
+	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
+	vigenciaStr := c.Ctx.Input.Param(":vigencia")
+	raiz := c.Ctx.Input.Param(":raiz")
+	nivel := c.GetString("nivel")
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
+		}
+	}()
+
+	arbol, err := apropiacionHelper.ConstruirArbolRubroApropiacion(ueStr, vigenciaStr, raiz, nivel)
+	if err != nil {
+		panic("Mongo API Service Error")
+	}
+	c.Data["json"] = arbol
+	c.ServeJSON()
+}
+
 // SaldoApropiacion ...
 // @Title SaldoApropiacion
 // @Description Get Arbol Rubros By UE
