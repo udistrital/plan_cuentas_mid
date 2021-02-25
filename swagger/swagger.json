@@ -178,6 +178,58 @@
                 }
             }
         },
+        "/apropiacion/ArbolRubroApropiacion/{unidadEjecutora}/{vigencia}/{raiz}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros apropiacion para usar en el cliente presupuesto",
+                "operationId": "ApropiacionController.ArbolRubroApropiaciones",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "path",
+                        "name": "raiz",
+                        "description": "raiz a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "nivel",
+                        "description": "nivel a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Rubro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/apropiacion/SaldoApropiacion/{rubro}/{unidadEjecutora}/{vigencia}": {
             "get": {
                 "tags": [
@@ -899,60 +951,60 @@
         }
     },
     "definitions": {
-        "1259.0xc0004f5b90.false": {
+        "10222.0xc0004e98f0.false": {
             "title": "false",
             "type": "object"
         },
-        "1318.string.0xc0005100c0": {
-            "title": "0xc0005100c0",
+        "10281.string.0xc00050c4c0": {
+            "title": "0xc00050c4c0",
             "type": "object"
         },
-        "1527.string.0xc000510280": {
-            "title": "0xc000510280",
+        "10490.string.0xc00050c680": {
+            "title": "0xc00050c680",
             "type": "object"
         },
-        "1595.0xc0004f5d40.false": {
+        "10558.0xc0004e9aa0.false": {
             "title": "false",
             "type": "object"
         },
-        "1647.string.0xc0005103c0": {
-            "title": "0xc0005103c0",
+        "10610.string.0xc00050c7c0": {
+            "title": "0xc00050c7c0",
             "type": "object"
         },
-        "1703.string.0xc000510460": {
-            "title": "0xc000510460",
+        "10666.string.0xc00050c860": {
+            "title": "0xc00050c860",
             "type": "object"
         },
-        "1918.string.0xc000510620": {
-            "title": "0xc000510620",
+        "10881.string.0xc00050ca40": {
+            "title": "0xc00050ca40",
             "type": "object"
         },
-        "2016.string.0xc0005106c0": {
-            "title": "0xc0005106c0",
+        "10979.string.0xc00050cae0": {
+            "title": "0xc00050cae0",
             "type": "object"
         },
-        "2112.string.0xc000510760": {
-            "title": "0xc000510760",
+        "11075.string.0xc00050cb80": {
+            "title": "0xc00050cb80",
             "type": "object"
         },
-        "2220.string.0xc000510820": {
-            "title": "0xc000510820",
+        "11183.string.0xc00050cc40": {
+            "title": "0xc00050cc40",
             "type": "object"
         },
-        "2318.string.0xc0005108c0": {
-            "title": "0xc0005108c0",
+        "11281.string.0xc00050cce0": {
+            "title": "0xc00050cce0",
             "type": "object"
         },
-        "2409.string.0xc000510960": {
-            "title": "0xc000510960",
+        "11372.string.0xc00050cd80": {
+            "title": "0xc00050cd80",
             "type": "object"
         },
-        "2509.string.0xc000510a00": {
-            "title": "0xc000510a00",
+        "11472.string.0xc00050ce20": {
+            "title": "0xc00050ce20",
             "type": "object"
         },
-        "2608.string.0xc000510aa0": {
-            "title": "0xc000510aa0",
+        "11571.string.0xc00050cec0": {
+            "title": "0xc00050cec0",
             "type": "object"
         },
         "models.Alert": {
@@ -1040,7 +1092,7 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1318.string.0xc0005100c0"
+                        "$ref": "#/definitions/10281.string.0xc00050c4c0"
                     }
                 },
                 "Id": {
@@ -1051,7 +1103,7 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
-                    "$ref": "#/definitions/1259.0xc0004f5b90.false"
+                    "$ref": "#/definitions/10222.0xc0004e98f0.false"
                 }
             }
         },
@@ -1213,7 +1265,7 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1647.string.0xc0005103c0"
+                        "$ref": "#/definitions/10610.string.0xc00050c7c0"
                     }
                 },
                 "Id": {
@@ -1221,7 +1273,7 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
-                    "$ref": "#/definitions/1527.string.0xc000510280"
+                    "$ref": "#/definitions/10490.string.0xc00050c680"
                 },
                 "Metas": {
                     "type": "array",
@@ -1230,12 +1282,12 @@
                     }
                 },
                 "NecesidadId": {
-                    "$ref": "#/definitions/1595.0xc0004f5d40.false"
+                    "$ref": "#/definitions/10558.0xc0004e9aa0.false"
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1703.string.0xc000510460"
+                        "$ref": "#/definitions/10666.string.0xc00050c860"
                     }
                 },
                 "RubroId": {
@@ -1341,40 +1393,40 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2509.string.0xc000510a00"
+                        "$ref": "#/definitions/11472.string.0xc00050ce20"
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2409.string.0xc000510960"
+                        "$ref": "#/definitions/11372.string.0xc00050cd80"
                     }
                 },
                 "DetallePrestacionServicioNecesidad": {
-                    "$ref": "#/definitions/2112.string.0xc000510760"
+                    "$ref": "#/definitions/11075.string.0xc00050cb80"
                 },
                 "DetalleServicioNecesidad": {
-                    "$ref": "#/definitions/2016.string.0xc0005106c0"
+                    "$ref": "#/definitions/10979.string.0xc00050cae0"
                 },
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2318.string.0xc0005108c0"
+                        "$ref": "#/definitions/11281.string.0xc00050cce0"
                     }
                 },
                 "Necesidad": {
-                    "$ref": "#/definitions/1918.string.0xc000510620"
+                    "$ref": "#/definitions/10881.string.0xc00050ca40"
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2220.string.0xc000510820"
+                        "$ref": "#/definitions/11183.string.0xc00050cc40"
                     }
                 },
                 "RequisitoMinimoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2608.string.0xc000510aa0"
+                        "$ref": "#/definitions/11571.string.0xc00050cec0"
                     }
                 },
                 "Rubros": {
