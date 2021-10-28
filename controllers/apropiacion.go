@@ -49,7 +49,10 @@ func (c *ApropiacionController) Post() {
 // Put ...
 // @Title Put
 // @Description Update Apropiacion
-// @Param	body		body 	models.Apropiacion	true		"body for Apropiacion content"
+// @Param id       query string             true  "vigencia a comprobar"
+// @Param valor    query string             true  "unidad ejecutora"
+// @Param Vigencia query string             true  "vigencia a comprobar"
+// @Param body     body  models.Apropiacion true  "body for Apropiacion content"
 // @Success 201 {int} models.Apropiacion
 // @Failure 403 body is empty
 // @router /:id/:valor/:vigencia [put]

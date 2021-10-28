@@ -10,12 +10,16 @@ import (
 )
 
 // URLCRUD Ruta de plan_cuentas_crud
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 var URLCRUD = beego.AppConfig.String("planCuentasApiService") + "fuente_financiamiento"
 
 // URLMONGO Ruta de plan_cuentas_mongo_crud
 var URLMONGO = beego.AppConfig.String("financieraMongoCurdApiService") + "fuente_financiamiento"
 
 // RegistrarFuenteHelper ...
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func RegistrarFuenteHelper(fuenteFinancimiento *models.FuenteFinanciamiento) (idFuente int) {
 	var (
 		res              map[string]interface{}
