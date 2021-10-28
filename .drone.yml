@@ -1,30 +1,29 @@
-workspace:
-  base: /go
-  path: src/github.com/udistrital/${DRONE_REPO##udistrital/}
-  when:
-    branch:
-    - develop
-    - release/*
-    - master
-
 kind: pipeline
 name: oas_api_ci
+
+trigger:
+  event:
+    exclude:
+      - tag
 
 steps:
 - name: check_readme
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_readme.py
   when:
     branch:
     - develop
     - feature/*
+    - hotfix/*
     - release/*
     event:
     - push
 
 - name: check_branch
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_branch.py -H ${DRONE_GIT_HTTP_URL}
   when:
@@ -35,14 +34,18 @@ steps:
     event:
     - push
 
+# SCRIPT NO OBJETIVO - Deberá ajustarse - Ver mensaje del commit:
+# https://github.com/udistrital/arka_cliente/commit/37e3ece10d52cae1303d837ad0e8a6ca1fb7a549
 - name: check_commits
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_commits.py
   when:
     branch:
     - develop
     - feature/*
+    - hotfix/*
     - release/*
     event:
     - push
@@ -55,22 +58,24 @@ steps:
   when:
     branch:
     - develop
-    - release/*
+    - feature/*
+    - hotfix/*
     - master
+    - release/*
     event:
     - push
 
 - name: go_test
   image: golang:1.14
+  failure: ignore
   commands:
   - go get -t
   - go get github.com/smartystreets/goconvey/convey
-  - GO111MODULE=off go get -u gopkg.in/alecthomas/gometalinter.v1
-  - GO111MODULE=off gometalinter.v1 --install
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.41.1
   - go get github.com/axw/gocov/...
   - go get github.com/AlekSi/gocov-xml
   - go get -u github.com/jstemmer/go-junit-report
-  - GO111MODULE=off gometalinter.v1 ./... --checkstyle | tee report.xml
+  - golangci-lint run ./... | tee report.xml
   #- gocov test ./... | gocov-xml > coverage.xml
   #- go test -v ./... | go-junit-report > test.xml
   when:
