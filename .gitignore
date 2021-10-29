@@ -11,6 +11,11 @@
 main
 plan_cuentas_mid
 
+# Variables de Entorno
+*.env
+!.develop.env
+!.template.env
+
 # Others
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
@@ -19,7 +24,6 @@ plan_cuentas_mid
 WebIM/WebIM
 shorturl/shorturl
 todo/todo
-custom.env
 lastupdate.*
 .vscode
 .scannerwork
