@@ -30,7 +30,7 @@ func (c *ModificacionPresupuestalController) URLMapping() {
 // Post ...
 // @Title Create
 // @Description create Modificacion Presupuestal
-// @Param	body		body 	models.Movimiento	true		"body for Movimiento content"
+// @Param	body		body 	models.ModificacionPresupuestalReceiver	true		"body for Movimiento content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router / [post]
@@ -89,7 +89,9 @@ func (c *ModificacionPresupuestalController) Post() {
 // SimulacionAfectacion ...
 // @Title Create
 // @Description create Modificacion Presupuestal
-// @Param	body		body 	models.ModificacionPresupuestalReceiverAfectation	true		"body for simulacion_afectacion_modificacion content"
+// @Param centroGestor path  string                                  true  "centro gestor / unidad ejecutora"
+// @Param vigencia     path  uint                                    true  "vigencia"
+// @Param body         body  models.ModificacionPresupuestalReceiver true  "body for simulacion_afectacion_modificacion content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router /simulacion_afectacion_modificacion/:centroGestor/:vigencia [post]
@@ -134,6 +136,9 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 // GetAllModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
 // @Title GetAllModificacionPresupuestalByVigenciaAndCG
 // @Description get all objects
+// @Param vigencia path  uint   true  "vigencia"
+// @Param CG       path  string true  "centro gestor / unidad ejecutora"
+// @Param tipo     path  string true  "tipo de documento"
 // @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
 // @Failure 403 :objectId is empty
 // @router /:vigencia/:CG/:tipo [get]
@@ -154,7 +159,10 @@ func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVig
 // GetOneModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
 // @Title GetOneModificacionPresupuestalByVigenciaAndCG
 // @Description get all objects
-// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Param vigencia path  uint   true  "vigencia"
+// @Param CG       path  string true  "centro gestor / unidad ejecutora"
+// @Param UUID     path  string true  "Identificador"
+// @Success 200 {object} models.ModificacionPresupuestalResponseDetail
 // @Failure 403 :objectId is empty
 // @router get_one/:vigencia/:CG/:UUID [get]
 func (c *ModificacionPresupuestalController) GetOneModificacionPresupuestalByVigenciaAndCG() {

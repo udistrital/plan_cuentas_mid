@@ -49,9 +49,9 @@ func (c *ApropiacionController) Post() {
 // Put ...
 // @Title Put
 // @Description Update Apropiacion
-// @Param id       query string             true  "vigencia a comprobar"
-// @Param valor    query string             true  "unidad ejecutora"
-// @Param Vigencia query string             true  "vigencia a comprobar"
+// @Param id       path  string             true  "vigencia a comprobar"
+// @Param valor    path  string             true  "unidad ejecutora"
+// @Param vigencia path  string             true  "vigencia a comprobar"
 // @Param body     body  models.Apropiacion true  "body for Apropiacion content"
 // @Success 201 {int} models.Apropiacion
 // @Failure 403 body is empty
@@ -79,8 +79,9 @@ func (c *ApropiacionController) Put() {
 // ArbolApropiaciones ...
 // @Title ArbolApropiaciones
 // @Description Get Arbol Rubros By UE
-// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
-// @Param	rama		query 	string	false		"rama a consultar"
+// @Param unidadEjecutora path  int64  true  "unidad ejecutora a consultar"
+// @Param vigencia        path  string true  "vigencia a comprobar"
+// @Param rama            query string false "rama a consultar"
 // @Success 200 {object} models.Rubro
 // @Failure 403
 // @router /ArbolApropiaciones/:unidadEjecutora/:vigencia [get]
@@ -142,8 +143,9 @@ func (c *ApropiacionController) ArbolRubroApropiaciones() {
 // SaldoApropiacion ...
 // @Title SaldoApropiacion
 // @Description Get Arbol Rubros By UE
-// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
-// @Param	rama		query 	string	false		"rama a consultar"
+// @Param rubro           path  int64  true  "rubro a consultar"
+// @Param unidadEjecutora path  int64  true  "unidad ejecutora a consultar"
+// @Param vigencia        path  int64  true  "vigencia a consultar"
 // @Success 200 {object} models.Rubro
 // @Failure 403
 // @router /SaldoApropiacion/:rubro/:unidadEjecutora/:vigencia [get]
