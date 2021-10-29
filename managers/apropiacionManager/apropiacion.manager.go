@@ -10,9 +10,14 @@ import (
 	"github.com/udistrital/utils_oas/request"
 )
 
+// apropiacionURI ...
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 var apropiacionURI = beego.AppConfig.String("planCuentasApiService") + "apropiacion" + "/"
 
 // GetAprByCodigoAndVigencia ... Return Apropiation Info by rubro's COde and vigencia.
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func GetAprByCodigoAndVigencia(codigo string, vigencia int) (aprComp []models.Apropiacion, err error) {
 
 	defer func() {

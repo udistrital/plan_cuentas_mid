@@ -29,7 +29,7 @@ func (c *MovimientoController) URLMapping() {
 // Post ...
 // @Title Create
 // @Description create Movimiento
-// @Param	body		body 	models.Movimiento	true		"body for Movimiento content"
+// @Param	body		body 	models.DocumentoPresupuestal	true		"body for Movimiento content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router / [post]
@@ -77,7 +77,10 @@ func (c *MovimientoController) Post() {
 // GetAllAnulacionesByVigenciaCGAndUUID función para obtener todos los objetos
 // @Title GetAllAnulacionesByVigenciaCGAndUUID
 // @Description get all objects
-// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Param vigencia path  uint   true  "vigencia"
+// @Param CG       path  string true  "centro gestor / unidad ejecutora"
+// @Param UUID     path  string true  "Identificador"
+// @Success 200 {object} []models.AnulationDetail
 // @Failure 403 :objectId is empty
 // @router /get_doc_by_mov_parentUUID/:vigencia/:CG/:UUID [get]
 func (c *MovimientoController) GetAllAnulacionesByVigenciaCGAndUUID() {

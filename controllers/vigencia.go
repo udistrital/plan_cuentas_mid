@@ -16,6 +16,7 @@ type VigenciaController struct {
 // @Description devuelve los objetos del cierre para una vigencia y un area funcional
 // @Param	vigencia		path 	string	true		"vigencia del cierre"
 // @Param	area			path 	string	true		"area funcional del cierre"
+// @Param	cerrada  path  uint  true "'1' para NO cerrada"
 // @Success 201 {object} models.SolicitudCDP
 // @router /get_cierre/:vigencia/:area/:cerrada [get]
 func (c *VigenciaController) GetCierreVigencia() {

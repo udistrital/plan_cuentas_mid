@@ -14,6 +14,8 @@ import (
 const success string = "success"
 
 // AddApropiacion ... Add apropiacion to mongo and postgres tr.
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 
 	var (
@@ -84,6 +86,8 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 }
 
 // PutApropiacion ... Modify the Apr Value if these Apr isn't Aproved
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) map[string]interface{} {
 	var (
 		urlcrud   string
@@ -219,6 +223,8 @@ func CompareApropiationNodes(nodesToCompare *map[string]float64, ue, vigencia in
 }
 
 // AprobarPresupuesto retorna res siempre y cuando el tipo sea success
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface{}) {
 	asignationInfo := map[string]float64{"2": 0.0, "3": 0.0}
 
@@ -237,6 +243,8 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 }
 
 // PresupuestoAprobado retorna true si la apropiacion esta aprobada, retorna falso en caso contrario
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	var res map[string]interface{}
 	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",RubroId.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",EstadoApropiacionId:2", &res); err == nil {

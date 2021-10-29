@@ -1,0 +1,1269 @@
+swagger: "2.0"
+info:
+  title: beego Test API
+  description: beego has a very cool tools to autogenerate documents for your API
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  contact:
+    email: astaxie@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /v1
+paths:
+  /aprobacion_apropiacion/AprobacionAsignacionInicial/:
+    post:
+      tags:
+      - aprobacion_apropiacion
+      description: aprueba la asignacion inicial de presupuesto
+      operationId: AprobacionController.AprobacionAsignacionInicial
+      parameters:
+      - in: query
+        name: Vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: query
+        name: UnidadEjecutora
+        description: unidad ejecutora de los rubros a comprobar
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} resultado'
+        "403":
+          description: ""
+  /aprobacion_apropiacion/Aprobado:
+    get:
+      tags:
+      - aprobacion_apropiacion
+      description: aprueba la asignacion inicial de presupuesto
+      operationId: AprobacionController.Aprobado
+      parameters:
+      - in: query
+        name: Vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: query
+        name: UnidadEjecutora
+        description: unidad ejecutora de los rubros a comprobar
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} resultado'
+        "403":
+          description: ""
+  /aprobacion_apropiacion/InformacionAsignacionInicial/:
+    get:
+      tags:
+      - aprobacion_apropiacion
+      description: Devuelve saldos iniciales antes de aprobar
+      operationId: AprobacionController.InformacionAsignacionInicial
+      parameters:
+      - in: query
+        name: Vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: query
+        name: UnidadEjecutora
+        description: unidad ejecutora de los rubros a comprobar
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} resultado'
+        "403":
+          description: ""
+  /apropiacion/:
+    post:
+      tags:
+      - apropiacion
+      description: create Apropiacion
+      operationId: ApropiacionController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for Apropiacion content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Apropiacion'
+      responses:
+        "201":
+          description: '{int} models.Apropiacion'
+        "403":
+          description: body is empty
+  /apropiacion/{id}/{valor}/{vigencia}:
+    put:
+      tags:
+      - apropiacion
+      description: Update Apropiacion
+      operationId: ApropiacionController.Put
+      parameters:
+      - in: path
+        name: id
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: path
+        name: valor
+        description: unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for Apropiacion content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Apropiacion'
+      responses:
+        "201":
+          description: '{int} models.Apropiacion'
+        "403":
+          description: body is empty
+  /apropiacion/ArbolApropiaciones/{unidadEjecutora}/{vigencia}:
+    get:
+      tags:
+      - apropiacion
+      description: Get Arbol Rubros By UE
+      operationId: ApropiacionController.ArbolApropiaciones
+      parameters:
+      - in: path
+        name: unidadEjecutora
+        description: unidad ejecutora a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: query
+        name: rama
+        description: rama a consultar
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Rubro'
+        "403":
+          description: ""
+  /apropiacion/ArbolRubroApropiacion/{unidadEjecutora}/{vigencia}/{raiz}:
+    get:
+      tags:
+      - apropiacion
+      description: Get Arbol Rubros apropiacion para usar en el cliente presupuesto
+      operationId: ApropiacionController.ArbolRubroApropiaciones
+      parameters:
+      - in: path
+        name: unidadEjecutora
+        description: unidad ejecutora a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: vigencia
+        description: vigencia a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: raiz
+        description: raiz a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: nivel
+        description: nivel a consultar
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Rubro'
+        "403":
+          description: ""
+  /apropiacion/SaldoApropiacion/{rubro}/{unidadEjecutora}/{vigencia}:
+    get:
+      tags:
+      - apropiacion
+      description: Get Arbol Rubros By UE
+      operationId: ApropiacionController.SaldoApropiacion
+      parameters:
+      - in: path
+        name: rubro
+        description: rubro a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: unidadEjecutora
+        description: unidad ejecutora a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: path
+        name: vigencia
+        description: vigencia a consultar
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Rubro'
+        "403":
+          description: ""
+  /cdp/aprobar_cdp:
+    post:
+      tags:
+      - cdp
+      description: create SolicitudCDP
+      operationId: CdpController.AprobarCdp
+      parameters:
+      - in: body
+        name: body
+        description: body for Solicitud content
+        required: true
+        schema:
+          $ref: '#/definitions/models.SolicitudCDP'
+      responses:
+        "201":
+          description: '{int} models.SolicitudCDP'
+        "403":
+          description: body is empty
+  /cdp/expedirCDP/{id}:
+    get:
+      tags:
+      - cdp
+      description: expedir cdp creando objeto infocdp en la solicitud
+      operationId: CdpController.ExpedirCdp
+      parameters:
+      - in: path
+        name: id
+        description: The key for solicitudcdp
+        required: true
+        type: string
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.SolicitudCDP'
+  /cdp/solicitarCDP:
+    post:
+      tags:
+      - cdp
+      description: create SolicitudCDP
+      operationId: CdpController.SolicitarCDP
+      parameters:
+      - in: body
+        name: body
+        description: body for Solicitud content
+        required: true
+        schema:
+          $ref: '#/definitions/models.SolicitudCDP'
+      responses:
+        "201":
+          description: '{int} models.SolicitudCDP'
+        "403":
+          description: body is empty
+  /crp/expedirCRP/{id}:
+    get:
+      tags:
+      - crp
+      description: expedir crp creando objeto infocrp en la solicitud
+      operationId: CrpController.ExpedirCrp
+      parameters:
+      - in: path
+        name: id
+        description: The key for solicitudcrp
+        required: true
+        type: string
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.SolicitudCRP'
+  /crp/getFullCrp:
+    get:
+      tags:
+      - crp
+      description: get all the information about CRPs
+      operationId: CrpController.Get Info CRPs
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ConsultaEntrada'
+        "404":
+          description: not found resource
+  /crp/solicitarCRP:
+    post:
+      tags:
+      - crp
+      description: create SolicitudCRP
+      operationId: CrpController.SolicitarCRP
+      parameters:
+      - in: body
+        name: body
+        description: body for Solicitud content
+        required: true
+        schema:
+          $ref: '#/definitions/models.SolicitudCRP'
+      responses:
+        "201":
+          description: '{int} models.SolicitudCRP'
+        "403":
+          description: body is empty
+  /fuente_financiamiento_apropiacion/{id}/{vigencia}/{unidadEjecutora}:
+    delete:
+      tags:
+      - fuente_financiamiento_apropiacion
+      description: Borrar FuenteFinanciamiento
+      operationId: FuenteFinanciamientoApropiacionController.Borrar FuenteFinanciamiento
+      parameters:
+      - in: path
+        name: id
+        description: El ObjectId del objeto que se quiere borrar
+        required: true
+        type: string
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: string
+      - in: path
+        name: unidadEjecutora
+        description: unidad ejecutora
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: string
+        "403":
+          description: objectId is empty
+  /fuente_financiamiento_apropiacion/modificacion:
+    post:
+      tags:
+      - fuente_financiamiento_apropiacion
+      description: create Modificacion Presupuestal Fuente
+      operationId: FuenteFinanciamientoApropiacionController.RegistrarModificacion
+      parameters:
+      - in: body
+        name: body
+        description: body for Movimiento content
+        required: true
+        schema:
+          $ref: '#/definitions/models.ModificacionFuenteReceiver'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Movimiento'
+        "403":
+          description: body is empty
+  /fuente_financiamiento_apropiacion/plan_adquisiciones_rubros_fuente/{vigencia}/{id}:
+    get:
+      tags:
+      - fuente_financiamiento_apropiacion
+      description: retorna rubros de la fuente desde el plan de adquisición
+      operationId: FuenteFinanciamientoApropiacionController.GetRubrosbyFuente
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia a comprobar
+        required: true
+        type: string
+      - in: path
+        name: id
+        description: vigencia a comprobar
+        required: true
+        type: string
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Fuentefinanciamiento'
+        "403":
+          description: :id is empty
+  /fuente_financiamiento_apropiacion/simulacion_afectacion_modificacion/{centroGestor}/{vigencia}:
+    post:
+      tags:
+      - fuente_financiamiento_apropiacion
+      description: create Modificacion Presupuestal
+      operationId: FuenteFinanciamientoApropiacionController.Create
+      parameters:
+      - in: path
+        name: centroGestor
+        description: centro gestor / unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: integer
+        format: int32
+      - in: body
+        name: body
+        description: body for simulacion_afectacion_modificacion content
+        required: true
+        schema:
+          $ref: '#/definitions/models.ModificacionFuenteReceiver'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Movimiento'
+        "403":
+          description: body is empty
+  /fuente_financiamiento_apropiacionregistrar_fuentes_con_apropiacion:
+    post:
+      tags:
+      - fuente_financiamiento_apropiacion
+      description: Registra la fuente de financiamiento en postgres y mongo
+      operationId: FuenteFinanciamientoApropiacionController.RegistrarFuenteConApropiacion
+      parameters:
+      - in: body
+        name: FuenteFinanciamiento
+        description: models.Fuentefinanciamiento
+        required: true
+        schema:
+          $ref: '#/definitions/models.FuenteFinanciamiento'
+      responses:
+        "200":
+          description: '{string} resultado'
+        "403":
+          description: ""
+  /modificacion_apropiacion/:
+    post:
+      tags:
+      - modificacion_apropiacion
+      description: create Modificacion Presupuestal
+      operationId: ModificacionPresupuestalController.Create
+      parameters:
+      - in: body
+        name: body
+        description: body for Movimiento content
+        required: true
+        schema:
+          $ref: '#/definitions/models.ModificacionPresupuestalReceiver'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Movimiento'
+        "403":
+          description: body is empty
+  /modificacion_apropiacion/{vigencia}/{CG}/{tipo}:
+    get:
+      tags:
+      - modificacion_apropiacion
+      description: get all objects
+      operationId: ModificacionPresupuestalController.GetAllModificacionPresupuestalByVigenciaAndCG
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: CG
+        description: centro gestor / unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: tipo
+        description: tipo de documento
+        required: true
+        type: string
+      responses:
+        "200":
+          description: DocumentoPresupuestal models.DocumentoPresupuestal
+        "403":
+          description: :objectId is empty
+  /modificacion_apropiacion/simulacion_afectacion_modificacion/{centroGestor}/{vigencia}:
+    post:
+      tags:
+      - modificacion_apropiacion
+      description: create Modificacion Presupuestal
+      operationId: ModificacionPresupuestalController.Create
+      parameters:
+      - in: path
+        name: centroGestor
+        description: centro gestor / unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: integer
+        format: int32
+      - in: body
+        name: body
+        description: body for simulacion_afectacion_modificacion content
+        required: true
+        schema:
+          $ref: '#/definitions/models.ModificacionPresupuestalReceiver'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Movimiento'
+        "403":
+          description: body is empty
+  /modificacion_apropiacionget_one/{vigencia}/{CG}/{UUID}:
+    get:
+      tags:
+      - modificacion_apropiacion
+      description: get all objects
+      operationId: ModificacionPresupuestalController.GetOneModificacionPresupuestalByVigenciaAndCG
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: CG
+        description: centro gestor / unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: UUID
+        description: Identificador
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ModificacionPresupuestalResponseDetail'
+        "403":
+          description: :objectId is empty
+  /movimiento/:
+    post:
+      tags:
+      - movimiento
+      description: create Movimiento
+      operationId: MovimientoController.Create
+      parameters:
+      - in: body
+        name: body
+        description: body for Movimiento content
+        required: true
+        schema:
+          $ref: '#/definitions/models.DocumentoPresupuestal'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Movimiento'
+        "403":
+          description: body is empty
+  /movimiento/get_doc_by_mov_parentUUID/{vigencia}/{CG}/{UUID}:
+    get:
+      tags:
+      - movimiento
+      description: get all objects
+      operationId: MovimientoController.GetAllAnulacionesByVigenciaCGAndUUID
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: CG
+        description: centro gestor / unidad ejecutora
+        required: true
+        type: string
+      - in: path
+        name: UUID
+        description: Identificador
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.AnulationDetail'
+        "403":
+          description: :objectId is empty
+  /necesidad/getfullnecesidad/{id}:
+    get:
+      tags:
+      - necesidad
+      description: retorna full Necesidad
+      operationId: NecesidadController.GetFullNecesidad
+      parameters:
+      - in: path
+        name: id
+        description: The key for necesidad
+        required: true
+        type: string
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.TrNecesidad'
+        "403":
+          description: body is empty
+  /necesidad/post_full_necesidad:
+    post:
+      tags:
+      - necesidad
+      description: create TrNecesidad
+      operationId: NecesidadController.PostFullNecesidad
+      parameters:
+      - in: body
+        name: body
+        description: body for TrNecesidad content
+        required: true
+        schema:
+          $ref: '#/definitions/models.TrNecesidad'
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.TrNecesidad'
+        "403":
+          description: body is empty
+  /rubro/ArbolRubros/{unidadEjecutora}:
+    get:
+      tags:
+      - rubro
+      description: Get Arbol Rubros By UE
+      operationId: RubroController.ArbolRubros
+      parameters:
+      - in: path
+        name: unidadEjecutora
+        description: unidad ejecutora a consultar
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: rama
+        description: rama a consultar
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Rubro'
+        "403":
+          description: ""
+  /rubro/EliminarRubro/{id}:
+    delete:
+      tags:
+      - rubro
+      description: delete the Rubro
+      operationId: RubroController.EliminarRubro
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
+  /rubro/RegistrarRubro/:
+    post:
+      tags:
+      - rubro
+      description: Registra Rubro en postgres y mongo
+      operationId: RubroController.RegistrarRubro
+      parameters:
+      - in: body
+        name: body
+        description: body for Rubro content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Rama'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Alert'
+        "403":
+          description: body is empty
+  /vigencia/cerrar_vigencia/{vigencia}/{area}:
+    get:
+      tags:
+      - vigencia
+      description: realiza los procesos del cierre para una vigencia y un area funcional
+      operationId: VigenciaController.CerrarVigencia
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia del cierre
+        required: true
+        type: string
+      - in: path
+        name: area
+        description: area funcional del cierre
+        required: true
+        type: string
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.SolicitudCDP'
+  /vigencia/get_cierre/{vigencia}/{area}/{cerrada}:
+    get:
+      tags:
+      - vigencia
+      description: devuelve los objetos del cierre para una vigencia y un area funcional
+      operationId: VigenciaController.GetCierreVigencia
+      parameters:
+      - in: path
+        name: vigencia
+        description: vigencia del cierre
+        required: true
+        type: string
+      - in: path
+        name: area
+        description: area funcional del cierre
+        required: true
+        type: string
+      - in: path
+        name: cerrada
+        description: '''1'' para NO cerrada'
+        required: true
+        type: integer
+        format: int32
+      responses:
+        "201":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.SolicitudCDP'
+definitions:
+  4594.0xc00047b350.false:
+    title: "false"
+    type: object
+  10222.0xc00047bd40.false:
+    title: "false"
+    type: object
+  10281.string.0xc00048e210:
+    title: "0xc00048e210"
+    type: object
+  10490.string.0xc00048e288:
+    title: "0xc00048e288"
+    type: object
+  10558.0xc00047bef0.false:
+    title: "false"
+    type: object
+  10610.string.0xc00048e2d0:
+    title: "0xc00048e2d0"
+    type: object
+  10666.string.0xc00048e300:
+    title: "0xc00048e300"
+    type: object
+  10881.string.0xc00048e390:
+    title: "0xc00048e390"
+    type: object
+  10979.string.0xc00048e3c0:
+    title: "0xc00048e3c0"
+    type: object
+  11075.string.0xc00048e3f0:
+    title: "0xc00048e3f0"
+    type: object
+  11183.string.0xc00048e420:
+    title: "0xc00048e420"
+    type: object
+  11281.string.0xc00048e450:
+    title: "0xc00048e450"
+    type: object
+  11372.string.0xc00048e480:
+    title: "0xc00048e480"
+    type: object
+  11472.string.0xc00048e4b0:
+    title: "0xc00048e4b0"
+    type: object
+  11571.string.0xc00048e4e0:
+    title: "0xc00048e4e0"
+    type: object
+  models.Alert:
+    title: Alert
+    type: object
+  models.AnulationDetail:
+    title: AnulationDetail
+    type: object
+    properties:
+      Consecutivo:
+        type: integer
+        format: int64
+      Descripcion:
+        type: string
+      FechaRegistro:
+        type: string
+      Tipo:
+        type: string
+      Valor:
+        type: number
+        format: double
+  models.Apropiacion:
+    title: Apropiacion
+    type: object
+    properties:
+      EstadoApropiacionId:
+        $ref: '#/definitions/models.EstadoApropiacion'
+      Id:
+        type: integer
+        format: int64
+      RubroId:
+        $ref: '#/definitions/models.Rubro'
+      UnidadEjecutora:
+        type: integer
+        format: int64
+      Valor:
+        type: number
+        format: double
+      Vigencia:
+        type: number
+        format: double
+  models.ConsultaEntrada:
+    title: ConsultaEntrada
+    type: object
+  models.DocumentoPresupuestal:
+    title: DocumentoPresupuestal
+    type: object
+    properties:
+      _id:
+        type: string
+      Afectacion:
+        type: array
+        items:
+          $ref: '#/definitions/models.MovimientoMongo'
+      AfectacionIds:
+        type: array
+        items:
+          type: string
+      AfectacionMovimiento:
+        type: array
+        items:
+          $ref: '#/definitions/models.Movimiento'
+      CentroGestor:
+        type: string
+      Consecutivo:
+        type: integer
+        format: int64
+      Data:
+        $ref: '#/definitions/4594.0xc00047b350.false'
+      FechaRegistro:
+        type: string
+      Tipo:
+        type: string
+      ValorActual:
+        type: number
+        format: double
+      ValorInicial:
+        type: number
+        format: double
+      Vigencia:
+        type: integer
+        format: int64
+  models.EstadoApropiacion:
+    title: EstadoApropiacion
+    type: object
+    properties:
+      Descripcion:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Nombre:
+        type: string
+  models.FuenteFinanciamiento:
+    title: FuenteFinanciamiento
+    type: object
+    properties:
+      Codigo:
+        type: string
+      Descripcion:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Nombre:
+        type: string
+      TipoFuenteFinanciamiento:
+        $ref: '#/definitions/models.TipoFuenteFinanciamiento'
+  models.Fuentefinanciamiento:
+    title: Fuentefinanciamiento
+    type: object
+  models.MetaRubroNecesidad:
+    title: MetaRubroNecesidad
+    type: object
+    properties:
+      Actividades:
+        type: array
+        items:
+          $ref: '#/definitions/10281.string.0xc00048e210'
+      Id:
+        type: integer
+        format: int64
+      MetaId:
+        type: string
+      RubroNecesidadId:
+        $ref: '#/definitions/10222.0xc00047bd40.false'
+  models.ModificacionFuenteReceiver:
+    title: ModificacionFuenteReceiver
+    type: object
+    properties:
+      Afectation:
+        type: array
+        items:
+          $ref: '#/definitions/models.ModificacionFuenteReceiverAfectation'
+      detail:
+        $ref: '#/definitions/models.ModificacionPresupuestalReceiverDetail'
+  models.ModificacionFuenteReceiverAfectation:
+    title: ModificacionFuenteReceiverAfectation
+    type: object
+    properties:
+      CuentaCredito:
+        $ref: '#/definitions/models.Rubro'
+      MovimientoOrigen:
+        $ref: '#/definitions/models.FuenteFinanciamiento'
+      Tipo:
+        $ref: '#/definitions/models.TipoGeneral'
+      Valor:
+        type: number
+        format: double
+  models.ModificacionPresupuestalReceiver:
+    title: ModificacionPresupuestalReceiver
+    type: object
+    properties:
+      Afectation:
+        type: array
+        items:
+          $ref: '#/definitions/models.ModificacionPresupuestalReceiverAfectation'
+      detail:
+        $ref: '#/definitions/models.ModificacionPresupuestalReceiverDetail'
+  models.ModificacionPresupuestalReceiverAfectation:
+    title: ModificacionPresupuestalReceiverAfectation
+    type: object
+    properties:
+      CuentaContraCredito:
+        $ref: '#/definitions/models.Rubro'
+      CuentaCredito:
+        $ref: '#/definitions/models.Rubro'
+      Tipo:
+        $ref: '#/definitions/models.TipoGeneral'
+      Valor:
+        type: number
+        format: double
+  models.ModificacionPresupuestalReceiverDetail:
+    title: ModificacionPresupuestalReceiverDetail
+    type: object
+    properties:
+      CentroGestor:
+        type: string
+      Descripcion:
+        type: string
+      FechaDocumento:
+        type: string
+        format: datetime
+      NumeroDocumento:
+        type: string
+      OrganismoEmisor:
+        type: string
+      TipoDocumento:
+        $ref: '#/definitions/models.TipoGeneral'
+  models.ModificacionPresupuestalResponseDetail:
+    title: ModificacionPresupuestalResponseDetail
+    type: object
+    properties:
+      _id:
+        type: string
+      CentroGestor:
+        type: string
+      Descripcion:
+        type: string
+      FechaDocumento:
+        type: string
+      FechaRegistro:
+        type: string
+      NumeroDocumento:
+        type: string
+      OrganismoEmisor:
+        type: string
+      TipoDocumento:
+        type: string
+      ValorActual:
+        type: number
+        format: double
+      ValorInicial:
+        type: number
+        format: double
+      Vigencia:
+        type: integer
+        format: int64
+  models.Movimiento:
+    title: Movimiento
+    type: object
+    properties:
+      Descripcion:
+        type: string
+      DocumentoPadre:
+        type: string
+      FechaRegistro:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      MovimientoProcesoExternoId:
+        $ref: '#/definitions/models.MovimientoProcesoExterno'
+      Valor:
+        type: number
+        format: double
+  models.MovimientoMongo:
+    title: MovimientoMongo
+    type: object
+    properties:
+      _id:
+        type: string
+      Descripcion:
+        type: string
+      FechaRegistro:
+        type: string
+      IDPsql:
+        type: integer
+        format: int64
+      Padre:
+        type: string
+      Tipo:
+        type: string
+      ValorInicial:
+        type: number
+        format: double
+  models.MovimientoProcesoExterno:
+    title: MovimientoProcesoExterno
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+      MovimientoProcesoExterno:
+        type: integer
+        format: int64
+      ProcesoExterno:
+        type: integer
+        format: int64
+      TipoMovimientoId:
+        $ref: '#/definitions/models.TipoGeneral'
+  models.Rama:
+    title: Rama
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+      RubroHijo:
+        $ref: '#/definitions/models.Rubro'
+      RubroPadre:
+        $ref: '#/definitions/models.Rubro'
+  models.Rubro:
+    title: Rubro
+    type: object
+    properties:
+      Codigo:
+        type: string
+      Descripcion:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Nombre:
+        type: string
+      Organizacion:
+        type: integer
+        format: int64
+      UnidadEjecutora:
+        type: string
+  models.RubroNecesidad:
+    title: RubroNecesidad
+    type: object
+    properties:
+      Fuentes:
+        type: array
+        items:
+          $ref: '#/definitions/10610.string.0xc00048e2d0'
+      Id:
+        type: integer
+        format: int64
+      InfoRubro:
+        $ref: '#/definitions/10490.string.0xc00048e288'
+      Metas:
+        type: array
+        items:
+          $ref: '#/definitions/models.MetaRubroNecesidad'
+      NecesidadId:
+        $ref: '#/definitions/10558.0xc00047bef0.false'
+      Productos:
+        type: array
+        items:
+          $ref: '#/definitions/10666.string.0xc00048e300'
+      RubroId:
+        type: string
+  models.SolicitudCDP:
+    title: SolicitudCDP
+    type: object
+    properties:
+      _id:
+        type: string
+      activo:
+        type: boolean
+      centroGestor:
+        type: integer
+        format: int64
+      consecutivo:
+        type: integer
+        format: int64
+      entidad:
+        type: integer
+        format: int64
+      estado:
+        $ref: '#/definitions/models.estadoCdp'
+      fechaCreacion:
+        type: string
+        format: datetime
+      fechaModificacion:
+        type: string
+        format: datetime
+      fechaRegistro:
+        type: string
+        format: datetime
+      justificacionRechazo:
+        type: string
+      necesidad:
+        type: integer
+        format: int64
+      vigencia:
+        type: string
+  models.SolicitudCRP:
+    title: SolicitudCRP
+    type: object
+  models.TipoFuenteFinanciamiento:
+    title: TipoFuenteFinanciamiento
+    type: object
+    properties:
+      Descripcion:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Nombre:
+        type: string
+  models.TipoGeneral:
+    title: TipoGeneral
+    type: object
+    properties:
+      Acronimo:
+        type: string
+      Descripcion:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Nombre:
+        type: string
+      Parametros:
+        type: string
+  models.TrNecesidad:
+    title: TrNecesidad
+    type: object
+    properties:
+      ActividadEconomicaNecesidad:
+        type: array
+        items:
+          $ref: '#/definitions/11472.string.0xc00048e4b0'
+      ActividadEspecificaNecesidad:
+        type: array
+        items:
+          $ref: '#/definitions/11372.string.0xc00048e480'
+      DetallePrestacionServicioNecesidad:
+        $ref: '#/definitions/11075.string.0xc00048e3f0'
+      DetalleServicioNecesidad:
+        $ref: '#/definitions/10979.string.0xc00048e3c0'
+      MarcoLegalNecesidad:
+        type: array
+        items:
+          $ref: '#/definitions/11281.string.0xc00048e450'
+      Necesidad:
+        $ref: '#/definitions/10881.string.0xc00048e390'
+      ProductosCatalogoNecesidad:
+        type: array
+        items:
+          $ref: '#/definitions/11183.string.0xc00048e420'
+      RequisitoMinimoNecesidad:
+        type: array
+        items:
+          $ref: '#/definitions/11571.string.0xc00048e4e0'
+      Rubros:
+        type: array
+        items:
+          $ref: '#/definitions/models.RubroNecesidad'
+  models.estadoCdp:
+    title: estadoCdp
+    type: object
+    properties:
+      acronimo:
+        type: string
+      id:
+        type: string
+      nombre:
+        type: string
+tags:
+- name: rubro
+  description: |
+    RubroController operations for Rubro
+- name: apropiacion
+  description: |
+    ApropiacionController operations for  Apropiacion
+- name: aprobacion_apropiacion
+  description: |
+    AprobacionController operations for AprobacionController
+- name: fuente_financiamiento_apropiacion
+  description: |
+    FuenteFinanciamientoApropiacionController operations for FuenteFinanciamientoApropiacionController
+- name: movimiento
+  description: |
+    MovimientoController operations for Movimiento
+- name: necesidad
+  description: |
+    NecesidadController operations for Necesidad
+- name: cdp
+  description: |
+    CdpController operations for Cdp
+- name: crp
+  description: |
+    CrpController operations for Crp
+- name: modificacion_apropiacion
+  description: |
+    ModificacionPresupuestalController operations for ModificacionPresupuestal
+- name: vigencia
+  description: |
+    VigenciaController operations for vigencia

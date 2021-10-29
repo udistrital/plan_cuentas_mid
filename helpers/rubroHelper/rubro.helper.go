@@ -10,6 +10,8 @@ import (
 )
 
 // AddRubro ... send finantial information to mongo for some internal operation's
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func AddRubro(data models.Rama) (response map[string]interface{}) {
 	var (
 		urlCrud       string
@@ -95,6 +97,8 @@ func AddRubro(data models.Rama) (response map[string]interface{}) {
 }
 
 // DeleteRubro ...
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func DeleteRubro(id int) map[string]interface{} {
 
 	idStr := strconv.Itoa(id)
