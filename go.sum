@@ -185,8 +185,9 @@ github.com/ledisdb/ledisdb v0.0.0-20200510135210-d35789ec47e6/go.mod h1:n931TsDu
 github.com/leodido/go-urn v1.2.1 h1:BqpAaACuzVSgi/VLzGZIobT2z4v53pjosyNd9Yv6n/w=
 github.com/leodido/go-urn v1.2.1/go.mod h1:zt4jvISO2HfUBqxjfIshjdMTYS56ZS/qv49ictyFfxY=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
-github.com/lib/pq v1.10.0 h1:Zx5DJFEYQXio93kgXnQ09fXNiUKsqv4OUEu2UtGcB1E=
 github.com/lib/pq v1.10.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
+github.com/lib/pq v1.10.3 h1:v9QZf2Sn6AmjXtQeFpdoq/eaNtYP6IN+7lcrygsIAtg=
+github.com/lib/pq v1.10.3/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/lightstep/lightstep-tracer-common/golang/gogo v0.0.0-20190605223551-bc2310a04743/go.mod h1:qklhhLq1aX+mtWk9cPHPzaBjWImj5ULL6C7HFJtXQMM=
 github.com/lightstep/lightstep-tracer-go v0.18.1/go.mod h1:jlF1pusYV4pidLvZ+XD0UBX0ZE6WURAspgAczcDHrL4=
 github.com/lyft/protoc-gen-validate v0.0.13/go.mod h1:XbGvPuh87YZc5TdIa2/I4pLk0QoUACkjt2znoq26NVQ=
@@ -327,6 +328,8 @@ github.com/syndtr/goleveldb v0.0.0-20181127023241-353a9fca669c/go.mod h1:Z4AUp2K
 github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/udistrital/auditoria v0.0.0-20200115201815-9680ae9c2515 h1:HTZDLLQ5QiGANHPjsz2rtNoryMncPISVrQ4DIjveWI4=
 github.com/udistrital/auditoria v0.0.0-20200115201815-9680ae9c2515/go.mod h1:2g8J932brTzbNOcSHob/vjt+/GFfMQuRreLZhvGiUro=
+github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9 h1:sho2wV6uGQVj+XLSKzynBT3cZAFFKwdmb3dktRglyxc=
+github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9/go.mod h1:3AbgZf1iSsUdVKoh3YpTnHxivtRdCV18D3ar+Gf6fHY=
 github.com/udistrital/utils_oas v0.0.0-20211011160436-7fa8127363aa h1:nzKR3AWWkX5b1A1hzNNHKLDnugkNWH8ll/Mb6mbdUMs=
 github.com/udistrital/utils_oas v0.0.0-20211011160436-7fa8127363aa/go.mod h1:ctr3PgpZazF32ukxlLZP3AVjq8b2zaZ4beG4cqkx5ZA=
 github.com/ugorji/go v0.0.0-20171122102828-84cb69a8af83/go.mod h1:hnLbHMwcvSihnDhEfx2/BzKp2xb0Y+ErdfYcrs9tkJQ=
