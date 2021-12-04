@@ -22,6 +22,7 @@ type NecesidadController struct {
 func (c *NecesidadController) URLMapping() {
 	c.Mapping("GetFullNecesidad", c.GetFullNecesidad)
 	c.Mapping("PostFullNecesidad", c.PostFullNecesidad)
+	c.Mapping("Put", c.Put)
 }
 
 // GetFullNecesidad ...
