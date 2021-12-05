@@ -140,7 +140,7 @@ func (c *NecesidadController) Put() {
 		panic(err)
 	}
 
-	if v, err := necesidadhelper.PutNecesidadService(id, necesidad); err != nil {
+	if v, err := necesidadhelper.InterceptorMovimientoNecesidad(id, necesidad); err != nil {
 		panic(err)
 	} else {
 		c.Data["json"] = v

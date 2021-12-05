@@ -23,7 +23,7 @@ func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated [
 	return
 }
 
-func ObtenerUltimoMovimiento(ultMovimiento models_movimientos.CuentasMovimientoProcesoExterno) (movimiento models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
+func ObtenerUltimoMovimiento(ultMovimiento []models_movimientos.CuentasMovimientoProcesoExterno) (movimiento []models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{
@@ -45,7 +45,7 @@ func ObtenerUltimoMovimiento(ultMovimiento models_movimientos.CuentasMovimientoP
 	return movimiento, nil
 }
 
-func CrearMovimiento(movimientocreado models_movimientos.CuentasMovimientoProcesoExterno) (movimiento models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
+func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProcesoExterno) (movimiento []models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{

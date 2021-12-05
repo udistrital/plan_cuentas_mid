@@ -1,6 +1,7 @@
 package necesidadhelper
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -22,18 +23,17 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 			panic(outputError)
 		}
 	}()
-
-	if necesidad.EstadoNecesidadId.Nombre != "Aprobada" {
+	if necesidadent.EstadoNecesidadId.Nombre != "Aprobada" {
 		if v, err := PutNecesidadService(id, necesidadent); err != nil {
 			outputError = err
 		} else {
 			necesidad = v
 		}
 	} else {
-		if resp, err := EvaluarMovimiento(necesidad); err != nil {
+		if resp, err := EvaluarMovimiento(necesidadent); err != nil {
 			outputError = err
 		} else if resp {
-			if err := RealizarMovimiento(necesidad); err != nil {
+			if err := RealizarMovimiento(necesidadent); err != nil {
 				outputError = err
 			} else {
 				if v, err := PutNecesidadService(id, necesidadent); err != nil {
@@ -59,18 +59,21 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 		}
 	}()
 	//TODO realizar movimiento
-	var mov models_movimientos.CuentasMovimientoProcesoExterno
+	var mov []models_movimientos.CuentasMovimientoProcesoExterno
+	var mov1 models_movimientos.CuentasMovimientoProcesoExterno
 	var movext models_movimientos.MovimientoProcesoExterno
+	var tipomov models_movimientos.TipoMovimiento
 	if response, err := GetTrNecesidad(strconv.Itoa(necesidad.Id)); err != nil {
 		outputError = err
 	} else {
-		movext.TipoMovimientoId.Id, _ = beego.AppConfig.Int("tipomovimiento")
+		tipomov.Id, _ = strconv.Atoi(beego.AppConfig.String("tipomovimiento"))
+		movext.TipoMovimientoId = &tipomov
 		movext.Activo = true
 		movext.MovimientoProcesoExterno = 0
 		movext.ProcesoExterno = 0
 		movext.Detalle, _ = utils.Serializar(map[string]interface{}{
 			"Estado":      "Publicado",
-			"NecesidadId": necesidad.Id,
+			"NecesidadId": fmt.Sprintf("%v", necesidad.Id),
 		})
 		if movimientoext, err := movimientohelper.CrearMovimientoProcesoExt(movext); err != nil {
 			outputError = err
@@ -81,25 +84,21 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 						for _, actividadp := range meta.Actividades {
 							actividad := *actividadp
 							fuentesi := actividad["FuentesActividad"]
-							fuentes := fuentesi.([]map[string]interface{})
-							for _, fuente := range fuentes {
-								mov.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+							fuentesp := fuentesi.([]*map[string]interface{})
+							for _, fuentep := range fuentesp {
+								fuente := *fuentep
+								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
-									"FuenteFinanciamientoId": fuente["Id"].(string),
-									"ActividadId":            actividad["Id"].(string),
+									"ActividadId":            fmt.Sprintf("%v", int(actividad["Id"].(float64))),
+									"FuenteFinanciamientoId": fmt.Sprintf("%v", int(fuente["Id"].(float64))),
 								})
-								if movimiento, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+								mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
+								mov1.Valor = -fuente["MontoParcial"].(float64)
+								mov = append(mov, mov1)
+								if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
 									outputError = err
-								} else {
-									mov.Mov_Proc_Ext = string(movimientoext.Id)
-									mov.Saldo = fuente["MontoParcial"].(float64)
-									mov.Valor = movimiento.Saldo + fuente["MontoParcial"].(float64)
-									if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
-										outputError = err
-									} else {
-										logs.Info(movimientodet)
-									}
 								}
+								mov = nil
 							}
 						}
 					}
@@ -109,22 +108,19 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 					//Consultar el movimiento de cada rubro
 					for _, fuentep := range valor.Fuentes {
 						fuente := *fuentep
-						mov.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 							"RubroId":                valor.RubroId,
 							"FuenteFinanciamientoId": fuente["Id"].(string),
 						})
-						if movimiento, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+						mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
+						mov1.Valor = -fuente["MontoParcial"].(float64)
+						mov = append(mov, mov1)
+						if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
 							outputError = err
 						} else {
-							mov.Mov_Proc_Ext = string(movimiento.MovimientoProcesoExternoId.Id)
-							mov.Saldo = fuente["MontoParcial"].(float64)
-							mov.Valor = movimiento.Saldo - fuente["MontoParcial"].(float64)
-							if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
-								outputError = err
-							} else {
-								logs.Info(movimientodet)
-							}
+							logs.Info(movimientodet)
 						}
+						mov = nil
 					}
 				}
 			}
@@ -144,37 +140,37 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 			panic(outputError)
 		}
 	}()
-
 	resultado = false
-	var mov models_movimientos.CuentasMovimientoProcesoExterno
+	var mov []models_movimientos.CuentasMovimientoProcesoExterno
+	var mov1 models_movimientos.CuentasMovimientoProcesoExterno
 	if response, err := GetTrNecesidad(strconv.Itoa(necesidad.Id)); err != nil {
-		resultado = false
 		outputError = err
 	} else {
 		if necesidad.TipoFinanciacionNecesidadId.Nombre == "Inversion" {
 			for _, valor := range response.Rubros {
-				//Consultar el movimiento de cada rubro
 				for _, meta := range valor.Metas {
 					for _, actividadp := range meta.Actividades {
 						actividad := *actividadp
 						fuentesi := actividad["FuentesActividad"]
-						fuentes := fuentesi.([]map[string]interface{})
-						for _, fuente := range fuentes {
-							mov.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+						fuentesp := fuentesi.([]*map[string]interface{})
+						for _, fuentep := range fuentesp {
+							fuente := *fuentep
+							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
-								"FuenteFinanciamientoId": fuente["Id"].(string),
-								"ActividadId":            actividad["Id"].(string),
+								"ActividadId":            fmt.Sprintf("%v", int(actividad["Id"].(float64))),
+								"FuenteFinanciamientoId": fmt.Sprintf("%v", int(fuente["Id"].(float64))),
 							})
-							if movimiento, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
-								resultado = false
+							mov = append(mov, mov1)
+							if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
 								outputError = err
 							} else {
-								if movimiento.Saldo > fuente["MontoParcial"].(float64) {
-									resultado = true
-								} else {
-									resultado = false
+								for _, movimiento := range movimientos {
+									if movimiento.Saldo > fuente["MontoParcial"].(float64) {
+										resultado = true
+									}
 								}
 							}
+							mov = nil
 						}
 					}
 				}
@@ -184,20 +180,21 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 				//Consultar el movimiento de cada rubro
 				for _, fuentep := range valor.Fuentes {
 					fuente := *fuentep
-					mov.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+					mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 						"RubroId":                valor.RubroId,
 						"FuenteFinanciamientoId": fuente["Id"].(string),
 					})
-					if movimiento, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
-						resultado = false
+					mov = append(mov, mov1)
+					if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
 						outputError = err
 					} else {
-						if movimiento.Saldo > fuente["MontoParcial"].(float64) {
-							resultado = true
-						} else {
-							resultado = false
+						for _, movimiento := range movimientos {
+							if movimiento.Saldo > fuente["MontoParcial"].(float64) {
+								resultado = true
+							}
 						}
 					}
+					mov = nil
 				}
 			}
 		}

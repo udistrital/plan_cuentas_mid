@@ -6,14 +6,16 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/udistrital/auditoria v0.0.0-20200115201815-9680ae9c2515
-	github.com/udistrital/utils_oas v0.0.0-20211011160436-7fa8127363aa
+	github.com/udistrital/movimientos_crud v0.3.1-0.20211202162351-31c5c2fb4d98
+	github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9
+	github.com/udistrital/utils_oas v0.0.0-20211125230753-1091d2af48e2
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
-	github.com/go-playground/locales v0.13.0 // indirect
-	github.com/go-playground/universal-translator v0.17.0 // indirect
+	github.com/go-playground/locales v0.14.0 // indirect
+	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -26,7 +28,6 @@ require (
 	github.com/prometheus/common v0.21.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
-	github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9 // indirect
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/net v0.0.0-20210420210106-798c2154c571 // indirect
 	golang.org/x/sys v0.0.0-20210420205809-ac73e9fd8988 // indirect
