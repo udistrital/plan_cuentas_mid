@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -131,13 +132,21 @@ func (c *NecesidadController) Put() {
 	)
 
 	if v, err := c.GetInt(":id"); err != nil {
-		panic(err)
+		panic(map[string]interface{}{
+			"funcion": "NecesidadController - c.GetInt(\":id\")",
+			"err":     fmt.Errorf("id debe ser entero "),
+			"status":  "400",
+		})
 	} else {
 		id = v
 	}
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &necesidad); err != nil {
-		panic(err)
+		panic(map[string]interface{}{
+			"funcion": "NecesidadController - json.Unmarshal(c.Ctx.Input.RequestBody, &necesidad)",
+			"err":     fmt.Errorf("Error de recepcion de objeto body"),
+			"status":  "400",
+		})
 	}
 
 	if v, err := necesidadhelper.InterceptorMovimientoNecesidad(id, necesidad); err != nil {
