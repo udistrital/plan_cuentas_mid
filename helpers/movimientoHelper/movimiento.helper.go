@@ -51,7 +51,7 @@ func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProc
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{
-				"funcion": "ObtenerUltimoMovimiento - Unhandled Error!",
+				"funcion": "CrearMovimiento - Unhandled Error!",
 				"err":     err,
 				"status":  "500",
 			}
@@ -74,7 +74,7 @@ func CrearMovimientoProcesoExt(movimientocreado models_movimientos.MovimientoPro
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{
-				"funcion": "ObtenerUltimoMovimiento - Unhandled Error!",
+				"funcion": "CrearMovimientoProcesoExt - Unhandled Error!",
 				"err":     err,
 				"status":  "500",
 			}

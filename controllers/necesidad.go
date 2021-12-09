@@ -116,7 +116,7 @@ func (c *NecesidadController) Put() {
 		if err := recover(); err != nil {
 			logs.Error(err)
 			localError := err.(map[string]interface{})
-			c.Data["mesaage"] = (beego.AppConfig.String("appname") + "/" + "NecesidadController" + "/" + (localError["funcion"]).(string))
+			c.Data["mesaage"] = (beego.AppConfig.String("appname") + "/" + "Put" + "/" + (localError["funcion"]).(string))
 			c.Data["data"] = (localError["err"])
 			if status, ok := localError["status"]; ok {
 				c.Abort(status.(string))
@@ -133,7 +133,7 @@ func (c *NecesidadController) Put() {
 
 	if v, err := c.GetInt(":id"); err != nil {
 		panic(map[string]interface{}{
-			"funcion": "NecesidadController - c.GetInt(\":id\")",
+			"funcion": "Put - c.GetInt(\":id\")",
 			"err":     fmt.Errorf("id debe ser entero "),
 			"status":  "400",
 		})
@@ -143,7 +143,7 @@ func (c *NecesidadController) Put() {
 
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &necesidad); err != nil {
 		panic(map[string]interface{}{
-			"funcion": "NecesidadController - json.Unmarshal(c.Ctx.Input.RequestBody, &necesidad)",
+			"funcion": "Put - json.Unmarshal(c.Ctx.Input.RequestBody, &necesidad)",
 			"err":     fmt.Errorf("Error de recepcion de objeto body"),
 			"status":  "400",
 		})
