@@ -23,6 +23,7 @@ func FormatDataForMovimientosMongoAPI(data ...models.Movimiento) (dataFormated [
 	return
 }
 
+//ObtenerUltimoMovimiento, obtiene el ultimo movimiento realizado por los datos de rubro y fuentes (actividades si es de inversion)
 func ObtenerUltimoMovimiento(ultMovimiento []models_movimientos.CuentasMovimientoProcesoExterno) (movimiento []models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -45,6 +46,7 @@ func ObtenerUltimoMovimiento(ultMovimiento []models_movimientos.CuentasMovimient
 	return movimiento, nil
 }
 
+//CrearMovimiento, Crea un resgistro del movimiento realizado a partir de un movimiento proceso externo y los datos de la necesidad
 func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProcesoExterno) (movimiento []models_movimientos.MovimientoDetalle, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -67,6 +69,7 @@ func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProc
 	return movimiento, nil
 }
 
+//CrearMovimientoProcesoExt, A partir de la informacion que se envie, crea un movimiento proceso externo con su Id respectivo
 func CrearMovimientoProcesoExt(movimientocreado models_movimientos.MovimientoProcesoExterno) (movimiento models_movimientos.MovimientoProcesoExterno, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {

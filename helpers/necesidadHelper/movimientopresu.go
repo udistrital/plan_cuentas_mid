@@ -12,6 +12,8 @@ import (
 	"github.com/udistrital/plan_cuentas_mid/helpers/utils"
 )
 
+// InterceptorMovimientoNecesidad, toma la necesidad y su id para determinar si se debe solo actualizar o si es para aprobar y en tal caso
+// hacer un movimiento con esta informacion de la necesidad
 func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesidad) (necesidad necesidad_models.Necesidad, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -47,6 +49,7 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 	return
 }
 
+//RealizarMovimiento, toma la informacion de la necesidad para poder generar y estructurar el movimiento
 func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -58,7 +61,6 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 			panic(outputError)
 		}
 	}()
-	//TODO realizar movimiento
 	var mov []models_movimientos.CuentasMovimientoProcesoExterno
 	var mov1 models_movimientos.CuentasMovimientoProcesoExterno
 	var movext models_movimientos.MovimientoProcesoExterno
@@ -105,7 +107,6 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 				}
 			} else if necesidad.TipoFinanciacionNecesidadId.Nombre == "Funcionamiento" {
 				for _, valor := range response.Rubros {
-					//Consultar el movimiento de cada rubro
 					for _, fuentep := range valor.Fuentes {
 						fuente := *fuentep
 						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
@@ -129,6 +130,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 	return
 }
 
+// EvaluarMovimiento, A partir de la necesidad se determina si hay fondos para crubir la necesidad evaluando si es por inversion o funcionamiento
 func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -177,7 +179,6 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 			}
 		} else if necesidad.TipoFinanciacionNecesidadId.Nombre == "Funcionamiento" {
 			for _, valor := range response.Rubros {
-				//Consultar el movimiento de cada rubro
 				for _, fuentep := range valor.Fuentes {
 					fuente := *fuentep
 					mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
