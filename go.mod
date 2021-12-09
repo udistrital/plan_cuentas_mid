@@ -6,18 +6,20 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/udistrital/auditoria v0.0.0-20200115201815-9680ae9c2515
-	github.com/udistrital/utils_oas v0.0.0-20211011160436-7fa8127363aa
+	github.com/udistrital/movimientos_crud v0.3.1-0.20211202162351-31c5c2fb4d98
+	github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9
+	github.com/udistrital/utils_oas v0.0.0-20211125230753-1091d2af48e2
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
-	github.com/go-playground/locales v0.13.0 // indirect
-	github.com/go-playground/universal-translator v0.17.0 // indirect
+	github.com/go-playground/locales v0.14.0 // indirect
+	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/lib/pq v1.10.0 // indirect
+	github.com/lib/pq v1.10.3 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
