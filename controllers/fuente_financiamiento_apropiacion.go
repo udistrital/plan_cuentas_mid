@@ -85,7 +85,7 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 	_, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
-		logs.Debug("error", err)
+		logs.Error("error", err)
 		panic(err.Error())
 	}
 

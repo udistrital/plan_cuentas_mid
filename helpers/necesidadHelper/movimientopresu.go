@@ -27,23 +27,31 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 	}()
 	if necesidadent.EstadoNecesidadId.Nombre != "Aprobada" {
 		if v, err := PutNecesidadService(id, necesidadent); err != nil {
+			// logs.Debug("InterceptorMovimientoNecesidad - 2")
 			outputError = err
 		} else {
+			// logs.Debug("InterceptorMovimientoNecesidad - 3")
 			necesidad = v
 		}
 	} else {
 		if resp, err := EvaluarMovimiento(necesidadent); err != nil {
+			// logs.Debug("InterceptorMovimientoNecesidad - 5")
 			outputError = err
 		} else if resp {
 			if err := RealizarMovimiento(necesidadent); err != nil {
+				// logs.Debug("InterceptorMovimientoNecesidad - 7")
 				outputError = err
 			} else {
 				if v, err := PutNecesidadService(id, necesidadent); err != nil {
+					// logs.Debug("InterceptorMovimientoNecesidad - 9")
 					outputError = err
 				} else {
+					// logs.Debug("InterceptorMovimientoNecesidad - 10")
 					necesidad = v
 				}
 			}
+		} else {
+			// logs.Debug("InterceptorMovimientoNecesidad - 11")
 		}
 	}
 	return
@@ -91,8 +99,8 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 								fuente := *fuentep
 								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
-									"ActividadId":            fmt.Sprintf("%v", int(actividad["Id"].(float64))),
-									"FuenteFinanciamientoId": fmt.Sprintf("%v", int(fuente["Id"].(float64))),
+									"ActividadId":            actividad["ActividadId"].(string),
+									"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 								})
 								mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 								mov1.Valor = -fuente["MontoParcial"].(float64)
@@ -146,30 +154,36 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 	var mov []models_movimientos.CuentasMovimientoProcesoExterno
 	var mov1 models_movimientos.CuentasMovimientoProcesoExterno
 	if response, err := GetTrNecesidad(strconv.Itoa(necesidad.Id)); err != nil {
+		// logs.Debug("EvaluarMovimiento - 1")
 		outputError = err
 	} else {
 		if necesidad.TipoFinanciacionNecesidadId.Nombre == "Inversion" {
-			for _, valor := range response.Rubros {
-				for _, meta := range valor.Metas {
-					for _, actividadp := range meta.Actividades {
+			for k1, valor := range response.Rubros {
+				for k2, meta := range valor.Metas {
+					for k3, actividadp := range meta.Actividades {
 						actividad := *actividadp
 						fuentesi := actividad["FuentesActividad"]
 						fuentesp := fuentesi.([]*map[string]interface{})
-						for _, fuentep := range fuentesp {
+						for k4, fuentep := range fuentesp {
 							fuente := *fuentep
 							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
-								"ActividadId":            fmt.Sprintf("%v", actividad["Id"]),
-								"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["Id"]),
+								"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
+								"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
 							})
 							mov = append(mov, mov1)
+							// logs.Debug(mov)
 							if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+								// logs.Debug("EvaluarMovimiento - 3", k1, k2, k3, k4)
 								outputError = err
 							} else {
-								for _, movimiento := range movimientos {
+								for k5, movimiento := range movimientos {
+									// logs.Debug(movimiento)
 									if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
 										resultado = true
 									}
+									logs.Debug("EvaluarMovimiento - 4", k1, k2, k3, k4, k5, resultado, movimiento.Saldo, fuente["MontoParcial"])
+
 								}
 							}
 							mov = nil
@@ -187,10 +201,12 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 					})
 					mov = append(mov, mov1)
 					if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+						// logs.Debug("EvaluarMovimiento - 5")
 						outputError = err
 					} else {
 						for _, movimiento := range movimientos {
 							if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
+								// logs.Debug("EvaluarMovimiento - 6")
 								resultado = true
 							}
 						}
