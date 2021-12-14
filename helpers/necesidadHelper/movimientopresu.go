@@ -44,6 +44,7 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 					necesidad = v
 				}
 			}
+		} else {
 		}
 	}
 	return
@@ -91,14 +92,16 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 								fuente := *fuentep
 								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
-									"ActividadId":            fmt.Sprintf("%v", int(actividad["Id"].(float64))),
-									"FuenteFinanciamientoId": fmt.Sprintf("%v", int(fuente["Id"].(float64))),
+									"ActividadId":            actividad["ActividadId"].(string),
+									"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 								})
 								mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 								mov1.Valor = -fuente["MontoParcial"].(float64)
 								mov = append(mov, mov1)
-								if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
+								if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
 									outputError = err
+								} else {
+									logs.Debug(movimientodet)
 								}
 								mov = nil
 							}
@@ -111,7 +114,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 						fuente := *fuentep
 						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 							"RubroId":                valor.RubroId,
-							"FuenteFinanciamientoId": fuente["Id"].(string),
+							"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 						})
 						mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 						mov1.Valor = -fuente["MontoParcial"].(float64)
@@ -119,7 +122,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 						if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
 							outputError = err
 						} else {
-							logs.Info(movimientodet)
+							logs.Debug(movimientodet)
 						}
 						mov = nil
 					}
@@ -149,27 +152,29 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 		outputError = err
 	} else {
 		if necesidad.TipoFinanciacionNecesidadId.Nombre == "Inversion" {
-			for _, valor := range response.Rubros {
-				for _, meta := range valor.Metas {
-					for _, actividadp := range meta.Actividades {
+			for k1, valor := range response.Rubros {
+				for k2, meta := range valor.Metas {
+					for k3, actividadp := range meta.Actividades {
 						actividad := *actividadp
 						fuentesi := actividad["FuentesActividad"]
 						fuentesp := fuentesi.([]*map[string]interface{})
-						for _, fuentep := range fuentesp {
+						for k4, fuentep := range fuentesp {
 							fuente := *fuentep
 							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
-								"ActividadId":            fmt.Sprintf("%v", int(actividad["Id"].(float64))),
-								"FuenteFinanciamientoId": fmt.Sprintf("%v", int(fuente["Id"].(float64))),
+								"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
+								"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
 							})
 							mov = append(mov, mov1)
 							if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
 								outputError = err
 							} else {
-								for _, movimiento := range movimientos {
-									if movimiento.Saldo > fuente["MontoParcial"].(float64) {
+								for k5, movimiento := range movimientos {
+									if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
 										resultado = true
 									}
+									logs.Debug("EvaluarMovimiento - 4", k1, k2, k3, k4, k5, resultado, movimiento.Saldo, fuente["MontoParcial"])
+
 								}
 							}
 							mov = nil
@@ -183,14 +188,14 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 					fuente := *fuentep
 					mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 						"RubroId":                valor.RubroId,
-						"FuenteFinanciamientoId": fuente["Id"].(string),
+						"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
 					})
 					mov = append(mov, mov1)
 					if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
 						outputError = err
 					} else {
 						for _, movimiento := range movimientos {
-							if movimiento.Saldo > fuente["MontoParcial"].(float64) {
+							if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
 								resultado = true
 							}
 						}

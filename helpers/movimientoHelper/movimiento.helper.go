@@ -3,7 +3,9 @@ package movimientohelper
 import (
 	"github.com/astaxie/beego"
 	models_movimientos "github.com/udistrital/movimientos_crud/models"
+	"github.com/udistrital/plan_cuentas_mid/helpers/utils"
 	"github.com/udistrital/plan_cuentas_mid/models"
+	"github.com/udistrital/utils_oas/formatdata"
 	"github.com/udistrital/utils_oas/request"
 )
 
@@ -58,14 +60,16 @@ func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProc
 			panic(outputError)
 		}
 	}()
+
 	urlcrearmovimiento := beego.AppConfig.String("movimientosCrudService") + "movimiento_detalle/crearMovimientosDetalle/"
 	if err := request.SendJson(urlcrearmovimiento, "POST", &movimiento, movimientocreado); err != nil {
 		return movimiento, map[string]interface{}{
-			"funcion": "CrearMovimiento - request.SendJson(urlcrearmovimiento, \"POST\", &movimiento, movimientocreado)",
+			"funcion": "CrearMovimiento - request.SendJson(urlcrearmovimiento, \"POST\", &respuestaPeticion, movimientocreado)",
 			"err":     err,
 			"status":  "500",
 		}
 	}
+
 	return movimiento, nil
 }
 
@@ -81,13 +85,19 @@ func CrearMovimientoProcesoExt(movimientocreado models_movimientos.MovimientoPro
 			panic(outputError)
 		}
 	}()
+
+	var respuestaPeticion utils.RespuestaEncapsulada1
+
 	urlcrearmovimiento := beego.AppConfig.String("movimientosCrudService") + "movimiento_proceso_externo/"
-	if err := request.SendJson(urlcrearmovimiento, "POST", &movimiento, movimientocreado); err != nil {
+	if err := request.SendJson(urlcrearmovimiento, "POST", &respuestaPeticion, movimientocreado); err != nil {
 		return movimiento, map[string]interface{}{
 			"funcion": "CrearMovimientoProcesoExt - request.SendJson(urlcrearmovimiento, \"POST\", &movimiento, movimientocreado)",
 			"err":     err,
 			"status":  "500",
 		}
 	}
+
+	formatdata.FillStruct(respuestaPeticion.Body, &movimiento)
+
 	return movimiento, nil
 }

@@ -162,8 +162,8 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 								urlcrud = beego.AppConfig.String("necesidadesCrudService") + "necesidad/" + strnecesidadID
 								if response4, err := request.GetJsonTest(urlcrud, &objNecesidad); err == nil {
 									tipoFinanciacion := objNecesidad["TipoFinanciacionNecesidadId"].(map[string]interface{})
-									logs.Debug(objNecesidad["TipoFinanciacionNecesidadId"])
-									logs.Debug(tipoFinanciacion["Nombre"])
+									// logs.Debug(objNecesidad["TipoFinanciacionNecesidadId"])
+									// logs.Debug(tipoFinanciacion["Nombre"])
 
 									objTmpCrp["consecutivoCdp"] = aux
 									objTmpCrp["vigencia"] = vig
@@ -199,14 +199,14 @@ func GetFullCrp() (consultaCrps []map[string]interface{}, outputError map[string
 
 		} else {
 			logs.Info("Error (2) servicio caido")
-			logs.Debug(err)
+			logs.Error(err)
 			outputError = map[string]interface{}{"Function": "GetCDP, ", "Error": err}
 			return nil, outputError
 		}
 
 	} else {
 		logs.Info("Error (1) servicio caido")
-		logs.Debug(err, response)
+		logs.Error(err, response)
 		outputError = map[string]interface{}{"Function": "GetSolicitudesCRP", "Error": err}
 		return nil, outputError
 	}

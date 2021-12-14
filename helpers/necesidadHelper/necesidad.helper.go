@@ -338,6 +338,7 @@ func getActividadesMeta(id string) (actividades []*map[string]interface{}, outEr
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "actividad_meta/?query=MetaRubroNecesidadId:" + id
 	var res []map[string]interface{}
 	actividades = make([]*map[string]interface{}, 0)
+	// logs.Debug(urlcrud)
 	if err := request.GetJson(urlcrud, &res); err != nil {
 		outErr = map[string]interface{}{"Function": "getActividadesMeta", "Error": err.Error()}
 		return nil, outErr

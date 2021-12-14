@@ -28,5 +28,7 @@ func PutNecesidadService(id int, necesidadent necesidad_models.Necesidad) (neces
 			"status":  "500",
 		}
 	}
+
+	// logs.Debug("Necesidades del controlador: ", necesidadent, necesidad)
 	return necesidad, nil
 }
