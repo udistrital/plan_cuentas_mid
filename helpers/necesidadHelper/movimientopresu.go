@@ -170,7 +170,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 								outputError = err
 							} else {
 								for k5, movimiento := range movimientos {
-									if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
+									if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
 										resultado = true
 									}
 									logs.Debug("EvaluarMovimiento - 4", k1, k2, k3, k4, k5, resultado, movimiento.Saldo, fuente["MontoParcial"])
@@ -195,7 +195,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 						outputError = err
 					} else {
 						for _, movimiento := range movimientos {
-							if int(movimiento.Saldo) > int(fuente["MontoParcial"].(float64)) {
+							if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
 								resultado = true
 							}
 						}
