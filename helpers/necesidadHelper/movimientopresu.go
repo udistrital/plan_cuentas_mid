@@ -46,7 +46,7 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 		} else {
 			outputError = map[string]interface{}{
 				"funcion": "EvaluarMovimiento - Handled Error!",
-				"status":  "452",
+				"status":  "409",
 			}
 		}
 	}
