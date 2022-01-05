@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	models_movimientos "github.com/udistrital/movimientos_crud/models"
 	necesidad_models "github.com/udistrital/necesidades_crud/models"
 	movimientohelper "github.com/udistrital/plan_cuentas_mid/helpers/movimientoHelper"
@@ -45,6 +44,10 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 				}
 			}
 		} else {
+			outputError = map[string]interface{}{
+				"funcion": "EvaluarMovimiento - Handled Error!",
+				"status":  "409",
+			}
 		}
 	}
 	return
@@ -98,10 +101,8 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 								mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 								mov1.Valor = -fuente["MontoParcial"].(float64)
 								mov = append(mov, mov1)
-								if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
+								if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
 									outputError = err
-								} else {
-									logs.Debug(movimientodet)
 								}
 								mov = nil
 							}
@@ -119,10 +120,8 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 						mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 						mov1.Valor = -fuente["MontoParcial"].(float64)
 						mov = append(mov, mov1)
-						if movimientodet, err := movimientohelper.CrearMovimiento(mov); err != nil {
+						if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
 							outputError = err
-						} else {
-							logs.Debug(movimientodet)
 						}
 						mov = nil
 					}
@@ -152,13 +151,13 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 		outputError = err
 	} else {
 		if necesidad.TipoFinanciacionNecesidadId.Nombre == "Inversion" {
-			for k1, valor := range response.Rubros {
-				for k2, meta := range valor.Metas {
-					for k3, actividadp := range meta.Actividades {
+			for _, valor := range response.Rubros {
+				for _, meta := range valor.Metas {
+					for _, actividadp := range meta.Actividades {
 						actividad := *actividadp
 						fuentesi := actividad["FuentesActividad"]
 						fuentesp := fuentesi.([]*map[string]interface{})
-						for k4, fuentep := range fuentesp {
+						for _, fuentep := range fuentesp {
 							fuente := *fuentep
 							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
@@ -169,12 +168,10 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 							if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
 								outputError = err
 							} else {
-								for k5, movimiento := range movimientos {
+								for _, movimiento := range movimientos {
 									if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
 										resultado = true
 									}
-									logs.Debug("EvaluarMovimiento - 4", k1, k2, k3, k4, k5, resultado, movimiento.Saldo, fuente["MontoParcial"])
-
 								}
 							}
 							mov = nil

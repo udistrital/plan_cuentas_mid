@@ -109,6 +109,7 @@ func (c *NecesidadController) PostFullNecesidad() {
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	necesidad_models.Necesidad	true		"body for Necesidad content"
 // @Success 200 {object} necesidad_models.Necesidad
+// @Failure 409 No se puede hacer movimiento poque el rubro no tiene monto suficiente
 // @Failure 400 the request contains incorrect syntax
 // @router /:id [put]
 func (c *NecesidadController) Put() {
