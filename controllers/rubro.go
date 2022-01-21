@@ -20,7 +20,7 @@ type RubroController struct {
 // @Title RegistrarRubro
 // @Description Registra Rubro en postgres y mongo
 // @Param       body            body    models.Rama    true            "body for Rubro content"
-// @Success 200 {object} models.Alert
+// @Success 200 {object} models.Rubro
 // @Failure 403 body is empty
 // @router /RegistrarRubro/ [post]
 func (c *RubroController) RegistrarRubro() {

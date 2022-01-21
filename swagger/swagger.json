@@ -40,7 +40,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.PorDefinir"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -73,7 +76,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "type": "boolean"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -106,7 +112,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.RespuestaInformacionAsignacionInicial"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -134,7 +143,10 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.Apropiacion"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -176,7 +188,10 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Rubro"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Rubro"
+                            }
                         }
                     },
                     "403": {
@@ -324,7 +339,10 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.Apropiacion"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -346,13 +364,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCDP"
+                            "$ref": "#/definitions/models.SolicitudAprobacionCdp"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCDP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.PlanCuentasMongoCrudDocumentoPresupuestal"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -365,7 +386,7 @@
                 "tags": [
                     "cdp"
                 ],
-                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "description": "expedir cdp creando objeto infocdp en la solicitud - TODO: Esto semánticamente debería ser un POST!",
                 "operationId": "CdpController.ExpedirCdp",
                 "parameters": [
                     {
@@ -400,13 +421,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCDP"
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadParcial1"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCDP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -419,7 +443,7 @@
                 "tags": [
                     "crp"
                 ],
-                "description": "expedir crp creando objeto infocrp en la solicitud",
+                "description": "expedir crp creando objeto infocrp en la solicitud - TODO: Este método semánticamente debería ser un POST!",
                 "operationId": "CrpController.ExpedirCrp",
                 "parameters": [
                     {
@@ -434,7 +458,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCRP"
+                            "$ref": "#/definitions/models.SolicitudCrp"
                         }
                     }
                 }
@@ -451,7 +475,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.ConsultaEntrada"
+                            "$ref": "#/definitions/models.RespuestaGetFullCrp"
                         }
                     },
                     "404": {
@@ -474,13 +498,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCRP"
+                            "$ref": "#/definitions/models.SolicitudCrp"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCRP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCrp"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -546,7 +573,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                            "$ref": "#/definitions/models.FuenteFinanciamiento"
                         }
                     },
                     "403": {
@@ -993,7 +1020,7 @@
                         "description": "body for Necesidad content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/necesidad_models.Necesidad"
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadCompleta"
                         }
                     }
                 ],
@@ -1001,7 +1028,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/necesidad_models.Necesidad"
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadCompleta"
                         }
                     },
                     "400": {
@@ -1097,7 +1124,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Alert"
+                            "$ref": "#/definitions/models.Rubro"
                         }
                     },
                     "403": {
@@ -1182,68 +1209,96 @@
         }
     },
     "definitions": {
-        "10222.0xc0005539b0.false": {
+        "10309.0xc000605290.false": {
             "title": "false",
             "type": "object"
         },
-        "10281.string.0xc00051df50": {
-            "title": "0xc00051df50",
+        "10368.string.0xc000615ce0": {
+            "title": "0xc000615ce0",
             "type": "object"
         },
-        "10490.string.0xc00051dfc8": {
-            "title": "0xc00051dfc8",
+        "10577.string.0xc000615ec0": {
+            "title": "0xc000615ec0",
             "type": "object"
         },
-        "10558.0xc000553b60.false": {
+        "10645.0xc000605440.false": {
             "title": "false",
             "type": "object"
         },
-        "10610.string.0xc00056a018": {
-            "title": "0xc00056a018",
+        "10697.string.0xc00061c000": {
+            "title": "0xc00061c000",
             "type": "object"
         },
-        "10666.string.0xc00056a048": {
-            "title": "0xc00056a048",
+        "10753.string.0xc00061c0a0": {
+            "title": "0xc00061c0a0",
             "type": "object"
         },
-        "10881.string.0xc00056a0d8": {
-            "title": "0xc00056a0d8",
+        "10968.string.0xc00061c260": {
+            "title": "0xc00061c260",
             "type": "object"
         },
-        "10979.string.0xc00056a108": {
-            "title": "0xc00056a108",
+        "11066.string.0xc00061c300": {
+            "title": "0xc00061c300",
             "type": "object"
         },
-        "11075.string.0xc00056a138": {
-            "title": "0xc00056a138",
+        "11162.string.0xc00061c3a0": {
+            "title": "0xc00061c3a0",
             "type": "object"
         },
-        "11183.string.0xc00056a168": {
-            "title": "0xc00056a168",
+        "11270.string.0xc00061c460": {
+            "title": "0xc00061c460",
             "type": "object"
         },
-        "11281.string.0xc00056a198": {
-            "title": "0xc00056a198",
+        "11368.string.0xc00061c500": {
+            "title": "0xc00061c500",
             "type": "object"
         },
-        "11372.string.0xc00056a1c8": {
-            "title": "0xc00056a1c8",
+        "11459.string.0xc00061c5a0": {
+            "title": "0xc00061c5a0",
             "type": "object"
         },
-        "11472.string.0xc00056a1f8": {
-            "title": "0xc00056a1f8",
+        "11559.string.0xc00061c640": {
+            "title": "0xc00061c640",
             "type": "object"
         },
-        "11571.string.0xc00056a228": {
-            "title": "0xc00056a228",
+        "11658.string.0xc00061c6e0": {
+            "title": "0xc00061c6e0",
             "type": "object"
         },
-        "4594.0xc000552fc0.false": {
+        "19195.0xc000605e90.false": {
             "title": "false",
             "type": "object"
         },
-        "models.Alert": {
-            "title": "Alert",
+        "20649.0xc00062c000.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20706.0xc00062c030.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20765.0xc00062c060.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20818.0xc00062c090.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20877.0xc00062c0c0.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20934.0xc00062c0f0.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20985.0xc00062c120.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "4594.0xc000604ae0.false": {
+            "title": "false",
             "type": "object"
         },
         "models.AnulationDetail": {
@@ -1297,9 +1352,19 @@
                 }
             }
         },
-        "models.ConsultaEntrada": {
-            "title": "ConsultaEntrada",
-            "type": "object"
+        "models.Compromiso": {
+            "title": "Compromiso",
+            "type": "object",
+            "properties": {
+                "NumeroCompromiso": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoCompromiso": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
         },
         "models.DocumentoPresupuestal": {
             "title": "DocumentoPresupuestal",
@@ -1331,7 +1396,7 @@
                     "format": "int64"
                 },
                 "Data": {
-                    "$ref": "#/definitions/4594.0xc000552fc0.false"
+                    "$ref": "#/definitions/4594.0xc000604ae0.false"
                 },
                 "FechaRegistro": {
                     "type": "string"
@@ -1394,10 +1459,6 @@
                 }
             }
         },
-        "models.Fuentefinanciamiento": {
-            "title": "Fuentefinanciamiento",
-            "type": "object"
-        },
         "models.MetaRubroNecesidad": {
             "title": "MetaRubroNecesidad",
             "type": "object",
@@ -1405,7 +1466,7 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/10281.string.0xc00051df50"
+                        "$ref": "#/definitions/10368.string.0xc000615ce0"
                     }
                 },
                 "Id": {
@@ -1416,7 +1477,7 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
-                    "$ref": "#/definitions/10222.0xc0005539b0.false"
+                    "$ref": "#/definitions/10309.0xc000605290.false"
                 }
             }
         },
@@ -1631,6 +1692,172 @@
                 }
             }
         },
+        "models.NecesidadesCrudNecesidadCompleta": {
+            "title": "NecesidadesCrudNecesidadCompleta",
+            "type": "object",
+            "properties": {
+                "Activo": {
+                    "type": "boolean"
+                },
+                "AnalisisRiesgo": {
+                    "type": "string"
+                },
+                "AreaFuncional": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ConsecutivoNecesidad": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ConsecutivoSolicitud": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "DependenciaNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.DependenciaNecesidad"
+                },
+                "DiasDuracion": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "EstadoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.EstadoNecesidad"
+                },
+                "EstudioMercado": {
+                    "type": "string"
+                },
+                "FechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "FechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "FechaSolicitud": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Justificacion": {
+                    "type": "string"
+                },
+                "JustificacionRechazo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ModalidadSeleccionId": {
+                    "$ref": "#/definitions/necesidades_crud.ModalidadSeleccion"
+                },
+                "Objeto": {
+                    "type": "string"
+                },
+                "PlanAnualAdquisicionesId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoContratoId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoContratoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoContratoNecesidad"
+                },
+                "TipoDuracionNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoDuracionNecesidad"
+                },
+                "TipoFinanciacionNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoFinanciacionNecesidad"
+                },
+                "TipoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoNecesidad"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NecesidadesCrudNecesidadParcial1": {
+            "title": "NecesidadesCrudNecesidadParcial1",
+            "type": "object",
+            "properties": {
+                "AreaFuncional": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Vigencia": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PlanCuentasMongoCrudDocumentoPresupuestal": {
+            "title": "PlanCuentasMongoCrudDocumentoPresupuestal",
+            "type": "object",
+            "properties": {
+                "Afectacion": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Movimiento"
+                    }
+                },
+                "AfectacionIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "CentroGestor": {
+                    "type": "string"
+                },
+                "Consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Data": {
+                    "$ref": "#/definitions/19195.0xc000605e90.false"
+                },
+                "Estado": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Tipo": {
+                    "type": "string"
+                },
+                "ValorActual": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "ValorInicial": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PorDefinir": {
+            "title": "PorDefinir",
+            "type": "object"
+        },
         "models.Rama": {
             "title": "Rama",
             "type": "object",
@@ -1644,6 +1871,48 @@
                 },
                 "RubroPadre": {
                     "$ref": "#/definitions/models.Rubro"
+                }
+            }
+        },
+        "models.RespuestaGetFullCrp": {
+            "title": "RespuestaGetFullCrp",
+            "type": "object",
+            "properties": {
+                "centroGestor": {
+                    "$ref": "#/definitions/20877.0xc00062c0c0.false"
+                },
+                "consecutivoCdp": {
+                    "$ref": "#/definitions/20706.0xc00062c030.false"
+                },
+                "estado": {
+                    "$ref": "#/definitions/20934.0xc00062c0f0.false"
+                },
+                "movimiento_cdp": {
+                    "$ref": "#/definitions/20818.0xc00062c090.false"
+                },
+                "necesidadFinanciacion": {
+                    "$ref": "#/definitions/20985.0xc00062c120.false"
+                },
+                "solicitudCrp": {
+                    "$ref": "#/definitions/20649.0xc00062c000.false"
+                },
+                "vigencia": {
+                    "$ref": "#/definitions/20765.0xc00062c060.false"
+                }
+            }
+        },
+        "models.RespuestaInformacionAsignacionInicial": {
+            "title": "RespuestaInformacionAsignacionInicial",
+            "type": "object",
+            "properties": {
+                "Aprobado": {
+                    "type": "boolean"
+                },
+                "InfoApropiacion": {
+                    "additionalProperties": {
+                        "type": "number",
+                        "format": "double"
+                    }
                 }
             }
         },
@@ -1680,7 +1949,7 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/10610.string.0xc00056a018"
+                        "$ref": "#/definitions/10697.string.0xc00061c000"
                     }
                 },
                 "Id": {
@@ -1688,7 +1957,7 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
-                    "$ref": "#/definitions/10490.string.0xc00051dfc8"
+                    "$ref": "#/definitions/10577.string.0xc000615ec0"
                 },
                 "Metas": {
                     "type": "array",
@@ -1697,15 +1966,30 @@
                     }
                 },
                 "NecesidadId": {
-                    "$ref": "#/definitions/10558.0xc000553b60.false"
+                    "$ref": "#/definitions/10645.0xc000605440.false"
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/10666.string.0xc00056a048"
+                        "$ref": "#/definitions/10753.string.0xc00061c0a0"
                     }
                 },
                 "RubroId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SolicitudAprobacionCdp": {
+            "title": "SolicitudAprobacionCdp",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "area_funcional": {
+                    "type": "string"
+                },
+                "vigencia": {
                     "type": "string"
                 }
             }
@@ -1759,9 +2043,57 @@
                 }
             }
         },
-        "models.SolicitudCRP": {
-            "title": "SolicitudCRP",
-            "type": "object"
+        "models.SolicitudCrp": {
+            "title": "SolicitudCrp",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "beneficiario": {
+                    "type": "string"
+                },
+                "compromiso": {
+                    "$ref": "#/definitions/models.Compromiso"
+                },
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "consecutivoCdp": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "$ref": "#/definitions/models.estadoCrp"
+                },
+                "fechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaFinalVigencia": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaInicioVigencia": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "vigencia": {
+                    "type": "string"
+                }
+            }
         },
         "models.TipoFuenteFinanciamiento": {
             "title": "TipoFuenteFinanciamiento",
@@ -1808,40 +2140,40 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/11472.string.0xc00056a1f8"
+                        "$ref": "#/definitions/11559.string.0xc00061c640"
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/11372.string.0xc00056a1c8"
+                        "$ref": "#/definitions/11459.string.0xc00061c5a0"
                     }
                 },
                 "DetallePrestacionServicioNecesidad": {
-                    "$ref": "#/definitions/11075.string.0xc00056a138"
+                    "$ref": "#/definitions/11162.string.0xc00061c3a0"
                 },
                 "DetalleServicioNecesidad": {
-                    "$ref": "#/definitions/10979.string.0xc00056a108"
+                    "$ref": "#/definitions/11066.string.0xc00061c300"
                 },
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/11281.string.0xc00056a198"
+                        "$ref": "#/definitions/11368.string.0xc00061c500"
                     }
                 },
                 "Necesidad": {
-                    "$ref": "#/definitions/10881.string.0xc00056a0d8"
+                    "$ref": "#/definitions/10968.string.0xc00061c260"
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/11183.string.0xc00056a168"
+                        "$ref": "#/definitions/11270.string.0xc00061c460"
                     }
                 },
                 "RequisitoMinimoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/11571.string.0xc00056a228"
+                        "$ref": "#/definitions/11658.string.0xc00061c6e0"
                     }
                 },
                 "Rubros": {
@@ -1867,8 +2199,55 @@
                 }
             }
         },
-        "necesidad_models.Necesidad": {
+        "models.estadoCrp": {
+            "title": "estadoCrp",
+            "type": "object",
+            "properties": {
+                "acronimo": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "necesidades_crud.DependenciaNecesidad": {
+            "title": "DependenciaNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.EstadoNecesidad": {
+            "title": "EstadoNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.ModalidadSeleccion": {
+            "title": "ModalidadSeleccion",
+            "type": "object"
+        },
+        "necesidades_crud.Necesidad": {
             "title": "Necesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoContratoNecesidad": {
+            "title": "TipoContratoNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoDuracionNecesidad": {
+            "title": "TipoDuracionNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoFinanciacionNecesidad": {
+            "title": "TipoFinanciacionNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoNecesidad": {
+            "title": "TipoNecesidad",
+            "type": "object"
+        },
+        "plan_cuentas_mongo_crud.DocumentoPresupuestal": {
+            "title": "DocumentoPresupuestal",
             "type": "object"
         }
     },

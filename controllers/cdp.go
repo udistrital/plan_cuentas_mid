@@ -15,7 +15,7 @@ type CdpController struct {
 
 // ExpedirCdp ...
 // @Title ExpedirCdp
-// @Description expedir cdp creando objeto infocdp en la solicitud
+// @Description expedir cdp creando objeto infocdp en la solicitud - TODO: Esto semánticamente debería ser un POST!
 // @Param	id		path 	string	true		"The key for solicitudcdp"
 // @Success 201 {object} models.SolicitudCDP
 // @router /expedirCDP/:id [get]
@@ -37,13 +37,13 @@ func (c *CdpController) ExpedirCdp() {
 // SolicitarCdp ...
 // @Title SolicitarCDP
 // @Description create SolicitudCDP
-// @Param	body		body 	models.SolicitudCDP true "body for Solicitud content"
-// @Success 201 {int} models.SolicitudCDP
+// @Param	body		body 	models.NecesidadesCrudNecesidadParcial1 true "body for Solicitud content"
+// @Success 201 {object} models.SolicitudCDP
 // @Failure 403 body is empty
 // @router /solicitarCDP [post]
 func (c *CdpController) SolicitarCdp() {
 	var v map[string]interface{}
-	
+
 	defer func() {
 		if r := recover(); r != nil {
 			beego.Error(r)
@@ -64,8 +64,8 @@ func (c *CdpController) SolicitarCdp() {
 // AprobarCdp ...
 // @Title AprobarCdp
 // @Description create SolicitudCDP
-// @Param	body		body 	models.SolicitudCDP true "body for Solicitud content"
-// @Success 201 {int} models.SolicitudCDP
+// @Param	body		body 	models.SolicitudAprobacionCdp true "body for Solicitud content"
+// @Success 201 {object} models.PlanCuentasMongoCrudDocumentoPresupuestal
 // @Failure 403 body is empty
 // @router /aprobar_cdp [post]
 func (c *CdpController) AprobarCdp() {
@@ -88,4 +88,3 @@ func (c *CdpController) AprobarCdp() {
 		responseformat.SetResponseFormat(&c.Controller, err, "E_0458", 500)
 	}
 }
-

@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"github.com/udistrital/plan_cuentas_mid/helpers"
-	"github.com/udistrital/plan_cuentas_mid/helpers/apropiacionHelper"
-
 	"github.com/astaxie/beego"
 	"github.com/udistrital/utils_oas/responseformat"
+
+	"github.com/udistrital/plan_cuentas_mid/helpers"
+	"github.com/udistrital/plan_cuentas_mid/helpers/apropiacionHelper"
+	"github.com/udistrital/plan_cuentas_mid/models"
 )
 
 // AprobacionController operations for AprobacionController
@@ -22,7 +23,7 @@ func (c *AprobacionController) URLMapping() {
 // @Description Devuelve saldos iniciales antes de aprobar
 // @Param	Vigencia		query 	string	true		"vigencia a comprobar"
 // @Param	UnidadEjecutora		query 	string	true		"unidad ejecutora de los rubros a comprobar"
-// @Success 200 {string} resultado
+// @Success 200 {object} models.RespuestaInformacionAsignacionInicial
 // @Failure 403
 // @router /InformacionAsignacionInicial/ [get]
 func (c *AprobacionController) InformacionAsignacionInicial() {
@@ -47,9 +48,10 @@ func (c *AprobacionController) InformacionAsignacionInicial() {
 	compareFlag := apropiacionHelper.CompareApropiationNodes(&asignationInfo, unidadejecutora, vigencia)
 
 	beego.Debug(compareFlag, asignationInfo)
-	response := make(map[string]interface{})
-	response["InfoApropiacion"] = asignationInfo
-	response["Aprobado"] = compareFlag
+	response := models.RespuestaInformacionAsignacionInicial{
+		InfoApropiacion: asignationInfo,
+		Aprobado:        compareFlag,
+	}
 
 	responseformat.SetResponseFormat(&c.Controller, response, "", 200)
 }
@@ -59,7 +61,7 @@ func (c *AprobacionController) InformacionAsignacionInicial() {
 // @Description aprueba la asignacion inicial de presupuesto
 // @Param	Vigencia		query 	string	true		"vigencia a comprobar"
 // @Param	UnidadEjecutora		query 	string	true		"unidad ejecutora de los rubros a comprobar"
-// @Success 200 {string} resultado
+// @Success 200 {object} models.PorDefinir
 // @Failure 403
 // @router /AprobacionAsignacionInicial/ [post]
 func (c *AprobacionController) AprobacionAsignacionInicial() {
@@ -92,7 +94,7 @@ func (c *AprobacionController) AprobacionAsignacionInicial() {
 // @Description aprueba la asignacion inicial de presupuesto
 // @Param	Vigencia		query 	string	true		"vigencia a comprobar"
 // @Param	UnidadEjecutora		query 	string	true		"unidad ejecutora de los rubros a comprobar"
-// @Success 200 {string} resultado
+// @Success 200 {object} bool
 // @Failure 403
 // @router /Aprobado [get]
 func (c *AprobacionController) Aprobado() {

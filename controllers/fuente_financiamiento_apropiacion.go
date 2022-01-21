@@ -36,7 +36,7 @@ func (c *FuenteFinanciamientoApropiacionController) URLMapping() {
 // @Description retorna rubros de la fuente desde el plan de adquisición
 // @Param vigencia path  string true  "vigencia a comprobar"
 // @Param id       path  string true  "vigencia a comprobar"
-// @Success 201 {object} models.Fuentefinanciamiento
+// @Success 201 {object} models.FuenteFinanciamiento
 // @Failure 403 :vigencia is empty
 // @Failure 403 :id is empty
 // @router /plan_adquisiciones_rubros_fuente/:vigencia/:id [get]

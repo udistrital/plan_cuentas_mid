@@ -24,7 +24,7 @@ func (c *ApropiacionController) URLMapping() {
 // @Title Post
 // @Description create Apropiacion
 // @Param	body		body 	models.Apropiacion	true		"body for Apropiacion content"
-// @Success 201 {int} models.Apropiacion
+// @Success 201 {object} models.Apropiacion
 // @Failure 403 body is empty
 // @router / [post]
 func (c *ApropiacionController) Post() {
@@ -53,7 +53,7 @@ func (c *ApropiacionController) Post() {
 // @Param valor    path  string             true  "unidad ejecutora"
 // @Param vigencia path  string             true  "vigencia a comprobar"
 // @Param body     body  models.Apropiacion true  "body for Apropiacion content"
-// @Success 201 {int} models.Apropiacion
+// @Success 201 {object} models.Apropiacion
 // @Failure 403 body is empty
 // @router /:id/:valor/:vigencia [put]
 func (c *ApropiacionController) Put() {
@@ -82,7 +82,7 @@ func (c *ApropiacionController) Put() {
 // @Param unidadEjecutora path  int64  true  "unidad ejecutora a consultar"
 // @Param vigencia        path  string true  "vigencia a comprobar"
 // @Param rama            query string false "rama a consultar"
-// @Success 200 {object} models.Rubro
+// @Success 200 {object}  []models.Rubro
 // @Failure 403
 // @router /ArbolApropiaciones/:unidadEjecutora/:vigencia [get]
 func (c *ApropiacionController) ArbolApropiaciones() {
