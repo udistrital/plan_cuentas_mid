@@ -430,16 +430,15 @@ func PostTrNecesidad(trnecesidad models.TrNecesidad) (out models.TrNecesidad, ou
 }
 
 // agregarConsecutivoSolicitiud calcula el consecutivo sumando todas las necesitades existentes hasta el momento
+//
+// Deprecated: Refactorizar para usar consecutivos_crud !!
 func agregarConsecutivoSolicitiud() int {
 	var necesidades []map[string]interface{}
 	urlcrud := beego.AppConfig.String("necesidadesCrudService") + "necesidad?limit=-1"
+	urlcrud += "&fields=Id"
 	if err := request.GetJson(urlcrud, &necesidades); err != nil {
 		return 0
 	}
-	if len(necesidades[0]) == 0 {
-		return 1
-	}
-	//fmt.Println(necesidades[0].(map[string]interface{}), necesidades[0].(map[string]interface{}) == nil)
 	return len(necesidades) + 1
 }
 
@@ -454,6 +453,7 @@ func agregarConsecutivoNecesidad() int {
 		"EstadoNecesidadId.CodigoAbreviacionn:M," + // Modificada
 		"EstadoNecesidadId.CodigoAbreviacionn:E," + // Enviada
 		"EstadoNecesidadId.CodigoAbreviacionn:CS" // CDP Solicitado
+	urlcrud += "&fields=Id"
 	if err := request.GetJson(urlcrud, &necesidades); err != nil {
 		return 0
 	}
