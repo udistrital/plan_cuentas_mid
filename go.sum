@@ -473,6 +473,8 @@ github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9 h1:sho
 github.com/udistrital/necesidades_crud v0.0.0-20211104043345-f10a90f1d5e9/go.mod h1:3AbgZf1iSsUdVKoh3YpTnHxivtRdCV18D3ar+Gf6fHY=
 github.com/udistrital/necesidades_crud v1.0.0 h1:0AkU1c4qEe8yNsPF8SBEqKI7SKZbICq3AXvUXCosuWg=
 github.com/udistrital/necesidades_crud v1.0.0/go.mod h1:3AbgZf1iSsUdVKoh3YpTnHxivtRdCV18D3ar+Gf6fHY=
+github.com/udistrital/necesidades_crud v1.0.1-0.20220211043313-bcdd21f4b170 h1:j/B+W6FXsenKLu8Ph9X11tqSBkMO4/SUhDnPe/4NPeY=
+github.com/udistrital/necesidades_crud v1.0.1-0.20220211043313-bcdd21f4b170/go.mod h1:3AbgZf1iSsUdVKoh3YpTnHxivtRdCV18D3ar+Gf6fHY=
 github.com/udistrital/plan_cuentas_mongo_crud v0.1.3 h1:fMzAY+QU2D217gsezzPAndxeFJlsvedZwzPZbLlqXpE=
 github.com/udistrital/plan_cuentas_mongo_crud v0.1.3/go.mod h1:TXh+dNSUOvV7ubcx7cLwViChFOrU+bLElTit0mWPINU=
 github.com/udistrital/utils_oas v0.0.0-20210916022348-721ac824ef36/go.mod h1:ctr3PgpZazF32ukxlLZP3AVjq8b2zaZ4beG4cqkx5ZA=

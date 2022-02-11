@@ -7,7 +7,7 @@ require (
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/udistrital/auditoria v0.0.0-20200115201815-9680ae9c2515
 	github.com/udistrital/movimientos_crud v0.5.0
-	github.com/udistrital/necesidades_crud v1.0.0
+	github.com/udistrital/necesidades_crud v1.0.1-0.20220211043313-bcdd21f4b170
 	github.com/udistrital/plan_cuentas_mongo_crud v0.1.3
 	github.com/udistrital/utils_oas v0.0.0-20211125230753-1091d2af48e2
 )
