@@ -29,6 +29,28 @@ func ObtenerProcesoNecesidad() (configuracion models_configuracion.Proceso, outp
 	return configuracion, nil
 }
 
+func CrearProcesoNecesidad(modeloproceso models_configuracion.Proceso) (configuracion models_configuracion.Proceso, outputError map[string]interface{}) {
+	defer func() {
+		if err := recover(); err != nil {
+			outputError = map[string]interface{}{
+				"funcion": "ObtenerProcesoNecesidad - Unhandled Error!",
+				"err":     err,
+				"status":  "500",
+			}
+			panic(outputError)
+		}
+	}()
+	urlproceso := beego.AppConfig.String("configuracionCrudService")
+	if err := request.SendJson(urlproceso, "POST", &configuracion, modeloproceso); err != nil {
+		return configuracion, map[string]interface{}{
+			"funcion": "CrearProcesoNecesidad - request.SendJson(urlproceso, \"POST\", &configuracion, modeloproceso)",
+			"err":     err,
+			"status":  "500",
+		}
+	}
+	return configuracion, nil
+}
+
 //CrearMovimiento, Crea un resgistro del movimiento realizado a partir de un movimiento proceso externo y los datos de la necesidad
 func GenerarConsecutivo(modeloconsecutivo models_consecutivos.Consecutivo) (consecutivo models_consecutivos.Consecutivo, outputError map[string]interface{}) {
 	defer func() {

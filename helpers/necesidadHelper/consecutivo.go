@@ -1,6 +1,7 @@
 package necesidadhelper
 
 import (
+	models_configuracion "github.com/udistrital/configuracion_api/models"
 	models_consecutivos "github.com/udistrital/consecutivos_crud/models"
 	consecutivohelper "github.com/udistrital/plan_cuentas_mid/helpers/consecutivoHelper"
 )
@@ -45,7 +46,21 @@ func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
 	if proceso, err := consecutivohelper.ObtenerProcesoNecesidad(); err != nil {
 		outputError = err
 	} else {
-		id = int(proceso.Id)
+		if proceso.Id != 0 {
+			id = int(proceso.Id)
+		} else {
+			var procesomodel models_configuracion.Proceso
+			procesomodel.Activo = true
+			procesomodel.Nombre = "Necesidades"
+			procesomodel.Sigla = "nc"
+			procesomodel.AplicacionId.Id = 14
+			procesomodel.Descripcion = "solicitudes de necesidades Kronos"
+			if proaux, err := consecutivohelper.CrearProcesoNecesidad(procesomodel); err != nil {
+				outputError = err
+			} else {
+				id = int(proaux.Id)
+			}
+		}
 	}
 	return
 }
