@@ -27,7 +27,7 @@ func CrearConsecutivo(vigencia int) (id int, outputError map[string]interface{})
 		}
 	}
 
-	return id, nil
+	return
 }
 
 func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
@@ -85,5 +85,5 @@ func SolicitudConsecutivo(vigencia int, proceso int) (respconsecutivo models_con
 	} else {
 		respconsecutivo = consecutivo
 	}
-	return respconsecutivo, nil
+	return
 }
