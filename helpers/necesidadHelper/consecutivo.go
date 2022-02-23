@@ -17,7 +17,6 @@ func CrearConsecutivo(vigencia int) (id int, outputError map[string]interface{})
 			panic(outputError)
 		}
 	}()
-
 	if idProceso, err := GetIdProcesoNecesidad(); err != nil {
 		outputError = err
 	} else {
@@ -42,12 +41,11 @@ func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
 			panic(outputError)
 		}
 	}()
-
 	if proceso, err := consecutivohelper.ObtenerProcesoNecesidad(); err != nil {
 		outputError = err
 	} else {
-		if proceso.Id != 0 {
-			id = int(proceso.Id)
+		if proceso[0].Id != 0 {
+			id = int(proceso[0].Id)
 		} else {
 			var procesomodel models_configuracion.Proceso
 			procesomodel.Activo = true
@@ -81,7 +79,7 @@ func SolicitudConsecutivo(vigencia int, proceso int) (respconsecutivo models_con
 	modelconsecutivo.Activo = true
 	modelconsecutivo.ContextoId = proceso
 	modelconsecutivo.Year = float64(vigencia)
-
+	modelconsecutivo.Descripcion = "Necesidad"
 	if consecutivo, err := consecutivohelper.GenerarConsecutivo(modelconsecutivo); err != nil {
 		outputError = err
 	} else {
