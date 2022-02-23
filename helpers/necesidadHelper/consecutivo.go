@@ -3,10 +3,11 @@ package necesidadhelper
 import (
 	models_configuracion "github.com/udistrital/configuracion_api/models"
 	models_consecutivos "github.com/udistrital/consecutivos_crud/models"
-	consecutivohelper "github.com/udistrital/plan_cuentas_mid/helpers/consecutivoHelper"
+	"github.com/udistrital/plan_cuentas_mid/helpers/crud/configuracion"
+	"github.com/udistrital/plan_cuentas_mid/helpers/crud/consecutivo"
 )
 
-func CrearConsecutivo(vigencia int) (id int, outputError map[string]interface{}) {
+func CrearConsecutivoNecesidad(vigencia int) (id int, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{
@@ -41,7 +42,7 @@ func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
 			panic(outputError)
 		}
 	}()
-	if proceso, err := consecutivohelper.ObtenerProcesoNecesidad(); err != nil {
+	if proceso, err := configuracion.ObtenerProceso("nc"); err != nil {
 		outputError = err
 	} else {
 		if proceso[0].Id != 0 {
@@ -53,7 +54,7 @@ func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
 			procesomodel.Sigla = "nc"
 			procesomodel.AplicacionId.Id = 14
 			procesomodel.Descripcion = "solicitudes de necesidades Kronos"
-			if proaux, err := consecutivohelper.CrearProcesoNecesidad(procesomodel); err != nil {
+			if proaux, err := configuracion.CrearProceso(procesomodel); err != nil {
 				outputError = err
 			} else {
 				id = int(proaux.Id)
@@ -80,7 +81,7 @@ func SolicitudConsecutivo(vigencia int, proceso int) (respconsecutivo models_con
 	modelconsecutivo.ContextoId = proceso
 	modelconsecutivo.Year = float64(vigencia)
 	modelconsecutivo.Descripcion = "Necesidad"
-	if consecutivo, err := consecutivohelper.GenerarConsecutivo(modelconsecutivo); err != nil {
+	if consecutivo, err := consecutivo.GenerarConsecutivo(modelconsecutivo); err != nil {
 		outputError = err
 	} else {
 		respconsecutivo = consecutivo
