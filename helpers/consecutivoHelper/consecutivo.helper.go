@@ -4,10 +4,11 @@ import (
 	"github.com/astaxie/beego"
 	models_configuracion "github.com/udistrital/configuracion_api/models"
 	models_consecutivos "github.com/udistrital/consecutivos_crud/models"
+	"github.com/udistrital/utils_oas/formatdata"
 	"github.com/udistrital/utils_oas/request"
 )
 
-func ObtenerProcesoNecesidad() (configuracion models_configuracion.Proceso, outputError map[string]interface{}) {
+func ObtenerProcesoNecesidad() (configuracion []models_configuracion.Proceso, outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {
 			outputError = map[string]interface{}{
@@ -18,10 +19,10 @@ func ObtenerProcesoNecesidad() (configuracion models_configuracion.Proceso, outp
 			panic(outputError)
 		}
 	}()
-	urlproceso := beego.AppConfig.String("configuracionCrudService")
-	if err := request.GetJson(urlproceso+"proceso?query=Sigla__contains%3Anc", &configuracion); err != nil {
+	urlproceso := beego.AppConfig.String("configuracionCrudService") + "proceso?query=Sigla__contains%3Anc"
+	if err := request.GetJson(urlproceso, &configuracion); err != nil {
 		return configuracion, map[string]interface{}{
-			"funcion": "ObtenerProcesoNecesidad - request.GetJson(urlproceso+\"proceso?query=Sigla__contains%3Anc\", &resp)",
+			"funcion": "ObtenerProcesoNecesidad - request.GetJson(urlproceso, &configuracion)",
 			"err":     err,
 			"status":  "500",
 		}
@@ -63,15 +64,15 @@ func GenerarConsecutivo(modeloconsecutivo models_consecutivos.Consecutivo) (cons
 			panic(outputError)
 		}
 	}()
-
-	urlgenerarconsecutivo := beego.AppConfig.String("movimientosCrudService") + "movimiento_detalle/crearMovimientosDetalle/"
-	if err := request.SendJson(urlgenerarconsecutivo, "POST", &consecutivo, modeloconsecutivo); err != nil {
+	var temporal map[string]interface{}
+	urlgenerarconsecutivo := beego.AppConfig.String("consecutivoApiService") + "consecutivo"
+	if err := request.SendJson(urlgenerarconsecutivo, "POST", &temporal, modeloconsecutivo); err != nil {
 		return consecutivo, map[string]interface{}{
 			"funcion": "GenerarConsecutivo - request.SendJson(urlgenerarconsecutivo, \"POST\", &consecutivo, modeloconsecutivo)",
 			"err":     err,
 			"status":  "500",
 		}
 	}
-
+	formatdata.FillStruct(temporal["Data"], &consecutivo)
 	return consecutivo, nil
 }
