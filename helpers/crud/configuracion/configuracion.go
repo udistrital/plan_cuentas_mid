@@ -20,16 +20,16 @@ func ObtenerProceso(sigla string) (configuracion []models_configuracion.Proceso,
 		}
 	}()
 	parametros := url.Values{}
-	parametros.Add("query", "Sigla_contains:"+sigla)
+	parametros.Add("query", "Sigla__contains:"+sigla)
 	urlproceso := beego.AppConfig.String("configuracionCrudService") + "proceso?" + parametros.Encode()
 	if err := request.GetJson(urlproceso, &configuracion); err != nil {
-		return configuracion, map[string]interface{}{
+		outputError = map[string]interface{}{
 			"funcion": "ObtenerProceso - request.GetJson(urlproceso, &configuracion)",
 			"err":     err,
-			"status":  "500",
+			"status":  "502",
 		}
 	}
-	return configuracion, nil
+	return
 }
 
 func CrearProceso(modeloproceso models_configuracion.Proceso) (configuracion models_configuracion.Proceso, outputError map[string]interface{}) {
@@ -43,13 +43,13 @@ func CrearProceso(modeloproceso models_configuracion.Proceso) (configuracion mod
 			panic(outputError)
 		}
 	}()
-	urlproceso := beego.AppConfig.String("configuracionCrudService")
+	urlproceso := beego.AppConfig.String("configuracionCrudService") + "proceso"
 	if err := request.SendJson(urlproceso, "POST", &configuracion, modeloproceso); err != nil {
-		return configuracion, map[string]interface{}{
+		outputError = map[string]interface{}{
 			"funcion": "CrearProceso - request.SendJson(urlproceso, \"POST\", &configuracion, modeloproceso)",
 			"err":     err,
-			"status":  "500",
+			"status":  "502",
 		}
 	}
-	return configuracion, nil
+	return
 }

@@ -24,7 +24,7 @@ func GenerarConsecutivo(modeloconsecutivo models_consecutivos.Consecutivo) (cons
 		return consecutivo, map[string]interface{}{
 			"funcion": "GenerarConsecutivo - request.SendJson(urlgenerarconsecutivo, \"POST\", &consecutivo, modeloconsecutivo)",
 			"err":     err,
-			"status":  "500",
+			"status":  "502",
 		}
 	}
 	formatdata.FillStruct(temporal["Data"], &consecutivo)
