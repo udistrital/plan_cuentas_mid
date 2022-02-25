@@ -53,3 +53,11 @@ func CrearProceso(modeloproceso models_configuracion.Proceso) (configuracion mod
 	}
 	return
 }
+
+type Aplicacion struct {
+	Id int
+}
+
+func ObtenerIdAplicacionNecesidades() (app Aplicacion, outputError map[string]interface{}) {
+	return Aplicacion{Id: 14}, nil
+}

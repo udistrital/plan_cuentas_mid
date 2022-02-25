@@ -48,16 +48,20 @@ func GetIdProcesoNecesidad() (id int, outputError map[string]interface{}) {
 		if proceso[0].Id != 0 {
 			id = int(proceso[0].Id)
 		} else {
-			var procesomodel models_configuracion.Proceso
-			procesomodel.Activo = true
-			procesomodel.Nombre = "Necesidades"
-			procesomodel.Sigla = "nc"
-			procesomodel.AplicacionId.Id = 14
-			procesomodel.Descripcion = "solicitudes de necesidades Kronos"
-			if proaux, err := configuracion.CrearProceso(procesomodel); err != nil {
+			if Aplicacion, err := configuracion.ObtenerIdAplicacionNecesidades(); err != nil {
 				outputError = err
 			} else {
-				id = int(proaux.Id)
+				var procesomodel models_configuracion.Proceso
+				procesomodel.Activo = true
+				procesomodel.Nombre = "Necesidades"
+				procesomodel.Sigla = "nc"
+				procesomodel.AplicacionId.Id = Aplicacion.Id
+				procesomodel.Descripcion = "solicitudes de necesidades Kronos"
+				if proaux, err := configuracion.CrearProceso(procesomodel); err != nil {
+					outputError = err
+				} else {
+					id = int(proaux.Id)
+				}
 			}
 		}
 	}
