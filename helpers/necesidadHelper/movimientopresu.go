@@ -37,6 +37,19 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 			if err := RealizarMovimiento(necesidadent); err != nil {
 				outputError = err
 			} else {
+				if vig, err := strconv.Atoi(necesidadent.Vigencia); err != nil {
+					outputError = map[string]interface{}{
+						"funcion": "InterceptorMovimientoNecesidad - strconv.Atoi(necesidadent.Vigencia)",
+						"err":     err,
+						"status":  "500",
+					}
+				} else {
+					if consec, err := CrearConsecutivoNecesidad(vig); err != nil {
+						outputError = err
+					} else {
+						necesidadent.Consecutivo = consec
+					}
+				}
 				if v, err := PutNecesidadService(id, necesidadent); err != nil {
 					outputError = err
 				} else {

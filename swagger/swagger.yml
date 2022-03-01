@@ -808,73 +808,73 @@ paths:
           schema:
             $ref: '#/definitions/models.SolicitudCDP'
 definitions:
-  4594.0xc000604ae0.false:
+  4594.0xc0005551a0.false:
     title: "false"
     type: object
-  10309.0xc000605290.false:
+  10309.0xc000555bf0.false:
     title: "false"
     type: object
-  10368.string.0xc000615ce0:
-    title: "0xc000615ce0"
+  10368.string.0xc000568108:
+    title: "0xc000568108"
     type: object
-  10577.string.0xc000615ec0:
-    title: "0xc000615ec0"
+  10577.string.0xc000568180:
+    title: "0xc000568180"
     type: object
-  10645.0xc000605440.false:
+  10645.0xc000555da0.false:
     title: "false"
     type: object
-  10697.string.0xc00061c000:
-    title: "0xc00061c000"
+  10697.string.0xc0005681c8:
+    title: "0xc0005681c8"
     type: object
-  10753.string.0xc00061c0a0:
-    title: "0xc00061c0a0"
+  10753.string.0xc0005681f8:
+    title: "0xc0005681f8"
     type: object
-  10968.string.0xc00061c260:
-    title: "0xc00061c260"
+  10968.string.0xc000568288:
+    title: "0xc000568288"
     type: object
-  11066.string.0xc00061c300:
-    title: "0xc00061c300"
+  11066.string.0xc0005682b8:
+    title: "0xc0005682b8"
     type: object
-  11162.string.0xc00061c3a0:
-    title: "0xc00061c3a0"
+  11162.string.0xc0005682e8:
+    title: "0xc0005682e8"
     type: object
-  11270.string.0xc00061c460:
-    title: "0xc00061c460"
+  11270.string.0xc000568318:
+    title: "0xc000568318"
     type: object
-  11368.string.0xc00061c500:
-    title: "0xc00061c500"
+  11368.string.0xc000568348:
+    title: "0xc000568348"
     type: object
-  11459.string.0xc00061c5a0:
-    title: "0xc00061c5a0"
+  11459.string.0xc000568378:
+    title: "0xc000568378"
     type: object
-  11559.string.0xc00061c640:
-    title: "0xc00061c640"
+  11559.string.0xc0005683a8:
+    title: "0xc0005683a8"
     type: object
-  11658.string.0xc00061c6e0:
-    title: "0xc00061c6e0"
+  11658.string.0xc0005683d8:
+    title: "0xc0005683d8"
     type: object
-  19195.0xc000605e90.false:
+  19074.0xc00056cc00.false:
     title: "false"
     type: object
-  20649.0xc00062c000.false:
+  20528.0xc00056cd50.false:
     title: "false"
     type: object
-  20706.0xc00062c030.false:
+  20585.0xc00056cd80.false:
     title: "false"
     type: object
-  20765.0xc00062c060.false:
+  20644.0xc00056cdb0.false:
     title: "false"
     type: object
-  20818.0xc00062c090.false:
+  20697.0xc00056cde0.false:
     title: "false"
     type: object
-  20877.0xc00062c0c0.false:
+  20756.0xc00056ce10.false:
     title: "false"
     type: object
-  20934.0xc00062c0f0.false:
+  20813.0xc00056ce40.false:
     title: "false"
     type: object
-  20985.0xc00062c120.false:
+  20864.0xc00056ce70.false:
     title: "false"
     type: object
   models.AnulationDetail:
@@ -947,7 +947,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/4594.0xc000604ae0.false'
+        $ref: '#/definitions/4594.0xc0005551a0.false'
       FechaRegistro:
         type: string
       Tipo:
@@ -994,14 +994,14 @@ definitions:
       Actividades:
         type: array
         items:
-          $ref: '#/definitions/10368.string.0xc000615ce0'
+          $ref: '#/definitions/10368.string.0xc000568108'
       Id:
         type: integer
         format: int64
       MetaId:
         type: string
       RubroNecesidadId:
-        $ref: '#/definitions/10309.0xc000605290.false'
+        $ref: '#/definitions/10309.0xc000555bf0.false'
   models.ModificacionFuenteReceiver:
     title: ModificacionFuenteReceiver
     type: object
@@ -1158,10 +1158,7 @@ definitions:
       AreaFuncional:
         type: integer
         format: int64
-      ConsecutivoNecesidad:
-        type: integer
-        format: int64
-      ConsecutivoSolicitud:
+      Consecutivo:
         type: integer
         format: int64
       DependenciaNecesidadId:
@@ -1245,7 +1242,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/19195.0xc000605e90.false'
+        $ref: '#/definitions/19074.0xc00056cc00.false'
       Estado:
         type: string
       FechaRegistro:
@@ -1280,19 +1277,19 @@ definitions:
     type: object
     properties:
       centroGestor:
-        $ref: '#/definitions/20877.0xc00062c0c0.false'
+        $ref: '#/definitions/20756.0xc00056ce10.false'
       consecutivoCdp:
-        $ref: '#/definitions/20706.0xc00062c030.false'
+        $ref: '#/definitions/20585.0xc00056cd80.false'
       estado:
-        $ref: '#/definitions/20934.0xc00062c0f0.false'
+        $ref: '#/definitions/20813.0xc00056ce40.false'
       movimiento_cdp:
-        $ref: '#/definitions/20818.0xc00062c090.false'
+        $ref: '#/definitions/20697.0xc00056cde0.false'
       necesidadFinanciacion:
-        $ref: '#/definitions/20985.0xc00062c120.false'
+        $ref: '#/definitions/20864.0xc00056ce70.false'
       solicitudCrp:
-        $ref: '#/definitions/20649.0xc00062c000.false'
+        $ref: '#/definitions/20528.0xc00056cd50.false'
       vigencia:
-        $ref: '#/definitions/20765.0xc00062c060.false'
+        $ref: '#/definitions/20644.0xc00056cdb0.false'
   models.RespuestaInformacionAsignacionInicial:
     title: RespuestaInformacionAsignacionInicial
     type: object
@@ -1328,22 +1325,22 @@ definitions:
       Fuentes:
         type: array
         items:
-          $ref: '#/definitions/10697.string.0xc00061c000'
+          $ref: '#/definitions/10697.string.0xc0005681c8'
       Id:
         type: integer
         format: int64
       InfoRubro:
-        $ref: '#/definitions/10577.string.0xc000615ec0'
+        $ref: '#/definitions/10577.string.0xc000568180'
       Metas:
         type: array
         items:
           $ref: '#/definitions/models.MetaRubroNecesidad'
       NecesidadId:
-        $ref: '#/definitions/10645.0xc000605440.false'
+        $ref: '#/definitions/10645.0xc000555da0.false'
       Productos:
         type: array
         items:
-          $ref: '#/definitions/10753.string.0xc00061c0a0'
+          $ref: '#/definitions/10753.string.0xc0005681f8'
       RubroId:
         type: string
   models.SolicitudAprobacionCdp:
@@ -1461,29 +1458,29 @@ definitions:
       ActividadEconomicaNecesidad:
         type: array
         items:
-          $ref: '#/definitions/11559.string.0xc00061c640'
+          $ref: '#/definitions/11559.string.0xc0005683a8'
       ActividadEspecificaNecesidad:
         type: array
         items:
-          $ref: '#/definitions/11459.string.0xc00061c5a0'
+          $ref: '#/definitions/11459.string.0xc000568378'
       DetallePrestacionServicioNecesidad:
-        $ref: '#/definitions/11162.string.0xc00061c3a0'
+        $ref: '#/definitions/11162.string.0xc0005682e8'
       DetalleServicioNecesidad:
-        $ref: '#/definitions/11066.string.0xc00061c300'
+        $ref: '#/definitions/11066.string.0xc0005682b8'
       MarcoLegalNecesidad:
         type: array
         items:
-          $ref: '#/definitions/11368.string.0xc00061c500'
+          $ref: '#/definitions/11368.string.0xc000568348'
       Necesidad:
-        $ref: '#/definitions/10968.string.0xc00061c260'
+        $ref: '#/definitions/10968.string.0xc000568288'
       ProductosCatalogoNecesidad:
         type: array
         items:
-          $ref: '#/definitions/11270.string.0xc00061c460'
+          $ref: '#/definitions/11270.string.0xc000568318'
       RequisitoMinimoNecesidad:
         type: array
         items:
-          $ref: '#/definitions/11658.string.0xc00061c6e0'
+          $ref: '#/definitions/11658.string.0xc0005683d8'
       Rubros:
         type: array
         items:
