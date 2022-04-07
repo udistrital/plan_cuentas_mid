@@ -25,6 +25,9 @@ type ModificacionPresupuestalController struct {
 // URLMapping ...
 func (c *ModificacionPresupuestalController) URLMapping() {
 	c.Mapping("Post", c.Post)
+	c.Mapping("SimulacionAfectacion", c.SimulacionAfectacion)
+	c.Mapping("GetAllModificacionPresupuestalByVigenciaAndCG", c.GetAllModificacionPresupuestalByVigenciaAndCG)
+	c.Mapping("GetOneModificacionPresupuestalByVigenciaAndCG", c.GetOneModificacionPresupuestalByVigenciaAndCG)
 }
 
 // Post ...

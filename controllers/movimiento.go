@@ -24,6 +24,7 @@ type MovimientoController struct {
 // URLMapping ...
 func (c *MovimientoController) URLMapping() {
 	c.Mapping("Post", c.Post)
+	c.Mapping("GetAllAnulacionesByVigenciaCGAndUUID", c.GetAllAnulacionesByVigenciaCGAndUUID)
 }
 
 // Post ...

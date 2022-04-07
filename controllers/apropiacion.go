@@ -18,6 +18,10 @@ type ApropiacionController struct {
 // URLMapping ...
 func (c *ApropiacionController) URLMapping() {
 	c.Mapping("Post", c.Post)
+	c.Mapping("Put", c.Put)
+	c.Mapping("ArbolApropiaciones", c.ArbolApropiaciones)
+	c.Mapping("ArbolRubroApropiaciones", c.ArbolRubroApropiaciones)
+	c.Mapping("SaldoApropiacion", c.SaldoApropiacion)
 }
 
 // Post ...

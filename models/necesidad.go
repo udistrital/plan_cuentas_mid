@@ -46,8 +46,7 @@ type NecesidadesCrudNecesidadCompleta struct {
 	// o bien, eliminar todos los campos siguientes
 
 	Id                          int                                         `orm:"column(id);pk;auto"`
-	ConsecutivoSolicitud        int                                         `orm:"column(consecutivo_solicitud)"`
-	ConsecutivoNecesidad        int                                         `orm:"column(consecutivo_necesidad);null"`
+	Consecutivo                 int                                         `orm:"column(consecutivo);null"`
 	Vigencia                    string                                      `orm:"column(vigencia)"`
 	Objeto                      string                                      `orm:"column(objeto)"`
 	Justificacion               string                                      `orm:"column(justificacion);null"`

@@ -14,6 +14,13 @@ type CdpController struct {
 	beego.Controller
 }
 
+// URLMapping ...
+func (c *CdpController) URLMapping() {
+	c.Mapping("ExpedirCdp", c.ExpedirCdp)
+	c.Mapping("SolicitarCdp", c.SolicitarCdp)
+	c.Mapping("AprobarCdp", c.AprobarCdp)
+}
+
 // ExpedirCdp ...
 // @Title ExpedirCdp
 // @Description expedir cdp creando objeto infocdp en la solicitud - TODO: Esto semánticamente debería ser un POST!

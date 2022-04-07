@@ -14,6 +14,13 @@ type CrpController struct {
 	beego.Controller
 }
 
+// URLMapping ...
+func (c *CrpController) URLMapping() {
+	c.Mapping("ExpedirCrp", c.ExpedirCrp)
+	c.Mapping("SolicitarCrp", c.SolicitarCrp)
+	c.Mapping("GetInfoCrp", c.GetInfoCrp)
+}
+
 // ExpedirCrp ...
 // @Title ExpedirCrp
 // @Description expedir crp creando objeto infocrp en la solicitud - TODO: Este método semánticamente debería ser un POST!

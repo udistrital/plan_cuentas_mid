@@ -11,7 +11,7 @@
 - [ ] `RegistrarFuenteHelper()` en [helpers/fuenteFinanciamientoHelper/fuente_financiamiento.helper.go](helpers/fuenteFinanciamientoHelper/fuente_financiamiento.helper.go)
 - [ ] `AddRubro()` en [helpers/rubroHelper/rubro.helper.go](helpers/rubroHelper/rubro.helper.go)
 - [ ] `DeleteRubro()` en [helpers/rubroHelper/rubro.helper.go](helpers/rubroHelper/rubro.helper.go)
-- [ ] `GetAprByCodigoAndVigencia()` en [managers/apropiacionManager/apropiacion.manager.go](managers/apropiacionManager/apropiacion.manager.go)
+- [x] `GetAprByCodigoAndVigencia()` en [managers/apropiacionManager/apropiacion.manager.go](managers/apropiacionManager/apropiacion.manager.go)
 
 Consecuencia de lo anterior, revisar/ajustar donde se consuman las anteriores:
 
