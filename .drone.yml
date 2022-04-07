@@ -50,21 +50,6 @@ steps:
     event:
     - push
 
-- name: go_build
-  image: golang:1.14
-  commands:
-  - go get -t
-  - GOOS=linux GOARCH=amd64 go build -o main
-  when:
-    branch:
-    - develop
-    - feature/*
-    - hotfix/*
-    - master
-    - release/*
-    event:
-    - push
-
 - name: go_test
   image: golang:1.14
   failure: ignore
@@ -98,6 +83,21 @@ steps:
     - develop
     - release/*
     - master
+    event:
+    - push
+
+- name: go_build
+  image: golang:1.14
+  commands:
+  - go get -t
+  - GOOS=linux GOARCH=amd64 go build -o main
+  when:
+    branch:
+    - develop
+    - feature/*
+    - hotfix/*
+    - master
+    - release/*
     event:
     - push
 
