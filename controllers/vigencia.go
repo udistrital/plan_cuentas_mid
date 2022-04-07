@@ -11,6 +11,12 @@ type VigenciaController struct {
 	beego.Controller
 }
 
+// URLMapping ...
+func (c *VigenciaController) URLMapping() {
+	c.Mapping("GetCierreVigencia", c.GetCierreVigencia)
+	c.Mapping("CerrarVigencia", c.CerrarVigencia)
+}
+
 // GetCierreVigencia s...
 // @Title GetCierreVigencia
 // @Description devuelve los objetos del cierre para una vigencia y un area funcional

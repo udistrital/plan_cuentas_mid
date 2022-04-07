@@ -16,6 +16,9 @@ type AprobacionController struct {
 
 // URLMapping ...
 func (c *AprobacionController) URLMapping() {
+	c.Mapping("InformacionAsignacionInicial", c.InformacionAsignacionInicial)
+	c.Mapping("AprobacionAsignacionInicial", c.AprobacionAsignacionInicial)
+	c.Mapping("Aprobado", c.Aprobado)
 }
 
 // InformacionAsignacionInicial ...
