@@ -101,7 +101,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 				for _, valor := range response.Rubros {
 					for _, meta := range valor.Metas {
 						for _, actividadp := range meta.Actividades {
-							actividad := *actividadp
+							actividad := actividadp
 							fuentesi := actividad["FuentesActividad"]
 							fuentesp := fuentesi.([]*map[string]interface{})
 							for _, fuentep := range fuentesp {
@@ -125,7 +125,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 			} else if necesidad.TipoFinanciacionNecesidadId.Nombre == "Funcionamiento" {
 				for _, valor := range response.Rubros {
 					for _, fuentep := range valor.Fuentes {
-						fuente := *fuentep
+						fuente := fuentep
 						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 							"RubroId":                valor.RubroId,
 							"FuenteFinanciamientoId": fuente["FuenteId"].(string),
@@ -167,7 +167,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 			for _, valor := range response.Rubros {
 				for _, meta := range valor.Metas {
 					for _, actividadp := range meta.Actividades {
-						actividad := *actividadp
+						actividad := actividadp
 						fuentesi := actividad["FuentesActividad"]
 						fuentesp := fuentesi.([]*map[string]interface{})
 						for _, fuentep := range fuentesp {
@@ -195,7 +195,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 		} else if necesidad.TipoFinanciacionNecesidadId.Nombre == "Funcionamiento" {
 			for _, valor := range response.Rubros {
 				for _, fuentep := range valor.Fuentes {
-					fuente := *fuentep
+					fuente := fuentep
 					mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 						"RubroId":                valor.RubroId,
 						"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
