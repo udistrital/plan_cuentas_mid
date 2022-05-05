@@ -22,7 +22,7 @@ func GenerarConsecutivo(modeloconsecutivo models_consecutivos.Consecutivo) (cons
 	urlgenerarconsecutivo := beego.AppConfig.String("consecutivoApiService") + "consecutivo"
 	if err := request.SendJson(urlgenerarconsecutivo, "POST", &temporal, modeloconsecutivo); err != nil {
 		return consecutivo, map[string]interface{}{
-			"funcion": "GenerarConsecutivo - request.SendJson(urlgenerarconsecutivo, \"POST\", &consecutivo, modeloconsecutivo)",
+			"funcion": "GenerarConsecutivo - request.SendJson(urlgenerarconsecutivo, \"POST\", &temporal, modeloconsecutivo)",
 			"err":     err,
 			"status":  "502",
 		}
