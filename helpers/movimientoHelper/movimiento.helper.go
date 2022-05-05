@@ -2,7 +2,6 @@ package movimientohelper
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 
 	models_movimientos "github.com/udistrital/movimientos_crud/models"
 	"github.com/udistrital/utils_oas/request"
@@ -63,7 +62,6 @@ func CrearMovimiento(movimientocreado []models_movimientos.CuentasMovimientoProc
 	}()
 
 	urlcrearmovimiento := beego.AppConfig.String("movimientosCrudService") + "movimiento_detalle/crearMovimientosDetalle/"
-	logs.Debug("----------------------------------->>>>>>>>>>>>>>" + urlcrearmovimiento)
 	if err := request.SendJson(urlcrearmovimiento, "POST", &movimiento, movimientocreado); err != nil {
 		return movimiento, map[string]interface{}{
 			"funcion": "CrearMovimiento - request.SendJson(urlcrearmovimiento, \"POST\", &respuestaPeticion, movimientocreado)",
