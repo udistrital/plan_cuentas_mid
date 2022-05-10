@@ -106,16 +106,18 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 							fuentesp := fuentesi.([]map[string]interface{})
 							for _, fuentep := range fuentesp {
 								fuente := fuentep
-								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
-									"RubroId":                valor.RubroId,
-									"ActividadId":            actividad["ActividadId"].(string),
-									"FuenteFinanciamientoId": fuente["FuenteId"].(string),
-								})
-								mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
-								mov1.Valor = -fuente["MontoParcial"].(float64)
-								mov = append(mov, mov1)
-								if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
-									outputError = err
+								if int(fuente["MontoParcial"].(float64)) > 0 {
+									mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+										"RubroId":                valor.RubroId,
+										"ActividadId":            actividad["ActividadId"].(string),
+										"FuenteFinanciamientoId": fuente["FuenteId"].(string),
+									})
+									mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
+									mov1.Valor = -fuente["MontoParcial"].(float64)
+									mov = append(mov, mov1)
+									if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
+										outputError = err
+									}
 								}
 								mov = nil
 							}
@@ -126,15 +128,17 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 				for _, valor := range response.Rubros {
 					for _, fuentep := range valor.Fuentes {
 						fuente := fuentep
-						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
-							"RubroId":                valor.RubroId,
-							"FuenteFinanciamientoId": fuente["FuenteId"].(string),
-						})
-						mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
-						mov1.Valor = -fuente["MontoParcial"].(float64)
-						mov = append(mov, mov1)
-						if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
-							outputError = err
+						if int(fuente["MontoParcial"].(float64)) > 0 {
+							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+								"RubroId":                valor.RubroId,
+								"FuenteFinanciamientoId": fuente["FuenteId"].(string),
+							})
+							mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
+							mov1.Valor = -fuente["MontoParcial"].(float64)
+							mov = append(mov, mov1)
+							if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
+								outputError = err
+							}
 						}
 						mov = nil
 					}
@@ -172,18 +176,20 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 						fuentesp := fuentesi.([]map[string]interface{})
 						for _, fuentep := range fuentesp {
 							fuente := fuentep
-							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
-								"RubroId":                valor.RubroId,
-								"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
-								"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
-							})
-							mov = append(mov, mov1)
-							if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
-								outputError = err
-							} else {
-								for _, movimiento := range movimientos {
-									if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
-										resultado = true
+							if int(fuente["MontoParcial"].(float64)) > 0 {
+								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+									"RubroId":                valor.RubroId,
+									"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
+									"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
+								})
+								mov = append(mov, mov1)
+								if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+									outputError = err
+								} else {
+									for _, movimiento := range movimientos {
+										if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
+											resultado = true
+										}
 									}
 								}
 							}
@@ -196,17 +202,19 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 			for _, valor := range response.Rubros {
 				for _, fuentep := range valor.Fuentes {
 					fuente := fuentep
-					mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
-						"RubroId":                valor.RubroId,
-						"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
-					})
-					mov = append(mov, mov1)
-					if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
-						outputError = err
-					} else {
-						for _, movimiento := range movimientos {
-							if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
-								resultado = true
+					if int(fuente["MontoParcial"].(float64)) > 0 {
+						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
+							"RubroId":                valor.RubroId,
+							"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
+						})
+						mov = append(mov, mov1)
+						if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
+							outputError = err
+						} else {
+							for _, movimiento := range movimientos {
+								if int(movimiento.Saldo) >= int(fuente["MontoParcial"].(float64)) {
+									resultado = true
+								}
 							}
 						}
 					}
