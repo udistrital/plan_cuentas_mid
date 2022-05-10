@@ -103,9 +103,9 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 						for _, actividadp := range meta.Actividades {
 							actividad := actividadp
 							fuentesi := actividad["FuentesActividad"]
-							fuentesp := fuentesi.([]*map[string]interface{})
+							fuentesp := fuentesi.([]map[string]interface{})
 							for _, fuentep := range fuentesp {
-								fuente := *fuentep
+								fuente := fuentep
 								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
 									"ActividadId":            actividad["ActividadId"].(string),
@@ -169,9 +169,9 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 					for _, actividadp := range meta.Actividades {
 						actividad := actividadp
 						fuentesi := actividad["FuentesActividad"]
-						fuentesp := fuentesi.([]*map[string]interface{})
+						fuentesp := fuentesi.([]map[string]interface{})
 						for _, fuentep := range fuentesp {
-							fuente := *fuentep
+							fuente := fuentep
 							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
 								"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
