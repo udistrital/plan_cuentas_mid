@@ -10,6 +10,7 @@ import (
 	necesidad_models "github.com/udistrital/necesidades_crud/models"
 	necesidadhelper "github.com/udistrital/plan_cuentas_mid/helpers/necesidadHelper"
 	"github.com/udistrital/plan_cuentas_mid/models"
+	errorctrl "github.com/udistrital/utils_oas/errorctrl"
 	"github.com/udistrital/utils_oas/request"
 	"github.com/udistrital/utils_oas/responseformat"
 )
@@ -56,6 +57,7 @@ func (c *NecesidadController) GetFullNecesidad() {
 // @Failure 403 body is empty
 // @router /post_full_necesidad [post]
 func (c *NecesidadController) PostFullNecesidad() {
+	defer errorctrl.ErrorControlController(c.Controller, "NecesidadController")
 	var (
 		v         models.TrNecesidad
 		necesidad map[string]interface{}

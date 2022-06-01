@@ -6,6 +6,7 @@ import (
 
 	documentopresupuestalmanager "github.com/udistrital/plan_cuentas_mid/managers/documentoPresupuestalManager"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
+	errorctrl "github.com/udistrital/utils_oas/errorctrl"
 	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
@@ -146,6 +147,7 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 // @Failure 403 :objectId is empty
 // @router /:vigencia/:CG/:tipo [get]
 func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVigenciaAndCG() {
+	defer errorctrl.ErrorControlController(c.Controller, "ModificacionPresupuestalController")
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
 	tipoModificacion := c.GetString(":tipo")
@@ -169,6 +171,7 @@ func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVig
 // @Failure 403 :objectId is empty
 // @router get_one/:vigencia/:CG/:UUID [get]
 func (c *ModificacionPresupuestalController) GetOneModificacionPresupuestalByVigenciaAndCG() {
+	defer errorctrl.ErrorControlController(c.Controller, "ModificacionPresupuestalController")
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
 	UUID := c.GetString(":UUID")
