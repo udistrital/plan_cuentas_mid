@@ -109,12 +109,13 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 								if int(fuente["MontoParcial"].(float64)) > 0 {
 									mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 										"RubroId":                valor.RubroId,
-										"ActividadId":            actividad["ActividadId"].(string),
+										"ActividadId":            actividad["ActividadId"].(int),
 										"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 									})
 									mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 									mov1.Valor = -fuente["MontoParcial"].(float64)
 									mov = append(mov, mov1)
+									fmt.Printf("Este es el formato del movimiento que se hara %v", mov)
 									if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
 										outputError = err
 									}
@@ -179,7 +180,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 							if int(fuente["MontoParcial"].(float64)) > 0 {
 								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
-									"ActividadId":            fmt.Sprintf("%v", actividad["ActividadId"]),
+									"ActividadId":            actividad["ActividadId"].(int),
 									"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
 								})
 								mov = append(mov, mov1)
