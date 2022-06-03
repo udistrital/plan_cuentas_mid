@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 
+	errorctrl "github.com/udistrital/utils_oas/errorctrl"
 	"github.com/udistrital/utils_oas/formatdata"
 	"github.com/udistrital/utils_oas/responseformat"
 
@@ -85,6 +86,7 @@ func (c *MovimientoController) Post() {
 // @Failure 403 :objectId is empty
 // @router /get_doc_by_mov_parentUUID/:vigencia/:CG/:UUID [get]
 func (c *MovimientoController) GetAllAnulacionesByVigenciaCGAndUUID() {
+	defer errorctrl.ErrorControlController(c.Controller, "MovimientoController")
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
 	documentUUID := c.GetString(":UUID")
