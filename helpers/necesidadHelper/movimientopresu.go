@@ -106,10 +106,11 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 							fuentesp := fuentesi.([]map[string]interface{})
 							for _, fuentep := range fuentesp {
 								fuente := fuentep
+								sv, _ := strconv.Atoi(actividad["ActividadId"].(string))
 								if int(fuente["MontoParcial"].(float64)) > 0 {
 									mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 										"RubroId":                valor.RubroId,
-										"ActividadId":            actividad["ActividadId"].(string),
+										"ActividadId":            sv,
 										"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 									})
 									mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)

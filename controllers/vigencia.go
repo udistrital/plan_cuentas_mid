@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	vigenciahelper "github.com/udistrital/plan_cuentas_mid/helpers/vigenciaHelper"
+	errorctrl "github.com/udistrital/utils_oas/errorctrl"
 )
 
 // VigenciaController operations for vigencia
@@ -26,6 +27,7 @@ func (c *VigenciaController) URLMapping() {
 // @Success 201 {object} models.SolicitudCDP
 // @router /get_cierre/:vigencia/:area/:cerrada [get]
 func (c *VigenciaController) GetCierreVigencia() {
+	defer errorctrl.ErrorControlController(c.Controller, "VigenciaController")
 	vigencia := c.Ctx.Input.Param(":vigencia")
 	areaf := c.Ctx.Input.Param(":area")
 	cerrada := c.Ctx.Input.Param(":cerrada") != "1"
@@ -48,6 +50,7 @@ func (c *VigenciaController) GetCierreVigencia() {
 // @Success 201 {object} models.SolicitudCDP
 // @router /cerrar_vigencia/:vigencia/:area [get]
 func (c *VigenciaController) CerrarVigencia() {
+	defer errorctrl.ErrorControlController(c.Controller, "VigenciaController")
 	vigencia := c.Ctx.Input.Param(":vigencia")
 	areaf := c.Ctx.Input.Param(":area")
 	v, err := vigenciahelper.CerrarVigencia(vigencia, areaf)
