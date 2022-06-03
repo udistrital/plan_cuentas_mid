@@ -116,7 +116,6 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 									mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 									mov1.Valor = -fuente["MontoParcial"].(float64)
 									mov = append(mov, mov1)
-									fmt.Printf("Este es el formato del movimiento que se hara %v", mov)
 									if _, err := movimientohelper.CrearMovimiento(mov); err != nil {
 										outputError = err
 									}
