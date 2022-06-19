@@ -16,11 +16,18 @@ type RubroController struct {
 	beego.Controller
 }
 
+// URLMapping ...
+func (c *RubroController) URLMapping() {
+	c.Mapping("RegistrarRubro", c.RegistrarRubro)
+	c.Mapping("EliminarRubro", c.EliminarRubro)
+	c.Mapping("ArbolRubros", c.ArbolRubros)
+}
+
 // RegistrarRubro ...
 // @Title RegistrarRubro
 // @Description Registra Rubro en postgres y mongo
-// @Param       body            body    models.Rubro    true            "body for Rubro content"
-// @Success 200 {object} models.Alert
+// @Param       body            body    models.Rama    true            "body for Rubro content"
+// @Success 200 {object} models.Rubro
 // @Failure 403 body is empty
 // @router /RegistrarRubro/ [post]
 func (c *RubroController) RegistrarRubro() {
@@ -49,6 +56,8 @@ func (c *RubroController) RegistrarRubro() {
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
 // @router /EliminarRubro/:id [delete]
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func (c *RubroController) EliminarRubro() {
 
 	idStr := c.Ctx.Input.Param(":id")

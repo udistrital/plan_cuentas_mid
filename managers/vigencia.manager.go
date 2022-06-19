@@ -24,7 +24,7 @@ func (m *VigenciaManager) GetCurrentActiveVigencia(areaFuncional string) (vigenc
 		}
 	}()
 	var response responseformat.Response
-	logs.Debug("url", beego.AppConfig.String("financieraMongoCurdApiService")+"vigencia/vigencia_actual_area/"+areaFuncional)
+	// logs.Debug("url", beego.AppConfig.String("financieraMongoCurdApiService")+"vigencia/vigencia_actual_area/"+areaFuncional)
 	if err = request.GetJson(beego.AppConfig.String("financieraMongoCurdApiService")+"vigencia/vigencia_actual_area/"+areaFuncional, &response); err == nil {
 		if responseformat.CheckResponseError(response) {
 			var errMessage = "Mongo API Error"

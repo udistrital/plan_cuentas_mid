@@ -40,7 +40,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.PorDefinir"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -73,7 +76,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "type": "boolean"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -106,7 +112,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} resultado"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.RespuestaInformacionAsignacionInicial"
+                        }
                     },
                     "403": {
                         "description": ""
@@ -134,7 +143,10 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.Apropiacion"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -159,9 +171,71 @@
                         "format": "int64"
                     },
                     {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "in": "query",
                         "name": "rama",
                         "description": "rama a consultar",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Rubro"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/apropiacion/ArbolRubroApropiacion/{unidadEjecutora}/{vigencia}/{raiz}": {
+            "get": {
+                "tags": [
+                    "apropiacion"
+                ],
+                "description": "Get Arbol Rubros apropiacion para usar en el cliente presupuesto",
+                "operationId": "ApropiacionController.ArbolRubroApropiaciones",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "path",
+                        "name": "raiz",
+                        "description": "raiz a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "nivel",
+                        "description": "nivel a consultar",
                         "type": "string"
                     }
                 ],
@@ -188,6 +262,14 @@
                 "parameters": [
                     {
                         "in": "path",
+                        "name": "rubro",
+                        "description": "rubro a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "path",
                         "name": "unidadEjecutora",
                         "description": "unidad ejecutora a consultar",
                         "required": true,
@@ -195,10 +277,12 @@
                         "format": "int64"
                     },
                     {
-                        "in": "query",
-                        "name": "rama",
-                        "description": "rama a consultar",
-                        "type": "string"
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a consultar",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
                     }
                 ],
                 "responses": {
@@ -223,6 +307,27 @@
                 "operationId": "ApropiacionController.Put",
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "id",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "valor",
+                        "description": "unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
                         "description": "body for Apropiacion content",
@@ -234,7 +339,10 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.Apropiacion"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Apropiacion"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -256,13 +364,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCDP"
+                            "$ref": "#/definitions/models.SolicitudAprobacionCdp"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCDP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.PlanCuentasMongoCrudDocumentoPresupuestal"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -275,7 +386,7 @@
                 "tags": [
                     "cdp"
                 ],
-                "description": "expedir cdp creando objeto infocdp en la solicitud",
+                "description": "expedir cdp creando objeto infocdp en la solicitud - TODO: Esto semánticamente debería ser un POST!",
                 "operationId": "CdpController.ExpedirCdp",
                 "parameters": [
                     {
@@ -310,13 +421,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCDP"
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadParcial1"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCDP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCDP"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -329,7 +443,7 @@
                 "tags": [
                     "crp"
                 ],
-                "description": "expedir crp creando objeto infocrp en la solicitud",
+                "description": "expedir crp creando objeto infocrp en la solicitud - TODO: Este método semánticamente debería ser un POST!",
                 "operationId": "CrpController.ExpedirCrp",
                 "parameters": [
                     {
@@ -344,7 +458,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCRP"
+                            "$ref": "#/definitions/models.SolicitudCrp"
                         }
                     }
                 }
@@ -361,7 +475,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.ConsultaEntrada"
+                            "$ref": "#/definitions/models.RespuestaGetFullCrp"
                         }
                     },
                     "404": {
@@ -384,13 +498,16 @@
                         "description": "body for Solicitud content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.SolicitudCRP"
+                            "$ref": "#/definitions/models.SolicitudCrp"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "{int} models.SolicitudCRP"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.SolicitudCrp"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
@@ -412,7 +529,7 @@
                         "description": "body for Movimiento content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Movimiento"
+                            "$ref": "#/definitions/models.ModificacionFuenteReceiver"
                         }
                     }
                 ],
@@ -436,11 +553,27 @@
                 ],
                 "description": "retorna rubros de la fuente desde el plan de adquisición",
                 "operationId": "FuenteFinanciamientoApropiacionController.GetRubrosbyFuente",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "vigencia a comprobar",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                            "$ref": "#/definitions/models.FuenteFinanciamiento"
                         }
                     },
                     "403": {
@@ -457,6 +590,21 @@
                 "description": "create Modificacion Presupuestal",
                 "operationId": "FuenteFinanciamientoApropiacionController.Create",
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "centroGestor",
+                        "description": "centro gestor / unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
                     {
                         "in": "body",
                         "name": "body",
@@ -494,11 +642,28 @@
                         "description": "El ObjectId del objeto que se quiere borrar",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "unidadEjecutora",
+                        "description": "unidad ejecutora",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} ok"
+                        "description": "",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "403": {
                         "description": "objectId is empty"
@@ -515,12 +680,12 @@
                 "operationId": "FuenteFinanciamientoApropiacionController.RegistrarFuenteConApropiacion",
                 "parameters": [
                     {
-                        "in": "query",
+                        "in": "body",
                         "name": "FuenteFinanciamiento",
                         "description": "models.Fuentefinanciamiento",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Fuentefinanciamiento"
+                            "$ref": "#/definitions/models.FuenteFinanciamiento"
                         }
                     }
                 ],
@@ -548,7 +713,7 @@
                         "description": "body for Movimiento content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Movimiento"
+                            "$ref": "#/definitions/models.ModificacionPresupuestalReceiver"
                         }
                     }
                 ],
@@ -574,12 +739,27 @@
                 "operationId": "ModificacionPresupuestalController.Create",
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "centroGestor",
+                        "description": "centro gestor / unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
                         "description": "body for simulacion_afectacion_modificacion content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ModificacionPresupuestalReceiverAfectation"
+                            "$ref": "#/definitions/models.ModificacionPresupuestalReceiver"
                         }
                     }
                 ],
@@ -603,6 +783,30 @@
                 ],
                 "description": "get all objects",
                 "operationId": "ModificacionPresupuestalController.GetAllModificacionPresupuestalByVigenciaAndCG",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "path",
+                        "name": "CG",
+                        "description": "centro gestor / unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "tipo",
+                        "description": "tipo de documento",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
@@ -620,9 +824,36 @@
                 ],
                 "description": "get all objects",
                 "operationId": "ModificacionPresupuestalController.GetOneModificacionPresupuestalByVigenciaAndCG",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "path",
+                        "name": "CG",
+                        "description": "centro gestor / unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "UUID",
+                        "description": "Identificador",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModificacionPresupuestalResponseDetail"
+                        }
                     },
                     "403": {
                         "description": ":objectId is empty"
@@ -644,7 +875,7 @@
                         "description": "body for Movimiento content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Movimiento"
+                            "$ref": "#/definitions/models.DocumentoPresupuestal"
                         }
                     }
                 ],
@@ -668,9 +899,39 @@
                 ],
                 "description": "get all objects",
                 "operationId": "MovimientoController.GetAllAnulacionesByVigenciaCGAndUUID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "vigencia",
+                        "description": "vigencia",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "path",
+                        "name": "CG",
+                        "description": "centro gestor / unidad ejecutora",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "UUID",
+                        "description": "Identificador",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "DocumentoPresupuestal models.DocumentoPresupuestal"
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AnulationDetail"
+                            }
+                        }
                     },
                     "403": {
                         "description": ":objectId is empty"
@@ -734,6 +995,47 @@
                     },
                     "403": {
                         "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/necesidad/{id}": {
+            "put": {
+                "tags": [
+                    "necesidad"
+                ],
+                "description": "update the Necesidad",
+                "operationId": "NecesidadController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Necesidad content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadCompleta"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.NecesidadesCrudNecesidadCompleta"
+                        }
+                    },
+                    "400": {
+                        "description": "the request contains incorrect syntax"
+                    },
+                    "409": {
+                        "description": "No se puede hacer movimiento poque el rubro no tiene monto suficiente"
                     }
                 }
             }
@@ -814,7 +1116,7 @@
                         "description": "body for Rubro content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Rubro"
+                            "$ref": "#/definitions/models.Rama"
                         }
                     }
                 ],
@@ -822,7 +1124,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Alert"
+                            "$ref": "#/definitions/models.Rubro"
                         }
                     },
                     "403": {
@@ -885,6 +1187,14 @@
                         "description": "area funcional del cierre",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "cerrada",
+                        "description": "'1' para NO cerrada",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
                     }
                 ],
                 "responses": {
@@ -899,65 +1209,120 @@
         }
     },
     "definitions": {
-        "1259.0xc0004f5b90.false": {
+        "10309.0xc000562600.false": {
             "title": "false",
             "type": "object"
         },
-        "1318.string.0xc0005100c0": {
-            "title": "0xc0005100c0",
+        "10368.string.0xc00053d6c8": {
+            "title": "0xc00053d6c8",
             "type": "object"
         },
-        "1527.string.0xc000510280": {
-            "title": "0xc000510280",
+        "10577.string.0xc00053d740": {
+            "title": "0xc00053d740",
             "type": "object"
         },
-        "1595.0xc0004f5d40.false": {
+        "10645.0xc0005627b0.false": {
             "title": "false",
             "type": "object"
         },
-        "1647.string.0xc0005103c0": {
-            "title": "0xc0005103c0",
+        "10697.string.0xc00053d788": {
+            "title": "0xc00053d788",
             "type": "object"
         },
-        "1703.string.0xc000510460": {
-            "title": "0xc000510460",
+        "10753.string.0xc00053d7b8": {
+            "title": "0xc00053d7b8",
             "type": "object"
         },
-        "1918.string.0xc000510620": {
-            "title": "0xc000510620",
+        "10968.string.0xc00053d848": {
+            "title": "0xc00053d848",
             "type": "object"
         },
-        "2016.string.0xc0005106c0": {
-            "title": "0xc0005106c0",
+        "11066.string.0xc00053d878": {
+            "title": "0xc00053d878",
             "type": "object"
         },
-        "2112.string.0xc000510760": {
-            "title": "0xc000510760",
+        "11162.string.0xc00053d8a8": {
+            "title": "0xc00053d8a8",
             "type": "object"
         },
-        "2220.string.0xc000510820": {
-            "title": "0xc000510820",
+        "11270.string.0xc00053d8d8": {
+            "title": "0xc00053d8d8",
             "type": "object"
         },
-        "2318.string.0xc0005108c0": {
-            "title": "0xc0005108c0",
+        "11368.string.0xc00053d908": {
+            "title": "0xc00053d908",
             "type": "object"
         },
-        "2409.string.0xc000510960": {
-            "title": "0xc000510960",
+        "11459.string.0xc00053d938": {
+            "title": "0xc00053d938",
             "type": "object"
         },
-        "2509.string.0xc000510a00": {
-            "title": "0xc000510a00",
+        "11559.string.0xc00053d968": {
+            "title": "0xc00053d968",
             "type": "object"
         },
-        "2608.string.0xc000510aa0": {
-            "title": "0xc000510aa0",
+        "11658.string.0xc00053d998": {
+            "title": "0xc00053d998",
             "type": "object"
         },
-        "models.Alert": {
-            "title": "Alert",
+        "19074.0xc0005635f0.false": {
+            "title": "false",
             "type": "object"
+        },
+        "20528.0xc000563740.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20585.0xc000563770.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20644.0xc0005637a0.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20697.0xc0005637d0.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20756.0xc000563800.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20813.0xc000563830.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "20864.0xc000563860.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "4594.0xc000553b90.false": {
+            "title": "false",
+            "type": "object"
+        },
+        "models.AnulationDetail": {
+            "title": "AnulationDetail",
+            "type": "object",
+            "properties": {
+                "Consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Tipo": {
+                    "type": "string"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
         },
         "models.Apropiacion": {
             "title": "Apropiacion",
@@ -987,9 +1352,74 @@
                 }
             }
         },
-        "models.ConsultaEntrada": {
-            "title": "ConsultaEntrada",
-            "type": "object"
+        "models.Compromiso": {
+            "title": "Compromiso",
+            "type": "object",
+            "properties": {
+                "NumeroCompromiso": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoCompromiso": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.DocumentoPresupuestal": {
+            "title": "DocumentoPresupuestal",
+            "type": "object",
+            "properties": {
+                "Afectacion": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MovimientoMongo"
+                    }
+                },
+                "AfectacionIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "AfectacionMovimiento": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Movimiento"
+                    }
+                },
+                "CentroGestor": {
+                    "type": "string"
+                },
+                "Consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Data": {
+                    "$ref": "#/definitions/4594.0xc000553b90.false"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Tipo": {
+                    "type": "string"
+                },
+                "ValorActual": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "ValorInicial": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
         },
         "models.EstadoApropiacion": {
             "title": "EstadoApropiacion",
@@ -1029,10 +1459,6 @@
                 }
             }
         },
-        "models.Fuentefinanciamiento": {
-            "title": "Fuentefinanciamiento",
-            "type": "object"
-        },
         "models.MetaRubroNecesidad": {
             "title": "MetaRubroNecesidad",
             "type": "object",
@@ -1040,7 +1466,7 @@
                 "Actividades": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1318.string.0xc0005100c0"
+                        "$ref": "#/definitions/10368.string.0xc00053d6c8"
                     }
                 },
                 "Id": {
@@ -1051,7 +1477,7 @@
                     "type": "string"
                 },
                 "RubroNecesidadId": {
-                    "$ref": "#/definitions/1259.0xc0004f5b90.false"
+                    "$ref": "#/definitions/10309.0xc000562600.false"
                 }
             }
         },
@@ -1086,6 +1512,21 @@
                 "Valor": {
                     "type": "number",
                     "format": "double"
+                }
+            }
+        },
+        "models.ModificacionPresupuestalReceiver": {
+            "title": "ModificacionPresupuestalReceiver",
+            "type": "object",
+            "properties": {
+                "Afectation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ModificacionPresupuestalReceiverAfectation"
+                    }
+                },
+                "detail": {
+                    "$ref": "#/definitions/models.ModificacionPresupuestalReceiverDetail"
                 }
             }
         },
@@ -1133,6 +1574,48 @@
                 }
             }
         },
+        "models.ModificacionPresupuestalResponseDetail": {
+            "title": "ModificacionPresupuestalResponseDetail",
+            "type": "object",
+            "properties": {
+                "CentroGestor": {
+                    "type": "string"
+                },
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaDocumento": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "NumeroDocumento": {
+                    "type": "string"
+                },
+                "OrganismoEmisor": {
+                    "type": "string"
+                },
+                "TipoDocumento": {
+                    "type": "string"
+                },
+                "ValorActual": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "ValorInicial": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Movimiento": {
             "title": "Movimiento",
             "type": "object",
@@ -1159,6 +1642,35 @@
                 }
             }
         },
+        "models.MovimientoMongo": {
+            "title": "MovimientoMongo",
+            "type": "object",
+            "properties": {
+                "Descripcion": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "IDPsql": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Padre": {
+                    "type": "string"
+                },
+                "Tipo": {
+                    "type": "string"
+                },
+                "ValorInicial": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.MovimientoProcesoExterno": {
             "title": "MovimientoProcesoExterno",
             "type": "object",
@@ -1177,6 +1689,226 @@
                 },
                 "TipoMovimientoId": {
                     "$ref": "#/definitions/models.TipoGeneral"
+                }
+            }
+        },
+        "models.NecesidadesCrudNecesidadCompleta": {
+            "title": "NecesidadesCrudNecesidadCompleta",
+            "type": "object",
+            "properties": {
+                "Activo": {
+                    "type": "boolean"
+                },
+                "AnalisisRiesgo": {
+                    "type": "string"
+                },
+                "AreaFuncional": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "DependenciaNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.DependenciaNecesidad"
+                },
+                "DiasDuracion": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "EstadoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.EstadoNecesidad"
+                },
+                "EstudioMercado": {
+                    "type": "string"
+                },
+                "FechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "FechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "FechaSolicitud": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Justificacion": {
+                    "type": "string"
+                },
+                "JustificacionRechazo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ModalidadSeleccionId": {
+                    "$ref": "#/definitions/necesidades_crud.ModalidadSeleccion"
+                },
+                "Objeto": {
+                    "type": "string"
+                },
+                "PlanAnualAdquisicionesId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoContratoId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "TipoContratoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoContratoNecesidad"
+                },
+                "TipoDuracionNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoDuracionNecesidad"
+                },
+                "TipoFinanciacionNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoFinanciacionNecesidad"
+                },
+                "TipoNecesidadId": {
+                    "$ref": "#/definitions/necesidades_crud.TipoNecesidad"
+                },
+                "Valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.NecesidadesCrudNecesidadParcial1": {
+            "title": "NecesidadesCrudNecesidadParcial1",
+            "type": "object",
+            "properties": {
+                "AreaFuncional": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Vigencia": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PlanCuentasMongoCrudDocumentoPresupuestal": {
+            "title": "PlanCuentasMongoCrudDocumentoPresupuestal",
+            "type": "object",
+            "properties": {
+                "Afectacion": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Movimiento"
+                    }
+                },
+                "AfectacionIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "CentroGestor": {
+                    "type": "string"
+                },
+                "Consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Data": {
+                    "$ref": "#/definitions/19074.0xc0005635f0.false"
+                },
+                "Estado": {
+                    "type": "string"
+                },
+                "FechaRegistro": {
+                    "type": "string"
+                },
+                "Tipo": {
+                    "type": "string"
+                },
+                "ValorActual": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "ValorInicial": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "Vigencia": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PorDefinir": {
+            "title": "PorDefinir",
+            "type": "object"
+        },
+        "models.Rama": {
+            "title": "Rama",
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RubroHijo": {
+                    "$ref": "#/definitions/models.Rubro"
+                },
+                "RubroPadre": {
+                    "$ref": "#/definitions/models.Rubro"
+                }
+            }
+        },
+        "models.RespuestaGetFullCrp": {
+            "title": "RespuestaGetFullCrp",
+            "type": "object",
+            "properties": {
+                "centroGestor": {
+                    "$ref": "#/definitions/20756.0xc000563800.false"
+                },
+                "consecutivoCdp": {
+                    "$ref": "#/definitions/20585.0xc000563770.false"
+                },
+                "estado": {
+                    "$ref": "#/definitions/20813.0xc000563830.false"
+                },
+                "movimiento_cdp": {
+                    "$ref": "#/definitions/20697.0xc0005637d0.false"
+                },
+                "necesidadFinanciacion": {
+                    "$ref": "#/definitions/20864.0xc000563860.false"
+                },
+                "solicitudCrp": {
+                    "$ref": "#/definitions/20528.0xc000563740.false"
+                },
+                "vigencia": {
+                    "$ref": "#/definitions/20644.0xc0005637a0.false"
+                }
+            }
+        },
+        "models.RespuestaInformacionAsignacionInicial": {
+            "title": "RespuestaInformacionAsignacionInicial",
+            "type": "object",
+            "properties": {
+                "Aprobado": {
+                    "type": "boolean"
+                },
+                "InfoApropiacion": {
+                    "additionalProperties": {
+                        "type": "number",
+                        "format": "double"
+                    }
                 }
             }
         },
@@ -1213,7 +1945,7 @@
                 "Fuentes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1647.string.0xc0005103c0"
+                        "$ref": "#/definitions/10697.string.0xc00053d788"
                     }
                 },
                 "Id": {
@@ -1221,7 +1953,7 @@
                     "format": "int64"
                 },
                 "InfoRubro": {
-                    "$ref": "#/definitions/1527.string.0xc000510280"
+                    "$ref": "#/definitions/10577.string.0xc00053d740"
                 },
                 "Metas": {
                     "type": "array",
@@ -1230,15 +1962,30 @@
                     }
                 },
                 "NecesidadId": {
-                    "$ref": "#/definitions/1595.0xc0004f5d40.false"
+                    "$ref": "#/definitions/10645.0xc0005627b0.false"
                 },
                 "Productos": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/1703.string.0xc000510460"
+                        "$ref": "#/definitions/10753.string.0xc00053d7b8"
                     }
                 },
                 "RubroId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.SolicitudAprobacionCdp": {
+            "title": "SolicitudAprobacionCdp",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "area_funcional": {
+                    "type": "string"
+                },
+                "vigencia": {
                     "type": "string"
                 }
             }
@@ -1292,9 +2039,57 @@
                 }
             }
         },
-        "models.SolicitudCRP": {
-            "title": "SolicitudCRP",
-            "type": "object"
+        "models.SolicitudCrp": {
+            "title": "SolicitudCrp",
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "activo": {
+                    "type": "boolean"
+                },
+                "beneficiario": {
+                    "type": "string"
+                },
+                "compromiso": {
+                    "$ref": "#/definitions/models.Compromiso"
+                },
+                "consecutivo": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "consecutivoCdp": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "estado": {
+                    "$ref": "#/definitions/models.estadoCrp"
+                },
+                "fechaCreacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaFinalVigencia": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaInicioVigencia": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "fechaModificacion": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "valor": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "vigencia": {
+                    "type": "string"
+                }
+            }
         },
         "models.TipoFuenteFinanciamiento": {
             "title": "TipoFuenteFinanciamiento",
@@ -1341,40 +2136,40 @@
                 "ActividadEconomicaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2509.string.0xc000510a00"
+                        "$ref": "#/definitions/11559.string.0xc00053d968"
                     }
                 },
                 "ActividadEspecificaNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2409.string.0xc000510960"
+                        "$ref": "#/definitions/11459.string.0xc00053d938"
                     }
                 },
                 "DetallePrestacionServicioNecesidad": {
-                    "$ref": "#/definitions/2112.string.0xc000510760"
+                    "$ref": "#/definitions/11162.string.0xc00053d8a8"
                 },
                 "DetalleServicioNecesidad": {
-                    "$ref": "#/definitions/2016.string.0xc0005106c0"
+                    "$ref": "#/definitions/11066.string.0xc00053d878"
                 },
                 "MarcoLegalNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2318.string.0xc0005108c0"
+                        "$ref": "#/definitions/11368.string.0xc00053d908"
                     }
                 },
                 "Necesidad": {
-                    "$ref": "#/definitions/1918.string.0xc000510620"
+                    "$ref": "#/definitions/10968.string.0xc00053d848"
                 },
                 "ProductosCatalogoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2220.string.0xc000510820"
+                        "$ref": "#/definitions/11270.string.0xc00053d8d8"
                     }
                 },
                 "RequisitoMinimoNecesidad": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/2608.string.0xc000510aa0"
+                        "$ref": "#/definitions/11658.string.0xc00053d998"
                     }
                 },
                 "Rubros": {
@@ -1399,6 +2194,57 @@
                     "type": "string"
                 }
             }
+        },
+        "models.estadoCrp": {
+            "title": "estadoCrp",
+            "type": "object",
+            "properties": {
+                "acronimo": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "necesidades_crud.DependenciaNecesidad": {
+            "title": "DependenciaNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.EstadoNecesidad": {
+            "title": "EstadoNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.ModalidadSeleccion": {
+            "title": "ModalidadSeleccion",
+            "type": "object"
+        },
+        "necesidades_crud.Necesidad": {
+            "title": "Necesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoContratoNecesidad": {
+            "title": "TipoContratoNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoDuracionNecesidad": {
+            "title": "TipoDuracionNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoFinanciacionNecesidad": {
+            "title": "TipoFinanciacionNecesidad",
+            "type": "object"
+        },
+        "necesidades_crud.TipoNecesidad": {
+            "title": "TipoNecesidad",
+            "type": "object"
+        },
+        "plan_cuentas_mongo_crud.DocumentoPresupuestal": {
+            "title": "DocumentoPresupuestal",
+            "type": "object"
         }
     },
     "tags": [

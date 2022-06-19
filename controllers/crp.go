@@ -14,11 +14,18 @@ type CrpController struct {
 	beego.Controller
 }
 
+// URLMapping ...
+func (c *CrpController) URLMapping() {
+	c.Mapping("ExpedirCrp", c.ExpedirCrp)
+	c.Mapping("SolicitarCrp", c.SolicitarCrp)
+	c.Mapping("GetInfoCrp", c.GetInfoCrp)
+}
+
 // ExpedirCrp ...
 // @Title ExpedirCrp
-// @Description expedir crp creando objeto infocrp en la solicitud
+// @Description expedir crp creando objeto infocrp en la solicitud - TODO: Este método semánticamente debería ser un POST!
 // @Param	id		path 	string	true		"The key for solicitudcrp"
-// @Success 201 {object} models.SolicitudCRP
+// @Success 201 {object} models.SolicitudCrp
 // @router /expedirCRP/:id [get]
 func (c *CrpController) ExpedirCrp() {
 	defer func() {
@@ -38,8 +45,8 @@ func (c *CrpController) ExpedirCrp() {
 // SolicitarCrp ...
 // @Title SolicitarCRP
 // @Description create SolicitudCRP
-// @Param	body		body 	models.SolicitudCRP true "body for Solicitud content"
-// @Success 201 {int} models.SolicitudCRP
+// @Param	body		body 	models.SolicitudCrp true "body for Solicitud content"
+// @Success 201 {object} models.SolicitudCrp
 // @Failure 403 body is empty
 // @router /solicitarCRP [post]
 func (c *CrpController) SolicitarCrp() {
@@ -67,7 +74,7 @@ func (c *CrpController) SolicitarCrp() {
 // GetInfoCrp ...
 // @Title Get Info CRPs
 // @Description get all the information about CRPs
-// @Success 200 {object} models.ConsultaEntrada
+// @Success 200 {object} models.RespuestaGetFullCrp
 // @Failure 404 not found resource
 // @router /getFullCrp [get]
 func (c *CrpController) GetInfoCrp() {

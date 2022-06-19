@@ -14,6 +14,8 @@ import (
 const success string = "success"
 
 // AddApropiacion ... Add apropiacion to mongo and postgres tr.
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 
 	var (
@@ -84,6 +86,8 @@ func AddApropiacion(data models.Apropiacion) map[string]interface{} {
 }
 
 // PutApropiacion ... Modify the Apr Value if these Apr isn't Aproved
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) map[string]interface{} {
 	var (
 		urlcrud   string
@@ -219,6 +223,8 @@ func CompareApropiationNodes(nodesToCompare *map[string]float64, ue, vigencia in
 }
 
 // AprobarPresupuesto retorna res siempre y cuando el tipo sea success
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface{}) {
 	asignationInfo := map[string]float64{"2": 0.0, "3": 0.0}
 
@@ -237,6 +243,8 @@ func AprobarPresupuesto(vigencia, unidadejecutora int) (res map[string]interface
 }
 
 // PresupuestoAprobado retorna true si la apropiacion esta aprobada, retorna falso en caso contrario
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	var res map[string]interface{}
 	if err := request.GetJson(beego.AppConfig.String("planCuentasApiService")+"apropiacion?"+"query=Vigencia:"+strconv.Itoa(vigencia)+",RubroId.UnidadEjecutora:"+strconv.Itoa(unidadejecutora)+",EstadoApropiacionId:2", &res); err == nil {
@@ -250,3 +258,52 @@ func PresupuestoAprobado(vigencia, unidadejecutora int) bool {
 	}
 
 }
+
+// ConstruirArbolRubroApropiacion construir abrol rubro apropiacion
+func ConstruirArbolRubroApropiacion(ueStr string, vigenciaStr string, raiz string, nivel string) (resultado map[string]interface{}, err interface{}) {
+	var urlmongo string
+	registros := make([]map[string]interface{}, 0)
+	var res map[string]interface{}
+	var respuesta map[string]interface{}
+
+	urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiacion/arbol_apropiacion_valores/" + ueStr + "/" + vigenciaStr + "/" + raiz + "?nivel=" + nivel
+	if err := request.GetJson(urlmongo, &res); err != nil {
+		return nil, err
+	}
+	hijosNodo := res["Body"].([]interface{})[0].(map[string]interface{})["data"].(map[string]interface{})["Hijos"]
+	hijos := interfaceToStringArray(hijosNodo)
+	for _, element := range hijos {
+		urlmongo = beego.AppConfig.String("financieraMongoCurdApiService") + "arbol_rubro_apropiacion/arbol_apropiacion_valores/" + ueStr + "/" + vigenciaStr + "/" + element + "?nivel=-1"
+		if err := request.GetJson(urlmongo, &respuesta); err != nil {
+			return nil, err
+		} else {
+			registros = append(registros, respuesta["Body"].([]interface{})[0].(map[string]interface{}))
+		}
+	}
+
+	res["Body"].([]interface{})[0].(map[string]interface{})["children"] = registros
+	return res, err
+
+}
+
+// interfaceToStringArray convierte array de interface{} a string
+func interfaceToStringArray(hijos interface{}) (Hijos []string) {
+	aInterface := hijos.([]interface{})
+	aString := make([]string, len(aInterface))
+	for i, v := range aInterface {
+		aString[i] = v.(string)
+	}
+	return aString
+
+}
+
+// // interfaceToStringArray convierte array de interface{} a string
+// func UnirArbol(registros []map[string]interface{}, ) (resultado map[string]interface{}) {
+// 	aInterface := hijos.([]interface{})
+// 	aString := make([]string, len(aInterface))
+// 	for i, v := range aInterface {
+// 		aString[i] = v.(string)
+// 	}
+// 	return aString
+
+// }

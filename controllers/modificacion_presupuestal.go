@@ -6,6 +6,7 @@ import (
 
 	documentopresupuestalmanager "github.com/udistrital/plan_cuentas_mid/managers/documentoPresupuestalManager"
 	movimientomanager "github.com/udistrital/plan_cuentas_mid/managers/movimientoManager"
+	errorctrl "github.com/udistrital/utils_oas/errorctrl"
 	"github.com/udistrital/utils_oas/responseformat"
 
 	"github.com/astaxie/beego"
@@ -25,12 +26,15 @@ type ModificacionPresupuestalController struct {
 // URLMapping ...
 func (c *ModificacionPresupuestalController) URLMapping() {
 	c.Mapping("Post", c.Post)
+	c.Mapping("SimulacionAfectacion", c.SimulacionAfectacion)
+	c.Mapping("GetAllModificacionPresupuestalByVigenciaAndCG", c.GetAllModificacionPresupuestalByVigenciaAndCG)
+	c.Mapping("GetOneModificacionPresupuestalByVigenciaAndCG", c.GetOneModificacionPresupuestalByVigenciaAndCG)
 }
 
 // Post ...
 // @Title Create
 // @Description create Modificacion Presupuestal
-// @Param	body		body 	models.Movimiento	true		"body for Movimiento content"
+// @Param	body		body 	models.ModificacionPresupuestalReceiver	true		"body for Movimiento content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router / [post]
@@ -78,7 +82,7 @@ func (c *ModificacionPresupuestalController) Post() {
 	finalDataIntf, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
-		logs.Debug("error", err)
+		logs.Error("error", err)
 		panic(err.Error())
 	}
 
@@ -89,7 +93,9 @@ func (c *ModificacionPresupuestalController) Post() {
 // SimulacionAfectacion ...
 // @Title Create
 // @Description create Modificacion Presupuestal
-// @Param	body		body 	models.ModificacionPresupuestalReceiverAfectation	true		"body for simulacion_afectacion_modificacion content"
+// @Param centroGestor path  string                                  true  "centro gestor / unidad ejecutora"
+// @Param vigencia     path  uint                                    true  "vigencia"
+// @Param body         body  models.ModificacionPresupuestalReceiver true  "body for simulacion_afectacion_modificacion content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router /simulacion_afectacion_modificacion/:centroGestor/:vigencia [post]
@@ -134,10 +140,14 @@ func (c *ModificacionPresupuestalController) SimulacionAfectacion() {
 // GetAllModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
 // @Title GetAllModificacionPresupuestalByVigenciaAndCG
 // @Description get all objects
+// @Param vigencia path  uint   true  "vigencia"
+// @Param CG       path  string true  "centro gestor / unidad ejecutora"
+// @Param tipo     path  string true  "tipo de documento"
 // @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
 // @Failure 403 :objectId is empty
 // @router /:vigencia/:CG/:tipo [get]
 func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVigenciaAndCG() {
+	defer errorctrl.ErrorControlController(c.Controller, "ModificacionPresupuestalController")
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
 	tipoModificacion := c.GetString(":tipo")
@@ -154,10 +164,14 @@ func (c *ModificacionPresupuestalController) GetAllModificacionPresupuestalByVig
 // GetOneModificacionPresupuestalByVigenciaAndCG función para obtener todos los objetos
 // @Title GetOneModificacionPresupuestalByVigenciaAndCG
 // @Description get all objects
-// @Success 200 DocumentoPresupuestal models.DocumentoPresupuestal
+// @Param vigencia path  uint   true  "vigencia"
+// @Param CG       path  string true  "centro gestor / unidad ejecutora"
+// @Param UUID     path  string true  "Identificador"
+// @Success 200 {object} models.ModificacionPresupuestalResponseDetail
 // @Failure 403 :objectId is empty
 // @router get_one/:vigencia/:CG/:UUID [get]
 func (c *ModificacionPresupuestalController) GetOneModificacionPresupuestalByVigenciaAndCG() {
+	defer errorctrl.ErrorControlController(c.Controller, "ModificacionPresupuestalController")
 	vigencia := c.GetString(":vigencia")
 	centroGestor := c.GetString(":CG")
 	UUID := c.GetString(":UUID")

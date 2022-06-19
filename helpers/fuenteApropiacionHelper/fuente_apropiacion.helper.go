@@ -13,6 +13,8 @@ import (
 )
 
 // URLCRUD Path de plan_cuentas_crud
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 var URLCRUD = beego.AppConfig.String("planCuentasApiService")
 
 // URLPLANADQUISICION Path de bodega jbpm para el plan de adquisiciones
@@ -102,6 +104,8 @@ func ConvertModificacionToDocumentoPresupuestal(modData models.ModificacionFuent
 
 // RegistrarMultipleFuenteApropiacion utiliza la transacción de fuente_financiamiento_apropiacion/registrar_multiple
 // para registrar multiples datos en fuente_financiamiento_apropiacion
+//
+// Deprecated: Depende de PLAN_CUENTAS_CRUD (ya no está en servicio)
 func RegistrarMultipleFuenteApropiacion(fuentesApropiacion []*models.FuenteFinanciamientoApropiacion) (idRegistrados []int) {
 	var (
 		res          map[string]interface{} // Respuesta de una petición

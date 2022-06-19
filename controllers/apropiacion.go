@@ -18,13 +18,17 @@ type ApropiacionController struct {
 // URLMapping ...
 func (c *ApropiacionController) URLMapping() {
 	c.Mapping("Post", c.Post)
+	c.Mapping("Put", c.Put)
+	c.Mapping("ArbolApropiaciones", c.ArbolApropiaciones)
+	c.Mapping("ArbolRubroApropiaciones", c.ArbolRubroApropiaciones)
+	c.Mapping("SaldoApropiacion", c.SaldoApropiacion)
 }
 
 // Post ...
 // @Title Post
 // @Description create Apropiacion
 // @Param	body		body 	models.Apropiacion	true		"body for Apropiacion content"
-// @Success 201 {int} models.Apropiacion
+// @Success 201 {object} models.Apropiacion
 // @Failure 403 body is empty
 // @router / [post]
 func (c *ApropiacionController) Post() {
@@ -49,8 +53,11 @@ func (c *ApropiacionController) Post() {
 // Put ...
 // @Title Put
 // @Description Update Apropiacion
-// @Param	body		body 	models.Apropiacion	true		"body for Apropiacion content"
-// @Success 201 {int} models.Apropiacion
+// @Param id       path  string             true  "vigencia a comprobar"
+// @Param valor    path  string             true  "unidad ejecutora"
+// @Param vigencia path  string             true  "vigencia a comprobar"
+// @Param body     body  models.Apropiacion true  "body for Apropiacion content"
+// @Success 201 {object} models.Apropiacion
 // @Failure 403 body is empty
 // @router /:id/:valor/:vigencia [put]
 func (c *ApropiacionController) Put() {
@@ -76,9 +83,10 @@ func (c *ApropiacionController) Put() {
 // ArbolApropiaciones ...
 // @Title ArbolApropiaciones
 // @Description Get Arbol Rubros By UE
-// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
-// @Param	rama		query 	string	false		"rama a consultar"
-// @Success 200 {object} models.Rubro
+// @Param unidadEjecutora path  int64  true  "unidad ejecutora a consultar"
+// @Param vigencia        path  string true  "vigencia a comprobar"
+// @Param rama            query string false "rama a consultar"
+// @Success 200 {object}  []models.Rubro
 // @Failure 403
 // @router /ArbolApropiaciones/:unidadEjecutora/:vigencia [get]
 func (c *ApropiacionController) ArbolApropiaciones() {
@@ -105,11 +113,43 @@ func (c *ApropiacionController) ArbolApropiaciones() {
 	c.Data["json"] = response
 }
 
+// ArbolRubroApropiaciones ...
+// @Title ArbolRubroApropiaciones
+// @Description Get Arbol Rubros apropiacion para usar en el cliente presupuesto
+// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
+// @Param	vigencia		path 	int64	true		"vigencia a consultar"
+// @Param	raiz		path 	int64	true		"raiz a consultar"
+// @Param	nivel		query 	string	false		"nivel a consultar"
+// @Success 200 {object} models.Rubro
+// @Failure 403
+// @router /ArbolRubroApropiacion/:unidadEjecutora/:vigencia/:raiz [get]
+func (c *ApropiacionController) ArbolRubroApropiaciones() {
+
+	ueStr := c.Ctx.Input.Param(":unidadEjecutora")
+	vigenciaStr := c.Ctx.Input.Param(":vigencia")
+	raiz := c.Ctx.Input.Param(":raiz")
+	nivel := c.GetString("nivel")
+	defer func() {
+		if r := recover(); r != nil {
+			beego.Error(r)
+			responseformat.SetResponseFormat(&c.Controller, r, "E_0458", 500)
+		}
+	}()
+
+	arbol, err := apropiacionHelper.ConstruirArbolRubroApropiacion(ueStr, vigenciaStr, raiz, nivel)
+	if err != nil {
+		panic("Mongo API Service Error")
+	}
+	c.Data["json"] = arbol
+	c.ServeJSON()
+}
+
 // SaldoApropiacion ...
 // @Title SaldoApropiacion
 // @Description Get Arbol Rubros By UE
-// @Param	unidadEjecutora		path 	int64	true		"unidad ejecutora a consultar"
-// @Param	rama		query 	string	false		"rama a consultar"
+// @Param rubro           path  int64  true  "rubro a consultar"
+// @Param unidadEjecutora path  int64  true  "unidad ejecutora a consultar"
+// @Param vigencia        path  int64  true  "vigencia a consultar"
 // @Success 200 {object} models.Rubro
 // @Failure 403
 // @router /SaldoApropiacion/:rubro/:unidadEjecutora/:vigencia [get]

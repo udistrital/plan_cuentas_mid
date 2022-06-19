@@ -1,13 +1,23 @@
-# Binaries for programs and plugins
+# Binaries for programs and plugins & temporary files
 *.exe
-*.exe~
+*~
 *.dll
 *.so
 *.dylib
-
+*.log
+*.tmp
+*.zip
 # Test binary, build with `go test -c`
 *.test
+main
+plan_cuentas_mid
 
+# Variables de Entorno
+*.env
+!.develop.env
+!.template.env
+
+# Others
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 #Bee api
@@ -15,20 +25,9 @@
 WebIM/WebIM
 shorturl/shorturl
 todo/todo
-custom.env
 lastupdate.*
-.vscode/
-plan_cuentas_mid
-main
-.scannerwork/
-swagger/*.png
-swagger/*.html
-swagger/*.js
-swagger/*.map
-swagger/*.css
-swagger/*.yml
-swagger/css/
-swagger/fonts/
-swagger/images/
-swagger/lang/
-swagger/lib/
+.vscode
+.scannerwork
+swagger/**
+!swagger/swagger.json
+!swagger/swagger.yml

@@ -34,7 +34,9 @@ func (c *FuenteFinanciamientoApropiacionController) URLMapping() {
 // GetRubrosbyFuente ...
 // @Title GetRubrosbyFuente
 // @Description retorna rubros de la fuente desde el plan de adquisición
-// @Success 201 {object} models.Fuentefinanciamiento
+// @Param vigencia path  string true  "vigencia a comprobar"
+// @Param id       path  string true  "vigencia a comprobar"
+// @Success 201 {object} models.FuenteFinanciamiento
 // @Failure 403 :vigencia is empty
 // @Failure 403 :id is empty
 // @router /plan_adquisiciones_rubros_fuente/:vigencia/:id [get]
@@ -57,7 +59,7 @@ func (c *FuenteFinanciamientoApropiacionController) GetRubrosbyFuente() {
 // RegistrarModificacion ...
 // @Title RegistrarModificacion
 // @Description create Modificacion Presupuestal Fuente
-// @Param	body		body 	models.Movimiento	true		"body for Movimiento content"
+// @Param	body		body 	models.ModificacionFuenteReceiver	true		"body for Movimiento content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router /modificacion [post]
@@ -83,7 +85,7 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 	_, err := compositor.AddMovimientoTransaction(modificacionPresupuestalData.Data, documentoPresupuestalDataFormated, documentoPresupuestalDataFormated.AfectacionMovimiento)
 
 	if err != nil {
-		logs.Debug("error", err)
+		logs.Error("error", err)
 		panic(err.Error())
 	}
 
@@ -96,8 +98,10 @@ func (c *FuenteFinanciamientoApropiacionController) RegistrarModificacion() {
 // Delete ...
 // @Title Borrar FuenteFinanciamiento
 // @Description Borrar FuenteFinanciamiento
-// @Param	id		path 	string	true		"El ObjectId del objeto que se quiere borrar"
-// @Success 200 {string} ok
+// @Param id              path  string true  "El ObjectId del objeto que se quiere borrar"
+// @Param vigencia        path  string true  "vigencia"
+// @Param unidadEjecutora path  string true  "unidad ejecutora"
+// @Success 200 {object} string
 // @Failure 403 objectId is empty
 // @router /:id/:vigencia/:unidadEjecutora [delete]
 func (c *FuenteFinanciamientoApropiacionController) Delete() {
@@ -127,7 +131,9 @@ func (c *FuenteFinanciamientoApropiacionController) Delete() {
 // SimulacionAfectacion ...
 // @Title Create
 // @Description create Modificacion Presupuestal
-// @Param	body		body 	models.ModificacionFuenteReceiver	true		"body for simulacion_afectacion_modificacion content"
+// @Param centroGestor path  string                            true  "centro gestor / unidad ejecutora"
+// @Param vigencia     path  uint                              true  "vigencia"
+// @Param body         body  models.ModificacionFuenteReceiver true  "body for simulacion_afectacion_modificacion content"
 // @Success 201 {object} models.Movimiento
 // @Failure 403 body is empty
 // @router /simulacion_afectacion_modificacion/:centroGestor/:vigencia [post]
@@ -170,7 +176,7 @@ func (c *FuenteFinanciamientoApropiacionController) SimulacionAfectacion() {
 // RegistrarFuenteConApropiacion ...
 // @Title RegistrarFuenteConApropiacion
 // @Description Registra la fuente de financiamiento en postgres y mongo
-// @Param	FuenteFinanciamiento		query 	models.Fuentefinanciamiento	true		"models.Fuentefinanciamiento"
+// @Param	FuenteFinanciamiento		body 	models.FuenteFinanciamiento	true		"models.Fuentefinanciamiento"
 // @Success 200 {string} resultado
 // @Failure 403
 // @router registrar_fuentes_con_apropiacion [post]

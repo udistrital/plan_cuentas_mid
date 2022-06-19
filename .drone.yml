@@ -1,30 +1,29 @@
-workspace:
-  base: /go
-  path: src/github.com/udistrital/${DRONE_REPO##udistrital/}
-  when:
-    branch:
-    - develop
-    - release/*
-    - master
-
 kind: pipeline
 name: oas_api_ci
+
+trigger:
+  event:
+    exclude:
+      - tag
 
 steps:
 - name: check_readme
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_readme.py
   when:
     branch:
     - develop
     - feature/*
+    - hotfix/*
     - release/*
     event:
     - push
 
 - name: check_branch
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_branch.py -H ${DRONE_GIT_HTTP_URL}
   when:
@@ -35,43 +34,33 @@ steps:
     event:
     - push
 
+# SCRIPT NO OBJETIVO - Deberá ajustarse - Ver mensaje del commit:
+# https://github.com/udistrital/arka_cliente/commit/37e3ece10d52cae1303d837ad0e8a6ca1fb7a549
 - name: check_commits
   image: jjvargass/qa_develoment:latest
+  failure: ignore
   commands:
   - python /app/check_commits.py
   when:
     branch:
     - develop
     - feature/*
+    - hotfix/*
     - release/*
-    event:
-    - push
-
-- name: go_build
-  image: golang:1.14
-  commands:
-  - go mod init
-  - go get -t
-  - GOOS=linux GOARCH=amd64 go build -o main
-  when:
-    branch:
-    - develop
-    - release/*
-    - master
     event:
     - push
 
 - name: go_test
   image: golang:1.14
+  failure: ignore
   commands:
   - go get -t
   - go get github.com/smartystreets/goconvey/convey
-  - GO111MODULE=off go get -u gopkg.in/alecthomas/gometalinter.v1
-  - GO111MODULE=off gometalinter.v1 --install
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.41.1
   - go get github.com/axw/gocov/...
   - go get github.com/AlekSi/gocov-xml
   - go get -u github.com/jstemmer/go-junit-report
-  - GO111MODULE=off gometalinter.v1 ./... --checkstyle | tee report.xml
+  - golangci-lint run ./... | tee report.xml
   #- gocov test ./... | gocov-xml > coverage.xml
   #- go test -v ./... | go-junit-report > test.xml
   when:
@@ -83,22 +72,32 @@ steps:
     - push
 
 - name: run_sonar_scanner
-  image: openjdk:8-alpine
-  commands:
-  - export RELEASE=4.2.0.1873
-  - apk add --no-cache  curl grep sed unzip nodejs npm
-  - curl --insecure -o ./sonarscanner.zip -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$RELEASE-linux.zip
-  - unzip sonarscanner.zip && rm sonarscanner.zip
-  - rm -rf sonar-scanner-$RELEASE-linux/jre
-  - sed -i 's/use_embedded_jre=true/use_embedded_jre=false/g' ./sonar-scanner-$RELEASE-linux/bin/sonar-scanner
-  - export PATH=$PATH:/go/src/github.com/udistrital/${DRONE_REPO##udistrital/}/sonar-scanner-$RELEASE-linux/bin
-  - cp sonar-project.properties ./sonar-scanner-$RELEASE-linux/conf/sonar-scanner.properties
-  - sonar-scanner
+  image: aosapps/drone-sonar-plugin
+  settings:
+    sonar_host:
+      from_secret: SONAR_HOST
+    sonar_token:
+      from_secret: SONAR_TOKEN
   when:
     branch:
     - develop
     - release/*
     - master
+    event:
+    - push
+
+- name: go_build
+  image: golang:1.14
+  commands:
+  - go get -t
+  - GOOS=linux GOARCH=amd64 go build -o main
+  when:
+    branch:
+    - develop
+    - feature/*
+    - hotfix/*
+    - master
+    - release/*
     event:
     - push
 
@@ -154,6 +153,7 @@ steps:
     - push
 
 - name: notify_telegram
+  failure: ignore
   image: appleboy/drone-telegram
   settings:
     token:
