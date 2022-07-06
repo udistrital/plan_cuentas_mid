@@ -261,8 +261,7 @@ paths:
     get:
       tags:
       - cdp
-      description: 'expedir cdp creando objeto infocdp en la solicitud - TODO: Esto
-        semánticamente debería ser un POST!'
+      description: 'expedir cdp creando objeto infocdp en la solicitud - TODO: Esto semánticamente debería ser un POST!'
       operationId: CdpController.ExpedirCdp
       parameters:
       - in: path
@@ -299,8 +298,7 @@ paths:
     get:
       tags:
       - crp
-      description: 'expedir crp creando objeto infocrp en la solicitud - TODO: Este
-        método semánticamente debería ser un POST!'
+      description: 'expedir crp creando objeto infocrp en la solicitud - TODO: Este método semánticamente debería ser un POST!'
       operationId: CrpController.ExpedirCrp
       parameters:
       - in: path
@@ -655,8 +653,7 @@ paths:
         "400":
           description: the request contains incorrect syntax
         "409":
-          description: No se puede hacer movimiento poque el rubro no tiene monto
-            suficiente
+          description: No se puede hacer movimiento poque el rubro no tiene monto suficiente
   /necesidad/getfullnecesidad/{id}:
     get:
       tags:
@@ -808,73 +805,49 @@ paths:
           schema:
             $ref: '#/definitions/models.SolicitudCDP'
 definitions:
-  4594.0xc000553b90.false:
+  4594.0xc0005781e0.false:
     title: "false"
     type: object
-  10309.0xc000562600.false:
+  10309.0xc0005789c0.false:
     title: "false"
     type: object
-  10368.string.0xc00053d6c8:
-    title: "0xc00053d6c8"
+  10574.string.0xc0005575a8:
+    title: "0xc0005575a8"
     type: object
-  10577.string.0xc00053d740:
-    title: "0xc00053d740"
-    type: object
-  10645.0xc0005627b0.false:
+  10641.0xc000578b40.false:
     title: "false"
     type: object
-  10697.string.0xc00053d788:
-    title: "0xc00053d788"
+  10960.string.0xc000557680:
+    title: "0xc000557680"
     type: object
-  10753.string.0xc00053d7b8:
-    title: "0xc00053d7b8"
+  11057.string.0xc0005576b0:
+    title: "0xc0005576b0"
     type: object
-  10968.string.0xc00053d848:
-    title: "0xc00053d848"
+  11152.string.0xc0005576e0:
+    title: "0xc0005576e0"
     type: object
-  11066.string.0xc00053d878:
-    title: "0xc00053d878"
-    type: object
-  11162.string.0xc00053d8a8:
-    title: "0xc00053d8a8"
-    type: object
-  11270.string.0xc00053d8d8:
-    title: "0xc00053d8d8"
-    type: object
-  11368.string.0xc00053d908:
-    title: "0xc00053d908"
-    type: object
-  11459.string.0xc00053d938:
-    title: "0xc00053d938"
-    type: object
-  11559.string.0xc00053d968:
-    title: "0xc00053d968"
-    type: object
-  11658.string.0xc00053d998:
-    title: "0xc00053d998"
-    type: object
-  19074.0xc0005635f0.false:
+  19057.0xc0005797d0.false:
     title: "false"
     type: object
-  20528.0xc000563740.false:
+  20511.0xc0005798c0.false:
     title: "false"
     type: object
-  20585.0xc000563770.false:
+  20568.0xc0005798f0.false:
     title: "false"
     type: object
-  20644.0xc0005637a0.false:
+  20627.0xc000579920.false:
     title: "false"
     type: object
-  20697.0xc0005637d0.false:
+  20680.0xc000579950.false:
     title: "false"
     type: object
-  20756.0xc000563800.false:
+  20739.0xc000579980.false:
     title: "false"
     type: object
-  20813.0xc000563830.false:
+  20796.0xc0005799b0.false:
     title: "false"
     type: object
-  20864.0xc000563860.false:
+  20847.0xc0005799e0.false:
     title: "false"
     type: object
   models.AnulationDetail:
@@ -947,7 +920,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/4594.0xc000553b90.false'
+        $ref: '#/definitions/4594.0xc0005781e0.false'
       FechaRegistro:
         type: string
       Tipo:
@@ -992,16 +965,14 @@ definitions:
     type: object
     properties:
       Actividades:
-        type: array
-        items:
-          $ref: '#/definitions/10368.string.0xc00053d6c8'
+        $ref: '#/definitions/map[string][10378.0xc000578a20.false]'
       Id:
         type: integer
         format: int64
       MetaId:
         type: string
       RubroNecesidadId:
-        $ref: '#/definitions/10309.0xc000562600.false'
+        $ref: '#/definitions/10309.0xc0005789c0.false'
   models.ModificacionFuenteReceiver:
     title: ModificacionFuenteReceiver
     type: object
@@ -1242,7 +1213,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/19074.0xc0005635f0.false'
+        $ref: '#/definitions/19057.0xc0005797d0.false'
       Estado:
         type: string
       FechaRegistro:
@@ -1277,19 +1248,19 @@ definitions:
     type: object
     properties:
       centroGestor:
-        $ref: '#/definitions/20756.0xc000563800.false'
+        $ref: '#/definitions/20739.0xc000579980.false'
       consecutivoCdp:
-        $ref: '#/definitions/20585.0xc000563770.false'
+        $ref: '#/definitions/20568.0xc0005798f0.false'
       estado:
-        $ref: '#/definitions/20813.0xc000563830.false'
+        $ref: '#/definitions/20796.0xc0005799b0.false'
       movimiento_cdp:
-        $ref: '#/definitions/20697.0xc0005637d0.false'
+        $ref: '#/definitions/20680.0xc000579950.false'
       necesidadFinanciacion:
-        $ref: '#/definitions/20864.0xc000563860.false'
+        $ref: '#/definitions/20847.0xc0005799e0.false'
       solicitudCrp:
-        $ref: '#/definitions/20528.0xc000563740.false'
+        $ref: '#/definitions/20511.0xc0005798c0.false'
       vigencia:
-        $ref: '#/definitions/20644.0xc0005637a0.false'
+        $ref: '#/definitions/20627.0xc000579920.false'
   models.RespuestaInformacionAsignacionInicial:
     title: RespuestaInformacionAsignacionInicial
     type: object
@@ -1323,24 +1294,20 @@ definitions:
     type: object
     properties:
       Fuentes:
-        type: array
-        items:
-          $ref: '#/definitions/10697.string.0xc00053d788'
+        $ref: '#/definitions/map[string][10702.0xc000578ba0.false]'
       Id:
         type: integer
         format: int64
       InfoRubro:
-        $ref: '#/definitions/10577.string.0xc00053d740'
+        $ref: '#/definitions/10574.string.0xc0005575a8'
       Metas:
         type: array
         items:
           $ref: '#/definitions/models.MetaRubroNecesidad'
       NecesidadId:
-        $ref: '#/definitions/10645.0xc0005627b0.false'
+        $ref: '#/definitions/10641.0xc000578b40.false'
       Productos:
-        type: array
-        items:
-          $ref: '#/definitions/10753.string.0xc00053d7b8'
+        $ref: '#/definitions/map[string][10757.0xc000578c30.false]'
       RubroId:
         type: string
   models.SolicitudAprobacionCdp:
@@ -1456,31 +1423,21 @@ definitions:
     type: object
     properties:
       ActividadEconomicaNecesidad:
-        type: array
-        items:
-          $ref: '#/definitions/11559.string.0xc00053d968'
+        $ref: '#/definitions/map[string][11555.0xc000578ff0.false]'
       ActividadEspecificaNecesidad:
-        type: array
-        items:
-          $ref: '#/definitions/11459.string.0xc00053d938'
+        $ref: '#/definitions/map[string][11456.0xc000578f60.false]'
       DetallePrestacionServicioNecesidad:
-        $ref: '#/definitions/11162.string.0xc00053d8a8'
+        $ref: '#/definitions/11152.string.0xc0005576e0'
       DetalleServicioNecesidad:
-        $ref: '#/definitions/11066.string.0xc00053d878'
+        $ref: '#/definitions/11057.string.0xc0005576b0'
       MarcoLegalNecesidad:
-        type: array
-        items:
-          $ref: '#/definitions/11368.string.0xc00053d908'
+        $ref: '#/definitions/map[string][11366.0xc000578ed0.false]'
       Necesidad:
-        $ref: '#/definitions/10968.string.0xc00053d848'
+        $ref: '#/definitions/10960.string.0xc000557680'
       ProductosCatalogoNecesidad:
-        type: array
-        items:
-          $ref: '#/definitions/11270.string.0xc00053d8d8'
+        $ref: '#/definitions/map[string][11269.0xc000578e40.false]'
       RequisitoMinimoNecesidad:
-        type: array
-        items:
-          $ref: '#/definitions/11658.string.0xc00053d998'
+        $ref: '#/definitions/map[string][11653.0xc000579080.false]'
       Rubros:
         type: array
         items:
