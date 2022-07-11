@@ -110,7 +110,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 										"RubroId":                valor.RubroId,
 										"ActividadId":            actividad["ActividadId"],
 										"FuenteFinanciamientoId": fuente["FuenteId"].(string),
-										"PlanAquisicionesId":     necesidad.PlanAnualAdquisicionesId,
+										"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 									})
 									mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 									mov1.Valor = -fuente["MontoParcial"].(float64)
@@ -132,7 +132,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 							mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 								"RubroId":                valor.RubroId,
 								"FuenteFinanciamientoId": fuente["FuenteId"].(string),
-								"PlanAquisicionesId":     necesidad.PlanAnualAdquisicionesId,
+								"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 							})
 							mov1.Mov_Proc_Ext = strconv.Itoa(movimientoext.Id)
 							mov1.Valor = -fuente["MontoParcial"].(float64)
