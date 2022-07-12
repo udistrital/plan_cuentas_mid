@@ -182,7 +182,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 									"RubroId":                valor.RubroId,
 									"ActividadId":            actividad["ActividadId"],
 									"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
-									"PlanAquisicionesId":     necesidad.PlanAnualAdquisicionesId,
+									"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 								})
 								mov = append(mov, mov1)
 								if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
@@ -208,7 +208,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 							"RubroId":                valor.RubroId,
 							"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
-							"PlanAquisicionesId":     necesidad.PlanAnualAdquisicionesId,
+							"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 						})
 						mov = append(mov, mov1)
 						if movimientos, err := movimientohelper.ObtenerUltimoMovimiento(mov); err != nil {
