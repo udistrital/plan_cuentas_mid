@@ -8,9 +8,9 @@ require (
 	github.com/udistrital/configuracion_api v0.0.0-20220201174247-63387e242e25
 	github.com/udistrital/consecutivos_crud v0.1.0
 	github.com/udistrital/movimientos_crud v0.5.0
-	github.com/udistrital/necesidades_crud v1.0.1-0.20220211043313-bcdd21f4b170
+	github.com/udistrital/necesidades_crud v1.2.0
 	github.com/udistrital/plan_cuentas_mongo_crud v0.1.3
-	github.com/udistrital/utils_oas v0.0.0-20220415063412-5dae4bd58180
+	github.com/udistrital/utils_oas v0.0.0-20220521085529-fbd949fcf4e2
 )
 
 require (
