@@ -101,6 +101,21 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 					for _, meta := range valor.Metas {
 						for _, actividadp := range meta.Actividades {
 							actividad := actividadp
+							fallo := true
+							var id int
+							if v1, ok := actividad["ActividadId"]; ok {
+								if v2, ok := v1.(string); ok {
+									var err error
+									if id, err = strconv.Atoi(v2); err == nil {
+										fallo = false
+									}
+								}
+							}
+							if fallo {
+								var outErr = map[string]interface{}{"Function": "RealizarMovimiento", "Error": "Obtener actividad del registro del plan de adquiciones"}
+								outputError = outErr
+								return
+							}
 							fuentesi := actividad["FuentesActividad"]
 							fuentesp := fuentesi.([]map[string]interface{})
 							for _, fuentep := range fuentesp {
@@ -108,7 +123,7 @@ func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[s
 								if int(fuente["MontoParcial"].(float64)) > 0 {
 									mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 										"RubroId":                valor.RubroId,
-										"ActividadId":            actividad["ActividadId"],
+										"ActividadId":            id,
 										"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 										"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 									})
@@ -173,6 +188,21 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 				for _, meta := range valor.Metas {
 					for _, actividadp := range meta.Actividades {
 						actividad := actividadp
+						fallo := true
+						var id int
+						if v1, ok := actividad["ActividadId"]; ok {
+							if v2, ok := v1.(string); ok {
+								var err error
+								if id, err = strconv.Atoi(v2); err == nil {
+									fallo = false
+								}
+							}
+						}
+						if fallo {
+							var outErr = map[string]interface{}{"Function": "EvaluarMovimiento", "Error": "Obtener actividad del registro del plan de adquiciones"}
+							outputError = outErr
+							return
+						}
 						fuentesi := actividad["FuentesActividad"]
 						fuentesp := fuentesi.([]map[string]interface{})
 						for _, fuentep := range fuentesp {
@@ -180,8 +210,8 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 							if int(fuente["MontoParcial"].(float64)) > 0 {
 								mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 									"RubroId":                valor.RubroId,
-									"ActividadId":            actividad["ActividadId"],
-									"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
+									"ActividadId":            id,
+									"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 									"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 								})
 								mov = append(mov, mov1)
@@ -207,7 +237,7 @@ func EvaluarMovimiento(necesidad necesidad_models.Necesidad) (resultado bool, ou
 					if int(fuente["MontoParcial"].(float64)) > 0 {
 						mov1.Cuen_Pre, _ = utils.Serializar(map[string]interface{}{
 							"RubroId":                valor.RubroId,
-							"FuenteFinanciamientoId": fmt.Sprintf("%v", fuente["FuenteId"]),
+							"FuenteFinanciamientoId": fuente["FuenteId"].(string),
 							"PlanAdquisicionesId":    necesidad.PlanAnualAdquisicionesId,
 						})
 						mov = append(mov, mov1)

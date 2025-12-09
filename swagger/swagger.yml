@@ -805,49 +805,49 @@ paths:
           schema:
             $ref: '#/definitions/models.SolicitudCDP'
 definitions:
-  4594.0xc0005781e0.false:
+  4594.0xc00055d2c0.false:
     title: "false"
     type: object
-  10309.0xc0005789c0.false:
+  10309.0xc00055daa0.false:
     title: "false"
     type: object
-  10574.string.0xc0005575a8:
-    title: "0xc0005575a8"
+  10574.string.0xc000553080:
+    title: "0xc000553080"
     type: object
-  10641.0xc000578b40.false:
+  10641.0xc00055dc20.false:
     title: "false"
     type: object
-  10960.string.0xc000557680:
-    title: "0xc000557680"
+  10960.string.0xc000553158:
+    title: "0xc000553158"
     type: object
-  11057.string.0xc0005576b0:
-    title: "0xc0005576b0"
+  11057.string.0xc000553188:
+    title: "0xc000553188"
     type: object
-  11152.string.0xc0005576e0:
-    title: "0xc0005576e0"
+  11152.string.0xc0005531b8:
+    title: "0xc0005531b8"
     type: object
-  19057.0xc0005797d0.false:
+  19057.0xc00057c8d0.false:
     title: "false"
     type: object
-  20511.0xc0005798c0.false:
+  20511.0xc00057c9c0.false:
     title: "false"
     type: object
-  20568.0xc0005798f0.false:
+  20568.0xc00057c9f0.false:
     title: "false"
     type: object
-  20627.0xc000579920.false:
+  20627.0xc00057ca20.false:
     title: "false"
     type: object
-  20680.0xc000579950.false:
+  20680.0xc00057ca50.false:
     title: "false"
     type: object
-  20739.0xc000579980.false:
+  20739.0xc00057ca80.false:
     title: "false"
     type: object
-  20796.0xc0005799b0.false:
+  20796.0xc00057cab0.false:
     title: "false"
     type: object
-  20847.0xc0005799e0.false:
+  20847.0xc00057cae0.false:
     title: "false"
     type: object
   models.AnulationDetail:
@@ -920,7 +920,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/4594.0xc0005781e0.false'
+        $ref: '#/definitions/4594.0xc00055d2c0.false'
       FechaRegistro:
         type: string
       Tipo:
@@ -965,14 +965,14 @@ definitions:
     type: object
     properties:
       Actividades:
-        $ref: '#/definitions/map[string][10378.0xc000578a20.false]'
+        $ref: '#/definitions/map[string][10378.0xc00055db00.false]'
       Id:
         type: integer
         format: int64
       MetaId:
         type: string
       RubroNecesidadId:
-        $ref: '#/definitions/10309.0xc0005789c0.false'
+        $ref: '#/definitions/10309.0xc00055daa0.false'
   models.ModificacionFuenteReceiver:
     title: ModificacionFuenteReceiver
     type: object
@@ -1213,7 +1213,7 @@ definitions:
         type: integer
         format: int64
       Data:
-        $ref: '#/definitions/19057.0xc0005797d0.false'
+        $ref: '#/definitions/19057.0xc00057c8d0.false'
       Estado:
         type: string
       FechaRegistro:
@@ -1248,19 +1248,19 @@ definitions:
     type: object
     properties:
       centroGestor:
-        $ref: '#/definitions/20739.0xc000579980.false'
+        $ref: '#/definitions/20739.0xc00057ca80.false'
       consecutivoCdp:
-        $ref: '#/definitions/20568.0xc0005798f0.false'
+        $ref: '#/definitions/20568.0xc00057c9f0.false'
       estado:
-        $ref: '#/definitions/20796.0xc0005799b0.false'
+        $ref: '#/definitions/20796.0xc00057cab0.false'
       movimiento_cdp:
-        $ref: '#/definitions/20680.0xc000579950.false'
+        $ref: '#/definitions/20680.0xc00057ca50.false'
       necesidadFinanciacion:
-        $ref: '#/definitions/20847.0xc0005799e0.false'
+        $ref: '#/definitions/20847.0xc00057cae0.false'
       solicitudCrp:
-        $ref: '#/definitions/20511.0xc0005798c0.false'
+        $ref: '#/definitions/20511.0xc00057c9c0.false'
       vigencia:
-        $ref: '#/definitions/20627.0xc000579920.false'
+        $ref: '#/definitions/20627.0xc00057ca20.false'
   models.RespuestaInformacionAsignacionInicial:
     title: RespuestaInformacionAsignacionInicial
     type: object
@@ -1294,20 +1294,20 @@ definitions:
     type: object
     properties:
       Fuentes:
-        $ref: '#/definitions/map[string][10702.0xc000578ba0.false]'
+        $ref: '#/definitions/map[string][10702.0xc00055dc80.false]'
       Id:
         type: integer
         format: int64
       InfoRubro:
-        $ref: '#/definitions/10574.string.0xc0005575a8'
+        $ref: '#/definitions/10574.string.0xc000553080'
       Metas:
         type: array
         items:
           $ref: '#/definitions/models.MetaRubroNecesidad'
       NecesidadId:
-        $ref: '#/definitions/10641.0xc000578b40.false'
+        $ref: '#/definitions/10641.0xc00055dc20.false'
       Productos:
-        $ref: '#/definitions/map[string][10757.0xc000578c30.false]'
+        $ref: '#/definitions/map[string][10757.0xc00055dd10.false]'
       RubroId:
         type: string
   models.SolicitudAprobacionCdp:
@@ -1423,21 +1423,21 @@ definitions:
     type: object
     properties:
       ActividadEconomicaNecesidad:
-        $ref: '#/definitions/map[string][11555.0xc000578ff0.false]'
+        $ref: '#/definitions/map[string][11555.0xc00057c0f0.false]'
       ActividadEspecificaNecesidad:
-        $ref: '#/definitions/map[string][11456.0xc000578f60.false]'
+        $ref: '#/definitions/map[string][11456.0xc00057c060.false]'
       DetallePrestacionServicioNecesidad:
-        $ref: '#/definitions/11152.string.0xc0005576e0'
+        $ref: '#/definitions/11152.string.0xc0005531b8'
       DetalleServicioNecesidad:
-        $ref: '#/definitions/11057.string.0xc0005576b0'
+        $ref: '#/definitions/11057.string.0xc000553188'
       MarcoLegalNecesidad:
-        $ref: '#/definitions/map[string][11366.0xc000578ed0.false]'
+        $ref: '#/definitions/map[string][11366.0xc00055dfb0.false]'
       Necesidad:
-        $ref: '#/definitions/10960.string.0xc000557680'
+        $ref: '#/definitions/10960.string.0xc000553158'
       ProductosCatalogoNecesidad:
-        $ref: '#/definitions/map[string][11269.0xc000578e40.false]'
+        $ref: '#/definitions/map[string][11269.0xc00055df20.false]'
       RequisitoMinimoNecesidad:
-        $ref: '#/definitions/map[string][11653.0xc000579080.false]'
+        $ref: '#/definitions/map[string][11653.0xc00057c180.false]'
       Rubros:
         type: array
         items:
