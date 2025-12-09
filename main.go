@@ -2,25 +2,28 @@ package main
 
 import (
 	_ "github.com/udistrital/plan_cuentas_mid/routers"
-	//"github.com/udistrital/utils_oas/customerror"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/plugins/cors"
 	apistatus "github.com/udistrital/utils_oas/apiStatusLib"
-	"github.com/udistrital/utils_oas/auditoria"
+	auditoria "github.com/udistrital/utils_oas/auditoria"
+	"github.com/udistrital/utils_oas/security"
+	"github.com/udistrital/utils_oas/xray"
 )
 
-func init() {
-}
-
 func main() {
-	// beego.BConfig.RecoverFunc = responseformat.GlobalResponseHandler
+	allowedOrigins := []string{"*.udistrital.edu.co"}
 	if beego.BConfig.RunMode == "dev" {
+		allowedOrigins = []string{"*"}
+		orm.Debug = true
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
-		AllowOrigins: []string{"*"},
+		AllowOrigins: allowedOrigins,
 		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "OPTIONS", "DELETE"},
 		AllowHeaders: []string{"Origin", "x-requested-with",
 			"content-type",
@@ -32,13 +35,13 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	//Prueba de auditoria
-	auditoria.InitMiddleware()
-
-	//beego.ErrorController(&customerror.CustomErrorController{})
+	err := xray.InitXRay()
+	if err != nil {
+		logs.Error("error configurando AWS XRay: %v", err)
+	}
 	apistatus.Init()
-
-	//mongoProcess.PresupuestoMongoJobInit()
+	auditoria.InitMiddleware()
+	security.SetSecurityHeaders()
 	beego.Run()
 
 }
