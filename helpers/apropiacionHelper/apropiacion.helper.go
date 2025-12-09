@@ -148,7 +148,7 @@ func PutApropiacion(data map[string]interface{}, idStr, valStr, vigStr string) m
 	return res
 }
 
-//CalcularSaldoApropiacion .... Return Apropiation's balance by Rubro's code , ue and year.
+// CalcularSaldoApropiacion .... Return Apropiation's balance by Rubro's code , ue and year.
 func CalcularSaldoApropiacion(rubroParam string, unidadEParam, vigenciaParam int) (res map[string]float64) {
 	var saldo float64
 	defer func() {

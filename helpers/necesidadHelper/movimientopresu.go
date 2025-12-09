@@ -66,7 +66,7 @@ func InterceptorMovimientoNecesidad(id int, necesidadent necesidad_models.Necesi
 	return
 }
 
-//RealizarMovimiento, toma la informacion de la necesidad para poder generar y estructurar el movimiento
+// RealizarMovimiento, toma la informacion de la necesidad para poder generar y estructurar el movimiento
 func RealizarMovimiento(necesidad necesidad_models.Necesidad) (outputError map[string]interface{}) {
 	defer func() {
 		if err := recover(); err != nil {

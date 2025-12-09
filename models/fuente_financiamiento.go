@@ -8,4 +8,3 @@ type FuenteFinanciamiento struct {
 	TipoFuenteFinanciamiento *TipoFuenteFinanciamiento `orm:"column(tipo_fuente_financiamiento);null"`
 	Codigo                   string                    `orm:"column(codigo)"`
 }
-
